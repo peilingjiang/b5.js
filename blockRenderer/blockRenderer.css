@@ -1,0 +1,21 @@
+@import '../../css/root.css';
+
+.block {
+  z-index: 60000;
+}
+
+.node {
+  z-index: 80000;
+}
+
+.wire {
+  z-index: 40000;
+}
+
+.blockFill {
+  position: absolute;
+  width: $block-width;
+  height: $line-height;
+  text-align: center;
+  vertical-align: center;
+}

@@ -1,4 +1,4 @@
-export function _findArgs(allBlocks, input, data) {
+export function _findArgs(allBlocks, input, inlineData) {
   let args = []
 
   // Find input data
@@ -9,7 +9,7 @@ export function _findArgs(allBlocks, input, data) {
     }
 
   // Find data data
-  if (data !== null) args.push(...data)
+  if (inlineData !== null) args.push(...inlineData)
 
   return args
 }

@@ -81,11 +81,11 @@ class _sectionObject {
 }
 
 class _blockObject {
-  constructor({ name, input, data }, parent) {
+  constructor({ name, input, inlineData }, parent) {
     this.parent = parent
     this.name = name
     this.input = input
-    this.data = data
+    this.inlineData = inlineData
     this.output = null
 
     /*
@@ -102,7 +102,7 @@ class _blockObject {
   }
 
   run(p) {
-    let _args = _findArgs(this.parent.blocks, this.input, this.data)
+    let _args = _findArgs(this.parent.blocks, this.input, this.inlineData)
     this.output = _b5b[this.name].run(p, ..._args)
   }
 }
