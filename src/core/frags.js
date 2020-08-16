@@ -5,11 +5,11 @@ export function _findArgs(allBlocks, input, inlineData) {
   if (input !== null)
     for (let i in input) {
       let ipt = input[i]
-      args.push(allBlocks[ipt[0]][ipt[1]].output[ipt[2]])
+      args.push(ipt === null ? null : allBlocks[ipt[0]][ipt[1]].output[ipt[2]])
     }
 
   // Find data data
-  if (inlineData !== null) args.push(...inlineData)
+  if (inlineData) args.push(...inlineData)
 
   return args
 }

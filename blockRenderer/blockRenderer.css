@@ -1,15 +1,15 @@
 @import '../../css/root.css';
 
-.block {
-  z-index: 60000;
+.wire {
+  z-index: 40000;
 }
 
 .node {
   z-index: 80000;
-}
-
-.wire {
-  z-index: 40000;
+  width: $node-size;
+  height: $node-size;
+  border-radius: calc($node-size / 2);
+  background-color: #fff;
 }
 
 .blockFill {
@@ -17,5 +17,168 @@
   width: $block-width;
   height: $line-height;
   text-align: center;
-  vertical-align: center;
+
+  .block {
+    z-index: 60000;
+    position: absolute;
+    border-radius: $tiny-radius;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    padding: 0;
+
+    .blockName {
+      color: #fff;
+      line-height: 100%;
+      margin: 7px auto;
+      font-size: $normal;
+      font-weight: $regular;
+    }
+  }
+
+  .default,
+  .defaultConnect {
+    background-color: $default;
+  }
+
+  .variable,
+  .variableConnect {
+    background-color: $variable;
+  }
+
+  .function,
+  .functionConnect {
+    background-color: $function;
+  }
+
+  .object,
+  .objectConnect {
+    background-color: $object;
+  }
+
+  .draw {
+    background-color: $draw;
+  }
+
+  .library {
+    background-color: $library;
+  }
+
+  .nodeFill {
+    .defaultNode {
+      border: $node-border $default;
+    }
+
+    .variableNode {
+      border: $node-border $variable;
+    }
+
+    .functionNode {
+      border: $node-border $function;
+    }
+
+    .objectNode {
+      border: $node-border $object;
+    }
+
+    .drawNode {
+      border: $node-border $draw;
+    }
+
+    .libraryNode {
+      border: $node-border $library;
+    }
+
+    .connected {
+      border: $node-border $grey;
+    }
+  }
+
+  .normal {
+    display: inline-block;
+
+    .nodes {
+      position: absolute;
+      display: flex;
+      margin: 0 auto;
+      width: 100%;
+
+      .nodeFill {
+        display: inline-block;
+        position: relative;
+
+        .node {
+          position: absolute;
+          left: 50%;
+          transform: translate(-50%, 0);
+        }
+      }
+    }
+
+    .inputNodes {
+      top: calc(- $node-size / 2);
+    }
+
+    .outputNodes {
+      bottom: calc($node-size / 2);
+    }
+
+    .nodesText {
+      display: flex;
+      text-align: center;
+      margin: 0 auto;
+      width: 100%;
+      line-height: 100%;
+      font-size: $small;
+    }
+
+    .inputNodesText {
+      margin-top: calc($node-size / 2 + $node-border-width * 2);
+    }
+
+    .outputNodesText {
+      margin-bottom: calc($node-size / 2 + $node-border-width * 2);
+    }
+
+    .count1 {
+      width: 100%;
+    }
+
+    .count2 {
+      width: 50%;
+    }
+
+    .count3 {
+      width: 33%;
+    }
+
+    .count4 {
+      width: 25%;
+    }
+
+    .count5 {
+      width: 20%;
+    }
+  }
+
+  // For .normal blocks
+  .nodesCount1 {
+    width: 100px;
+  }
+
+  .nodesCount2 {
+    width: 124px;
+  }
+
+  .nodesCount3 {
+    width: 150px;
+  }
+
+  .nodesCount4 {
+    width: 176px;
+  }
+
+  .nodesCount5 {
+    width: 200px;
+  }
 }
