@@ -1,10 +1,10 @@
-import React, { Component } from 'react'
+import React, { Component, forwardRef } from 'react'
 
 import '../../postcss/b5.js/blockRenderer/blockRenderer.css'
 import { lineHeight, roomWidth } from '../../components/constants'
 import _b5BlocksObject from '../src/blocks/blocksObjectWrapper'
 
-export default class blockRenderer extends Component {
+class BlockRenderer extends Component {
   constructor(props) {
     super(props) // x, y, data, inputBlocks
     this.x = props.x
@@ -99,6 +99,7 @@ export default class blockRenderer extends Component {
           top: this.y * lineHeight + 'px',
           left: this.x * roomWidth + 'px',
         }}
+        ref={this.props.thisBlockRef}
       >
         {kind === 'inline' ? (
           <></>
@@ -114,7 +115,7 @@ export default class blockRenderer extends Component {
           // kind === 'normal'
           <div
             className={
-              'block ' +
+              'grab block ' +
               type +
               ' ' +
               kind +
@@ -154,7 +155,7 @@ class Node extends Component {
       <div className={'nodeFill count' + count}>
         <div
           className={
-            'node ' +
+            'nodeAdd node ' +
             (connectType === null
               ? type + 'Node'
               : connectType + 'Connect connected')
@@ -164,3 +165,7 @@ class Node extends Component {
     )
   }
 }
+
+export default forwardRef((props, ref) => (
+  <BlockRenderer thisBlockRef={ref} {...props} />
+))

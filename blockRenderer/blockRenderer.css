@@ -39,29 +39,37 @@
   .default,
   .defaultConnect {
     background-color: $default;
+    color: color-mod($default blend($black 80%));
   }
 
   .variable,
   .variableConnect {
     background-color: $variable;
+    color: color-mod($variable blend($black 80%));
   }
 
   .function,
   .functionConnect {
     background-color: $function;
+    color: color-mod($function blend($black 80%));
   }
 
   .object,
   .objectConnect {
     background-color: $object;
+    color: color-mod($object blend($black 80%));
   }
 
-  .draw {
+  .draw,
+  .drawConnect {
     background-color: $draw;
+    color: color-mod($draw blend($black 80%));
   }
 
-  .library {
+  .library,
+  .libraryConnect {
     background-color: $library;
+    color: color-mod($library blend($black 80%));
   }
 
   .nodeFill {
@@ -111,6 +119,7 @@
           position: absolute;
           left: 50%;
           transform: translate(-50%, 0);
+          box-shadow: 0 0 3px -1px $grey;
         }
       }
     }

@@ -30,6 +30,7 @@ _b5Blocks.prototype.createCanvas = {
   run: function (p, x, y) {
     const d = this.default
     const cnv = p.createCanvas(x || d[0], y || d[1])
+    p.background(255, 255, 255, 255) // Draw a white background by default
     return { 0: cnv } // Return the directly readable output
     // The index should be corresponding to info in inputNodes
   },
