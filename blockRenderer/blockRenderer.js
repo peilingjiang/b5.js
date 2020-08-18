@@ -29,6 +29,8 @@ class BlockRenderer extends Component {
     const {
         data: { name, input, inlineData, output },
         inputBlocks,
+        x,
+        y,
       } = this.props,
       { type, kind, inputNodes, outputNodes } = _b5BlocksObject[name]
 
@@ -45,7 +47,7 @@ class BlockRenderer extends Component {
       for (let i in inputNodes) {
         blockInputNodes.push(
           <Node
-            key={'inputNode ' + i}
+            key={x + y + ' inputNode' + i}
             nodeClass="input"
             count={inputNodesCount}
             type={type}
@@ -60,7 +62,7 @@ class BlockRenderer extends Component {
         )
         inputNodesText.push(
           <p
-            key={'inputText ' + i}
+            key={x + y + ' inputText' + i}
             className={'inputText count' + inputNodesCount}
           >
             {inputNodes[i].text}
@@ -74,7 +76,7 @@ class BlockRenderer extends Component {
       for (let i in outputNodes) {
         blockOutputNodes.push(
           <Node
-            key={'outputNode ' + i}
+            key={x + y + 'outputNode ' + i}
             nodeClass="output"
             count={outputNodesCount}
             type={type}
@@ -83,7 +85,7 @@ class BlockRenderer extends Component {
         )
         outputNodesText.push(
           <p
-            key={'outputText ' + i}
+            key={x + y + 'outputText ' + i}
             className={'outputText count' + outputNodesCount}
           >
             {outputNodes[i].text}
@@ -108,7 +110,14 @@ class BlockRenderer extends Component {
         ) : kind === 'display' ? (
           <></>
         ) : kind === 'input' ? (
-          <></>
+          <InputBlock
+            className={'grab block ' + type + ' ' + kind}
+            name={name}
+            inlineData={inlineData}
+            output={output}
+            outputNodes={outputNodes}
+            type={type}
+          />
         ) : kind === 'slider' ? (
           <></>
         ) : (
@@ -147,23 +156,50 @@ class BlockRenderer extends Component {
   }
 }
 
-class Node extends Component {
-  // props - nodeClass, count, type, connectType
-  render() {
-    const { count, type, connectType } = this.props
-    return (
-      <div className={'nodeFill count' + count}>
-        <div
-          className={
-            'nodeAdd node ' +
-            (connectType === null
-              ? type + 'Node'
-              : connectType + 'Connect connected')
-          }
-        ></div>
+const Node = ({ count, type, connectType }) => {
+  return (
+    <div className={'nodeFill count' + count}>
+      <div
+        className={
+          'nodeAdd node ' +
+          (connectType === null
+            ? type + 'Node'
+            : connectType + 'Connect connected')
+        }
+      ></div>
+    </div>
+  )
+}
+
+const InputBlock = ({
+  className,
+  inlineData,
+  output,
+  outputNodes,
+  name,
+  type,
+}) => {
+  console.log(className)
+  console.log(outputNodes, name)
+  console.log(inlineData)
+  return (
+    <div className={className}>
+      <div className="left">
+        <div className="blockName">{name}</div>
+        <div className="nodes outputNodes">
+          <Node
+            nodeClass="output"
+            count={1}
+            type={type}
+            connectType={output[0] !== null ? outputNodes[0].type[0] : null}
+          />
+        </div>
       </div>
-    )
-  }
+      <div className="right">
+        <input className="inputBox" type="text" defaultValue={inlineData} />
+      </div>
+    </div>
+  )
 }
 
 export default forwardRef((props, ref) => (

@@ -108,35 +108,35 @@
     }
   }
 
-  .normal {
-    display: inline-block;
+  .nodes {
+    position: absolute;
+    display: flex;
+    margin: 0 auto;
+    width: 100%;
 
-    .nodes {
-      position: absolute;
-      display: flex;
-      margin: 0 auto;
-      width: 100%;
+    .nodeFill {
+      display: inline-block;
+      position: relative;
 
-      .nodeFill {
-        display: inline-block;
-        position: relative;
-
-        .node {
-          position: absolute;
-          left: 50%;
-          transform: translate(-50%, 0);
-          box-shadow: 0 0 3px -1px $grey;
-        }
+      .node {
+        position: absolute;
+        left: 50%;
+        transform: translate(-50%, 0);
+        box-shadow: 0 0 3px -1px $grey;
       }
     }
+  }
 
-    .inputNodes {
-      top: calc(- $node-size / 2);
-    }
+  .inputNodes {
+    top: calc(- $node-size / 2);
+  }
 
-    .outputNodes {
-      bottom: calc($node-size / 2);
-    }
+  .outputNodes {
+    bottom: calc($node-size / 2);
+  }
+
+  .normal {
+    display: inline-block;
 
     .nodesText {
       display: flex;
@@ -171,6 +171,43 @@
 
     .count5 {
       width: 20%;
+    }
+  }
+
+  .input {
+    display: flex;
+    width: 150px;
+    height: 34px;
+
+    .blockName {
+      margin: 9px 0;
+    }
+
+    .left {
+      display: inline-block;
+      width: 64px;
+
+      .nodes {
+        width: 64px;
+
+        .count1 {
+          width: 100%;
+        }
+      }
+    }
+
+    .right {
+      display: inline-block;
+      width: 86px;
+    }
+
+    .inputBox {
+      border-radius: $tiny-tiny-radius;
+      margin: 3px 3px 3px 0;
+      height: 28px;
+      width: 83px;
+      text-align: center;
+      font-size: $small;
     }
   }
 
