@@ -199,15 +199,22 @@
     .right {
       display: inline-block;
       width: 86px;
-    }
 
-    .inputBox {
-      border-radius: $tiny-tiny-radius;
-      margin: 3px 3px 3px 0;
-      height: 28px;
-      width: 83px;
-      text-align: center;
-      font-size: $small;
+      .inputBox {
+        border-radius: $tiny-tiny-radius;
+        margin: 3px 3px 3px 0;
+        height: 28px;
+        width: 83px;
+        text-align: center;
+        font-size: $small;
+      }
+
+      // .inputBox:focus {}
+
+      .invalid {
+        border: $alert solid 1px;
+        color: $alert;
+      }
     }
   }
 

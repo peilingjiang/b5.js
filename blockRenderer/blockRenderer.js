@@ -1,4 +1,4 @@
-import React, { Component, forwardRef } from 'react'
+import React, { Component, forwardRef, createRef } from 'react'
 
 import '../../postcss/b5.js/blockRenderer/blockRenderer.css'
 import { lineHeight, roomWidth } from '../../components/constants'
@@ -31,6 +31,7 @@ class BlockRenderer extends Component {
         inputBlocks,
         x,
         y,
+        collect,
       } = this.props,
       { type, kind, inputNodes, outputNodes } = _b5BlocksObject[name]
 
@@ -117,6 +118,9 @@ class BlockRenderer extends Component {
             output={output}
             outputNodes={outputNodes}
             type={type}
+            collect={collect}
+            x={x}
+            y={y}
           />
         ) : kind === 'slider' ? (
           <></>
@@ -171,35 +175,114 @@ const Node = ({ count, type, connectType }) => {
   )
 }
 
-const InputBlock = ({
-  className,
-  inlineData,
-  output,
-  outputNodes,
-  name,
-  type,
-}) => {
-  console.log(className)
-  console.log(outputNodes, name)
-  console.log(inlineData)
-  return (
-    <div className={className}>
-      <div className="left">
-        <div className="blockName">{name}</div>
-        <div className="nodes outputNodes">
-          <Node
-            nodeClass="output"
-            count={1}
-            type={type}
-            connectType={output[0] !== null ? outputNodes[0].type[0] : null}
-          />
+class InputBlock extends Component {
+  constructor(props) {
+    super(props)
+    this.valid = true // valid or not
+    this.inputRef = createRef()
+  }
+
+  componentDidMount() {
+    this.inputRef.current.addEventListener('click', this.handleClick, true)
+  }
+
+  componentWillUnmount() {
+    this.inputRef.current.removeEventListener('click', this.handleClick, true)
+  }
+
+  _cleanValue = v => {
+    return isNaN(v) ? v : Number(v)
+  }
+
+  _finished = (toBlur = true) => {
+    // Handle send data
+    if (this.inputRef) {
+      const { collect, x, y, inlineData } = this.props
+      let value = this._cleanValue(this.inputRef.current.value)
+      if (this.valid && value !== inlineData[0]) {
+        collect([x, y, 0, value], 'inlineDataChange')
+      }
+
+      if (toBlur) {
+        this.inputRef.current.blur()
+
+        // Remove listeners
+        this.inputRef.current.removeEventListener(
+          'keypress',
+          this._keyFinished,
+          true
+        )
+        document.removeEventListener('click', this._clickFinished, true)
+      }
+    }
+  }
+
+  _keyFinished = e => {
+    if (e.key === 'Enter') this._finished(false) // Keep editing after pressing return...
+  }
+
+  _clickFinished = e => {
+    if (e.target !== this.inputRef.current) this._finished(true)
+  }
+
+  handleClick = e => {
+    this.inputRef.current.addEventListener('keypress', this._keyFinished, true)
+    document.addEventListener('click', this._clickFinished, true)
+  }
+
+  handleValueChange = () => {
+    // Check if value is valid if it's a number input
+    if (this.props.name === 'number') {
+      if (
+        isNaN(this.inputRef.current.value) &&
+        !this.inputRef.current.classList.contains('invalid')
+      ) {
+        this.inputRef.current.className += ' invalid'
+        this.valid = false
+      } else if (!isNaN(this.inputRef.current.value)) {
+        this.inputRef.current.className = this.inputRef.current.className.replace(
+          ' invalid',
+          ''
+        )
+        this.valid = true
+      }
+    }
+  }
+
+  render() {
+    const {
+      className,
+      name,
+      type,
+      inlineData,
+      output,
+      outputNodes,
+    } = this.props
+    return (
+      <div className={className}>
+        <div className="left">
+          <div className="blockName">{name}</div>
+          <div className="nodes outputNodes">
+            <Node
+              nodeClass="output"
+              count={1}
+              type={type}
+              connectType={output[0] !== null ? outputNodes[0].type[0] : null}
+            />
+          </div>
+        </div>
+        <div className="right">
+          <input
+            ref={this.inputRef}
+            className="inputBox"
+            type="text"
+            defaultValue={inlineData}
+            onChange={this.handleValueChange}
+          ></input>
         </div>
       </div>
-      <div className="right">
-        <input className="inputBox" type="text" defaultValue={inlineData} />
-      </div>
-    </div>
-  )
+    )
+  }
 }
 
 export default forwardRef((props, ref) => (
