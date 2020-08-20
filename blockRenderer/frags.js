@@ -77,14 +77,18 @@ export class InputBox extends PureComponent {
 
   handleValueChange = () => {
     // Check if value is valid if it's a number input
+    const r = this.props.range
+    // If a range for the input is given, then the value must be within the range
     if (this.props.name.includes('number')) {
+      let v = this.inputRef.current.value
+      let vN = Number(v)
       if (
-        isNaN(this.inputRef.current.value) &&
+        (isNaN(v) || (r ? vN <= r[0] || vN >= r[1] : false)) &&
         !this.inputRef.current.classList.contains('invalid')
       ) {
         this.inputRef.current.className += ' invalid'
         this.valid = false
-      } else if (!isNaN(this.inputRef.current.value)) {
+      } else if (!isNaN(v)) {
         this.inputRef.current.className = this.inputRef.current.className.replace(
           ' invalid',
           ''

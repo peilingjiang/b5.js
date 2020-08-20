@@ -1,6 +1,7 @@
 import React, { Component, createRef } from 'react'
 
 import { Node, InputBox } from './frags'
+import { constrain } from '../../components/main'
 
 export class InputBlock extends Component {
   constructor(props) {
@@ -49,7 +50,7 @@ export class InputBlock extends Component {
   }
 }
 
-const _inputRangeThumbWidth = 2
+const _inputRangeThumbWidth = 1
 
 class InputRange extends Component {
   constructor(props) {
@@ -88,30 +89,36 @@ class InputRange extends Component {
       inlineData: [current, min, max],
     } = this.props
     // Make sure the current value is in the range
-    if (current < min || current > max) {
-      let newCurrent = Math.max(Math.min(current, min), max)
+    let newCurrent = current
+    if (current !== constrain(current, min, max)) {
+      console.log('l')
+      newCurrent = constrain(current, min, max)
       collect([x, y, 0, newCurrent], 'inlineDataChange')
       this.setState({ currentValue: newCurrent })
     }
-    this.rangeBelow.style.width =
-      this._getLength(current, min, max, this.totalLength) + 'px'
+    this.rangeBelow.style.width = this._getLength(newCurrent, min, max) + 'px'
   }
 
-  _getLength = (current, min, max, totalLen) => {
+  _getLength = (current, min, max) => {
     // Get length from current slider value
-    return (totalLen * (current - min)) / (max - min)
+    return (this.totalLength * (current - min)) / (max - min)
   }
 
   _getValue = (length, min, max, step) => {
     // Get value from slider length
-    return Math.max(
-      Math.min(
-        Math.round(((length / this.totalLength) * (max - min) + min) / step) *
-          step,
-        max
-      ),
-      min
-    )
+    return length === 0
+      ? min
+      : length === this.totalLength
+      ? max
+      : Math.max(
+          Math.min(
+            Math.round(
+              ((length / this.totalLength) * (max - min) + min) / step
+            ) * step,
+            max
+          ),
+          min
+        )
   }
 
   collectRangeData() {
@@ -141,7 +148,7 @@ class InputRange extends Component {
         this.setState({ currentValue: value })
 
         this.rangeBelow.style.width =
-          this._getLength(value, iD[1], iD[2], this.totalLength) + 'px'
+          this._getLength(value, iD[1], iD[2]) + 'px'
       }
 
       this.sliderBox.classList.replace('defaultCursor', 'ewResizing')
@@ -205,6 +212,7 @@ class InputRange extends Component {
             className={'sliderSet step'}
             thisInlineData={inlineData[3]}
             inlineDataInd={3}
+            range={[0, Infinity]}
             name={name}
             x={x}
             y={y}

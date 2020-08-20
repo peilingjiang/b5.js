@@ -122,7 +122,7 @@
         position: absolute;
         left: 50%;
         transform: translate(-50%, 0);
-        box-shadow: 0 0 3px -1px $grey;
+        // box-shadow: 0 0 3px -1px $grey;
       }
     }
   }
@@ -262,7 +262,10 @@
           width: 100%;
           top: 28px;
           left: 0;
-          transition: ease-in-out 0.5s;
+
+          pointer-events: none;
+          opacity: 0;
+          // transition: ease-in-out 0.2s;
         }
 
         .inputBox {
@@ -296,7 +299,7 @@
         }
 
         .sliderSet {
-          top: 0;
+          top: 3px;
           border: $light-grey solid 1px;
           color: $light-grey;
         }
@@ -324,4 +327,9 @@
   .nodesCount5 {
     width: 200px;
   }
+}
+
+.blockFill:hover .sliderInput {
+  pointer-events: auto !important;
+  opacity: 1 !important;
 }

@@ -48,7 +48,10 @@ export default class b5 {
     for (let r in blocks) {
       if (!this.playground.blocks[r]) this.playground.blocks[r] = {}
       for (let c in blocks[r])
-        this.playground.blocks[r][c] = new _blockObject(blocks[r][c], this)
+        this.playground.blocks[r][c] = new _blockObject(
+          blocks[r][c],
+          this.playground
+        )
     }
 
     // lineStyles
@@ -67,8 +70,9 @@ class _sectionObject {
 
     for (let r in blocks) {
       if (!this.blocks[r]) this.blocks[r] = {}
-      for (let c in blocks[r])
+      for (let c in blocks[r]) {
         this.blocks[r][c] = new _blockObject(blocks[r][c], this)
+      }
     }
 
     // _findInput()
