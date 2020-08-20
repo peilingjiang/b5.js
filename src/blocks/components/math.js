@@ -34,7 +34,7 @@ _b5Blocks.prototype.numberSlider = {
   ],
   default: [50, 0, 100, 5],
   run: function (p, a) {
-    return { 0: a || this.default()[0] }
+    return { 0: a || this.default[0] }
   },
   // 'slider' kind block special
   sliderData: [
