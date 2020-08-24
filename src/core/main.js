@@ -1,8 +1,6 @@
-import _b5Blocks from '../blocks/blocks'
+import _b5BlocksObject from '../blocks/blocksObjectWrapper'
 // import { _findInput } from './factory'
 import { _findArgs } from './frags'
-
-const _b5b = new _b5Blocks()
 
 export default class b5 {
   constructor(data) {
@@ -24,6 +22,8 @@ export default class b5 {
     // Construct playground flow
     this._consPlayground(data.playground)
   }
+
+  update(data) {}
 
   _consVariables(variable) {
     // For each section...
@@ -107,6 +107,6 @@ class _blockObject {
 
   run(p) {
     let _args = _findArgs(this.parent.blocks, this.input, this.inlineData)
-    this.output = _b5b[this.name].run(p, ..._args)
+    this.output = _b5BlocksObject[this.name].run(p, ..._args)
   }
 }
