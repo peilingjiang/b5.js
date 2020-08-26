@@ -1,4 +1,5 @@
 import _b5Blocks from '../main'
+import { valid } from '../method'
 
 _b5Blocks.prototype.number = {
   type: 'object',
@@ -15,7 +16,9 @@ _b5Blocks.prototype.number = {
   ],
   default: [1],
   run: function (p, a) {
-    return { 0: a || this.default[0] }
+    return {
+      0: valid(a) ? a : this.default[0],
+    }
   },
 }
 
@@ -34,7 +37,9 @@ _b5Blocks.prototype.numberSlider = {
   ],
   default: [50, 0, 100, 5],
   run: function (p, a) {
-    return { 0: a || this.default[0] }
+    return {
+      0: valid(a) ? a : this.default[0],
+    }
   },
   // 'slider' kind block special
   sliderData: [

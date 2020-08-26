@@ -1,3 +1,5 @@
+import { valid } from './method'
+
 class _b5Blocks {}
 
 _b5Blocks.prototype.createCanvas = {
@@ -29,7 +31,7 @@ _b5Blocks.prototype.createCanvas = {
   default: [400, 300],
   run: function (p, x, y) {
     const d = this.default
-    const cnv = p.createCanvas(x || d[0], y || d[1])
+    const cnv = p.createCanvas(valid(x) ? x : d[0], valid(y) ? y : d[1])
     p.background(255, 255, 255, 255) // Draw a white background by default
     return { 0: cnv } // Return the directly readable output
     // The index should be corresponding to info in inputNodes

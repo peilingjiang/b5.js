@@ -1,4 +1,5 @@
 import _b5Blocks from '../main'
+import { valid } from '../method'
 
 _b5Blocks.prototype.background = {
   type: 'draw',
@@ -34,7 +35,12 @@ _b5Blocks.prototype.background = {
   default: [255, 255, 255, 255],
   run: function (p, r, g, b, a) {
     const d = this.default
-    p.background(r || d[0], g || d[1], b || d[2], a || d[3])
+    p.background(
+      valid(r) ? r : d[0],
+      valid(g) ? g : d[1],
+      valid(b) ? b : d[2],
+      valid(a) ? a : d[3]
+    )
   },
 }
 
@@ -75,7 +81,12 @@ _b5Blocks.prototype.ellipse = {
   },
   run: function (p, x, y, w, h) {
     const d = this.default(p)
-    p.ellipse(x || d[0], y || d[1], w || d[2], h || d[3])
+    p.ellipse(
+      valid(x) ? x : d[0],
+      valid(y) ? y : d[1],
+      valid(w) ? w : d[2],
+      valid(h) ? h : d[3]
+    )
   },
 }
 

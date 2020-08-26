@@ -4,26 +4,42 @@ import { _findArgs } from './frags'
 
 export default class b5 {
   constructor(data) {
-    // Construct factory sections
+    this._clear()
+    this._init(data)
+  }
+
+  update(data) {
+    // TODO: Only update b instead of re-render the whole canvas
+    this._clear()
+    this._init(data)
+  }
+
+  _clear() {
     this.factory = {
       variable: {}, // Object of _sectionObjects
       function: {},
       object: {},
     }
+
     this.playground = {
       // Equivalent to _sectionObject
       lineStyles: {},
       blocks: {},
     }
-    this._consVariables(data.factory.variable)
-    this._consFunctions(data.factory.function)
-    this._consObjects(data.factory.object)
-
-    // Construct playground flow
-    this._consPlayground(data.playground)
   }
 
-  update(data) {}
+  _init(data) {
+    if (data) {
+      // Construct factory sections
+      this._consVariables(data.factory.variable)
+      this._consFunctions(data.factory.function)
+      this._consObjects(data.factory.object)
+
+      // Construct playground flow
+      this._consPlayground(data.playground)
+    }
+    return
+  }
 
   _consVariables(variable) {
     // For each section...
