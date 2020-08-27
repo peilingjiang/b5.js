@@ -79,7 +79,7 @@ class _sectionObject {
   constructor({ name, type, lineStyles, blocks }) {
     this.name = name
     this.type = type
-    this.kind = 'normal' // TODO: Can it be other kinds?
+    this.kind = 'normal' // TODO: Can it be other kinds, e.g. inline, display?
     this.source = 'custom'
     this.lineStyles = {} // Object of _lineStyleObject/s
     this.blocks = {} // Object of _blockObject/s
