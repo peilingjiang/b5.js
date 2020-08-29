@@ -1,62 +1,77 @@
+import equal from 'react-fast-compare'
+
 import _b5BlocksObject from '../blocks/blocksObjectWrapper'
-// import { _findInput } from './factory'
-import { _findArgs } from './frags'
+import { _findNodes } from './preFactory'
+import { _findArgs } from './b5Frags'
 
 export default class b5 {
   constructor(data) {
+    this.data = data
     this._clear()
     this._init(data)
   }
 
   update(data) {
-    // TODO: Only update b instead of re-render the whole canvas
-    this._clear()
-    this._init(data)
+    if (this.data === undefined || !equal(data.factory, this.data.factory)) {
+      // Re-construct completely
+      this._clear(true, true)
+      this._init(data)
+    } else {
+      // Only update playground part
+      this._clear(false, true)
+      this._consPlayground(data.playground)
+    }
+    this.data = data
   }
 
-  _clear() {
-    this.factory = {
-      variable: {}, // Object of _sectionObjects
-      function: {},
-      object: {},
+  unplug() {
+    // Clear all section block values
+    for (let f in this.factory)
+      for (let i in this.factory[f]) this.factory[f][i].unplug()
+  }
+
+  _clear(clearFactory = false, clearPlayground = true) {
+    // TODO: Deeper garbage clean
+    if (clearFactory) {
+      if (this.factory) delete this.factory
+      this.factory = {
+        variable: {}, // Object of _sectionObjects
+        function: {},
+        object: {},
+      }
     }
 
-    this.playground = {
-      // Equivalent to _sectionObject
-      lineStyles: {},
-      blocks: {},
+    if (clearPlayground) {
+      if (this.playground) delete this.playground
+      this.playground = {
+        // Equivalent to _sectionObject
+        lineStyles: {},
+        blocks: {},
+      }
     }
   }
 
   _init(data) {
     if (data) {
       // Construct factory sections
-      this._consVariables(data.factory.variable)
-      this._consFunctions(data.factory.function)
-      this._consObjects(data.factory.object)
+      this._consFactory(data.factory)
 
       // Construct playground flow
       this._consPlayground(data.playground)
     }
-    return
   }
 
-  _consVariables(variable) {
+  _consFactory(f) {
+    // VARIABLE
     // For each section...
-    for (let i in variable)
-      this.factory.variable[variable[i].name] = new _sectionObject(variable[i])
-  }
+    for (let i in f.variable)
+      this.factory.variable[f.variable[i].name] = new _variableSectionObject(
+        f.variable[i]
+      )
 
-  _consFunctions(func) {
-    if (func.length)
-      for (let i in func)
-        this.factory.function[func[i].name] = new _sectionObject(func[i])
-  }
+    // FUNCTION
 
-  _consObjects(obj) {
-    if (obj.length)
-      for (let i in obj)
-        this.factory.object[obj[i].name] = new _sectionObject(obj[i])
+    // OBJECT
   }
 
   _consPlayground({ lineStyles, blocks }) {
@@ -90,23 +105,74 @@ class _sectionObject {
         this.blocks[r][c] = new _blockObject(blocks[r][c], this)
       }
     }
-
-    // _findInput()
   }
 
-  run(p) {
-    for (let r in this.blocks)
-      for (let c in this.blocks[r]) this.blocks[r][c].run(p)
+  unplug = () => {
+    delete this.output
+    this.output = null
+  }
+}
+
+class _variableSectionObject extends _sectionObject {
+  constructor(props) {
+    super(props)
+
+    // No need for variable section blocks to find input
+    this.outputNodes = _findNodes('output', props.blocks)
+    /*
+    
+    > this.outputNodes
+    {
+      positions: [['1', '0', '0']], // Positions of the nodes in original codeCanvas
+      
+      details: [{
+        text: 'canvas',
+        name: 'canvas',
+        description: 'A canvas for you to draw and create.',
+        type: ['object', 'canvas'],
+      }], // Details from the original node
+    }
+
+    */
+    this.output = null
+    // Add to _b5BlocksObject
+    _b5BlocksObject._createCustom(
+      this.name,
+      this.type,
+      this.kind,
+      null, // this.inputNodes
+      this.outputNodes.details, // Only need details
+      this.run
+    )
+  }
+
+  run = p => {
+    // variable blocks only run once and use local storage for future outputs
+    // Run sub-blocks
+    if (this.output === null) {
+      for (let r in this.blocks)
+        for (let c in this.blocks[r]) this.blocks[r][c].run(p)
+
+      // Construct LOCAL STORAGE
+      this.output = {}
+      for (let i in this.outputNodes.positions) {
+        const [y, x, node] = this.outputNodes.positions[i]
+        this.output[i] = this.blocks[y][x].output[node]
+      }
+    } else {
+      return this.output
+    }
   }
 }
 
 class _blockObject {
-  constructor({ name, input, inlineData }, parent) {
+  constructor({ name, source, input, inlineData }, parent) {
     this.parent = parent
     this.name = name
+    this.source = source
     this.input = input
     this.inlineData = inlineData
-    this.output = null
+    this.output = null // LOCAL STORAGE
 
     /*
 
@@ -123,6 +189,6 @@ class _blockObject {
 
   run(p) {
     let _args = _findArgs(this.parent.blocks, this.input, this.inlineData)
-    this.output = _b5BlocksObject[this.name].run(p, ..._args)
+    this.output = _b5BlocksObject[this.source][this.name].run(p, ..._args)
   }
 }

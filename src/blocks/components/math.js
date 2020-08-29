@@ -5,6 +5,7 @@ _b5Blocks.prototype.number = {
   type: 'object',
   kind: 'input',
   source: 'original',
+  description: 'Set a number.',
   inputNodes: null,
   outputNodes: [
     {
@@ -26,6 +27,7 @@ _b5Blocks.prototype.numberSlider = {
   type: 'object',
   kind: 'slider',
   source: 'original',
+  description: 'Use a slider to set a number.',
   inputNodes: null,
   outputNodes: [
     {

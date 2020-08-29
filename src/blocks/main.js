@@ -1,41 +1,39 @@
-import { valid } from './method'
+class _b5Blocks {
+  constructor() {
+    this.custom = {}
+    this.library = {}
+    this.original = this.__proto__
+  }
+}
 
-class _b5Blocks {}
+_b5Blocks.prototype._createCustom = function (
+  name,
+  type,
+  kind,
+  inputNodesDetails,
+  outputNodesDetails,
+  run
+) {
+  if (this.custom[name]) delete this.custom[name]
 
-_b5Blocks.prototype.createCanvas = {
-  type: 'draw',
-  kind: 'normal',
-  source: 'original',
-  inputNodes: [
-    {
-      text: 'w', // Display name of the node
-      name: 'width', // Full name of the node
-      description: 'Width of the canvas.', // Description of the node
-      type: ['object', 'number'], // Name of the data type and the description of it
+  this.custom[name] = {
+    type: type,
+    kind: kind,
+    source: 'custom',
+    description:
+      'Customized block created from ' + type + ' section in factory.',
+    inputNodes: inputNodesDetails,
+    outputNodes: outputNodesDetails,
+    run: function (p) {
+      return run(p)
     },
-    {
-      text: 'h',
-      name: 'height',
-      description: 'Height of the canvas.',
-      type: ['object', 'number'],
-    },
-  ],
-  outputNodes: [
-    {
-      text: 'canvas',
-      name: 'canvas',
-      description: 'A canvas for you to draw and create.',
-      type: ['object', 'canvas'],
-    },
-  ],
-  default: [400, 300],
-  run: function (p, x, y) {
-    const d = this.default
-    const cnv = p.createCanvas(valid(x) ? x : d[0], valid(y) ? y : d[1])
-    p.background(255, 255, 255, 255) // Draw a white background by default
-    return { 0: cnv } // Return the directly readable output
-    // The index should be corresponding to info in inputNodes
-  },
+  }
+  console.log(this.custom)
+}
+
+_b5Blocks.prototype._cleanCustom = function () {
+  // Clear all custom blocks
+  for (let c in this.custom) delete this.custom[c]
 }
 
 export default _b5Blocks
