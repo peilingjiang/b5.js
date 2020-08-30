@@ -49,6 +49,6 @@ export const _findNodes = (io, blocks) => {
 
   return {
     positions: foundNodes,
-    details: details,
+    details: details.length ? details : null,
   }
 }

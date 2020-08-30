@@ -2,7 +2,7 @@ class _b5Blocks {
   constructor() {
     this.custom = {}
     this.library = {}
-    this.original = this.__proto__
+    this.original = this.__proto__ // Is it dangerous?
   }
 }
 
@@ -28,7 +28,7 @@ _b5Blocks.prototype._createCustom = function (
       return run(p)
     },
   }
-  console.log(this.custom)
+  // console.log(this.custom)
 }
 
 _b5Blocks.prototype._cleanCustom = function () {
