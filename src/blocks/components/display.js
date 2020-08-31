@@ -14,7 +14,7 @@ _b5Blocks.prototype.console = {
     },
   ],
   outputNodes: null,
-  run: function (p, a) {
-    console.log(a)
+  run: function (p, s, a) {
+    if (a !== null) console.log(a)
   },
 }

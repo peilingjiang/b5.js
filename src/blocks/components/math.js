@@ -16,11 +16,19 @@ _b5Blocks.prototype.number = {
     },
   ],
   default: [1],
-  run: function (p, a) {
+  run: function (p, s, a) {
     return {
       0: valid(a) ? a : this.default[0],
     }
   },
+  // 'input' kind block special
+  inlineData: [
+    {
+      name: 'value',
+      description: 'The value of the number.',
+      type: ['object', 'number'],
+    },
+  ],
 }
 
 _b5Blocks.prototype.numberSlider = {
@@ -37,14 +45,14 @@ _b5Blocks.prototype.numberSlider = {
       type: ['object', 'number'],
     },
   ],
-  default: [50, 0, 100, 5],
-  run: function (p, a) {
+  default: [50, 0, 100, 5], // default here is for default inline data instead of input
+  run: function (p, s, a) {
     return {
       0: valid(a) ? a : this.default[0],
     }
   },
   // 'slider' kind block special
-  sliderData: [
+  inlineData: [
     {
       name: 'current',
       description: 'The current value of the slider.',

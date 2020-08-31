@@ -29,7 +29,7 @@ _b5Blocks.prototype.createCanvas = {
     },
   ],
   default: [400, 300],
-  run: function (p, x, y) {
+  run: function (p, s, x, y) {
     const d = this.default
     const cnv = p.createCanvas(valid(x) ? x : d[0], valid(y) ? y : d[1])
     p.background(255, 255, 255, 255) // Draw a white background by default
@@ -71,7 +71,7 @@ _b5Blocks.prototype.background = {
   ],
   outputNodes: null,
   default: [255, 255, 255, 255],
-  run: function (p, r, g, b, a) {
+  run: function (p, s, r, g, b, a) {
     const d = this.default
     p.background(
       valid(r) ? r : d[0],
@@ -118,7 +118,7 @@ _b5Blocks.prototype.ellipse = {
   default: function (p) {
     return [p.width / 2, p.height / 2, 50, 50] // Default values for the block
   },
-  run: function (p, x, y, w, h) {
+  run: function (p, s, x, y, w, h) {
     const d = this.default(p)
     p.ellipse(
       valid(x) ? x : d[0],
@@ -158,7 +158,7 @@ _b5Blocks.prototype.circle = {
   default: function (p) {
     return [p.width / 2, p.height / 2, 50]
   },
-  run: function (p, x, y, r) {
+  run: function (p, s, x, y, r) {
     const d = this.default(p)
     p.circle(valid(x) ? x : d[0], valid(y) ? y : d[1], valid(r) ? r : d[2])
   },

@@ -24,8 +24,8 @@ _b5Blocks.prototype._createCustom = function (
       'Customized block created from ' + type + ' section in factory.',
     inputNodes: inputNodesDetails,
     outputNodes: outputNodesDetails,
-    run: function (p) {
-      return run(p)
+    run: function (...args) {
+      return run(...args)
     },
   }
   // console.log(this.custom)

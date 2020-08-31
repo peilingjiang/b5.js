@@ -151,7 +151,8 @@ class _variableSectionObject extends _sectionObject {
     // Run sub-blocks
     if (this.output === null) {
       for (let r in this.blocks)
-        for (let c in this.blocks[r]) this.blocks[r][c].run(p)
+        for (let c in this.blocks[r])
+          this.blocks[r][c].run(p, this.blocks[r][c].output)
 
       // Construct LOCAL STORAGE
       this.output = {}
@@ -159,9 +160,7 @@ class _variableSectionObject extends _sectionObject {
         const [y, x, node] = this.outputNodes.positions[i]
         this.output[i] = this.blocks[y][x].output[node]
       }
-    } else {
-      return this.output
-    }
+    } else return this.output
   }
 }
 
@@ -172,7 +171,7 @@ class _blockObject {
     this.source = source
     this.input = input
     this.inlineData = inlineData
-    this.output = null // LOCAL STORAGE
+    this.output = null // LOCAL STORAGE / s
 
     /*
 
@@ -183,12 +182,16 @@ class _blockObject {
     ]
 
     If the block has both input and data that are not 'null', the
-    'input' values will always be ahead of 'data' values in run()
+    'input' values will always be ahead of 'inlineData' values in run()
     */
   }
 
   run(p) {
     let _args = _findArgs(this.parent.blocks, this.input, this.inlineData)
-    this.output = _b5BlocksObject[this.source][this.name].run(p, ..._args)
+    this.output = _b5BlocksObject[this.source][this.name].run(
+      p,
+      this.output,
+      ..._args
+    )
   }
 }

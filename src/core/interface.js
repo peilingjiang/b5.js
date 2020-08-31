@@ -7,7 +7,7 @@ import b5 from './main'
 
 b5.prototype.runSetup = function (p) {
   for (let f in this.factory)
-    for (let i in this.factory[f]) this.factory[f][i].run(p) // this.factory.variable['cnv']...
+    for (let i in this.factory[f]) this.factory[f][i].run(p) // this.factory['variable']['cnv']...
 }
 
 b5.prototype.runDraw = function (p) {
