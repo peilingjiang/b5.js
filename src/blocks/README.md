@@ -5,6 +5,8 @@
 ```js
 // TODO: Error handler
 _b5Blocks.prototype.number = {
+  /* Display text of the block name */
+  text: 'number',
   /* Type of the block, e.g. variable, function, draw */
   type: 'object',
   /* Kind of the block rendering style, e.g. normal, inline, display */

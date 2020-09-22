@@ -5,14 +5,6 @@
 
 import _b5BlocksObject from '../blocks/blocksObjectWrapper'
 
-// import _b5Blocks from '../blocks/blocks'
-
-export const _findInput = blocks => {
-  /**
-   * Find all inputs from inner blocks in codeCanvas
-   */
-}
-
 export const _findNodes = (io, blocks) => {
   /**
    * Find all inputs/outputs from inner blocks in certain codeCanvas

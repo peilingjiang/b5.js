@@ -1,7 +1,8 @@
 import _b5Blocks from '../main'
-import { valid } from '../method'
+import { valid, mustValid } from '../method'
 
 _b5Blocks.prototype.createCanvas = {
+  text: 'canvas',
   type: 'draw',
   kind: 'normal',
   source: 'original',
@@ -19,19 +20,29 @@ _b5Blocks.prototype.createCanvas = {
       description: 'Height of the canvas.',
       type: ['object', 'number'],
     },
+    {
+      text: 'type',
+      name: 'type',
+      description: 'Type of the canvas (P2D or WEBGL).',
+      type: ['object', 'string'],
+    },
   ],
   outputNodes: [
     {
-      text: 'canvas',
-      name: 'canvas',
+      text: 'self',
+      name: 'this canvas',
       description: 'A canvas for you to draw and create.',
       type: ['object', 'canvas'],
     },
   ],
-  default: [400, 300],
-  run: function (p, s, x, y) {
+  default: [400, 300, 'P2D'],
+  run: function (p, o, x, y, t) {
     const d = this.default
-    const cnv = p.createCanvas(valid(x) ? x : d[0], valid(y) ? y : d[1])
+    const cnv = p.createCanvas(
+      valid(x, d[0]),
+      valid(y, d[1]),
+      mustValid(t, [d[2], 'WEBGL'])
+    )
     p.background(255, 255, 255, 255) // Draw a white background by default
     return { 0: cnv } // Return the directly readable output
     // The index should be corresponding to info in inputNodes
@@ -39,6 +50,7 @@ _b5Blocks.prototype.createCanvas = {
 }
 
 _b5Blocks.prototype.background = {
+  text: 'background',
   type: 'draw',
   kind: 'normal',
   source: 'original',
@@ -71,18 +83,14 @@ _b5Blocks.prototype.background = {
   ],
   outputNodes: null,
   default: [255, 255, 255, 255],
-  run: function (p, s, r, g, b, a) {
+  run: function (p, o, r, g, b, a) {
     const d = this.default
-    p.background(
-      valid(r) ? r : d[0],
-      valid(g) ? g : d[1],
-      valid(b) ? b : d[2],
-      valid(a) ? a : d[3]
-    )
+    p.background(valid(r, d[0]), valid(g, d[1]), valid(b, d[2]), valid(a, d[3]))
   },
 }
 
 _b5Blocks.prototype.ellipse = {
+  text: 'ellipse',
   type: 'draw',
   kind: 'normal',
   source: 'original',
@@ -118,18 +126,14 @@ _b5Blocks.prototype.ellipse = {
   default: function (p) {
     return [p.width / 2, p.height / 2, 50, 50] // Default values for the block
   },
-  run: function (p, s, x, y, w, h) {
+  run: function (p, o, x, y, w, h) {
     const d = this.default(p)
-    p.ellipse(
-      valid(x) ? x : d[0],
-      valid(y) ? y : d[1],
-      valid(w) ? w : d[2],
-      valid(h) ? h : d[3]
-    )
+    p.ellipse(valid(x, d[0]), valid(y, d[1]), valid(w, d[2]), valid(h, d[3]))
   },
 }
 
 _b5Blocks.prototype.circle = {
+  text: 'circle',
   type: 'draw',
   kind: 'normal',
   source: 'original',
@@ -156,11 +160,11 @@ _b5Blocks.prototype.circle = {
   ],
   outputNodes: null,
   default: function (p) {
-    return [p.width / 2, p.height / 2, 50]
+    return [p.width / 2, p.height / 2, 10]
   },
-  run: function (p, s, x, y, r) {
+  run: function (p, o, x, y, r) {
     const d = this.default(p)
-    p.circle(valid(x) ? x : d[0], valid(y) ? y : d[1], valid(r) ? r : d[2])
+    p.circle(valid(x, d[0]), valid(y, d[1]), valid(r, d[2]))
   },
 }
 

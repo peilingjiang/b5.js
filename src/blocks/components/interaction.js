@@ -2,6 +2,7 @@ import _b5Blocks from '../main'
 import { valid } from '../method'
 
 _b5Blocks.prototype.mouse = {
+  text: 'mouse',
   type: 'object',
   kind: 'normal',
   source: 'original',
@@ -27,13 +28,14 @@ _b5Blocks.prototype.mouse = {
   run: function (p, s) {
     const d = this.default(p)
     return {
-      0: valid(p.mouseX) ? p.mouseX : d[0],
-      1: valid(p.mouseY) ? p.mouseY : d[1],
+      0: valid(p.mouseX, d[0]),
+      1: valid(p.mouseY, d[1]),
     }
   },
 }
 
-_b5Blocks.prototype.click = {
+_b5Blocks.prototype.mouseIsPressed = {
+  text: 'pressed',
   type: 'object',
   kind: 'normal',
   source: 'original',
@@ -41,8 +43,8 @@ _b5Blocks.prototype.click = {
   inputNodes: null,
   outputNodes: [
     {
-      text: 'c',
-      name: 'clicked',
+      text: 'p',
+      name: 'pressed',
       description: 'Is the cursor clicked?',
       type: ['object', 'boolean'],
     },

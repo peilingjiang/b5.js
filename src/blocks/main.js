@@ -1,10 +1,12 @@
 class _b5Blocks {
   constructor() {
     this.custom = {}
-    this.library = {}
+    this.library = this.__proto__.library
     this.original = this.__proto__ // Is it dangerous?
   }
 }
+
+_b5Blocks.prototype.library = {}
 
 _b5Blocks.prototype._createCustom = function (
   name,
@@ -17,6 +19,7 @@ _b5Blocks.prototype._createCustom = function (
   if (this.custom[name]) delete this.custom[name]
 
   this.custom[name] = {
+    text: name,
     type: type,
     kind: kind,
     source: 'custom',
