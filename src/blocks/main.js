@@ -8,7 +8,7 @@ class _b5Blocks {
 
 _b5Blocks.prototype.library = {}
 
-_b5Blocks.prototype._createCustom = function (
+_b5Blocks.prototype.createCustom = function (
   name,
   type,
   kind,
@@ -34,7 +34,7 @@ _b5Blocks.prototype._createCustom = function (
   // console.log(this.custom)
 }
 
-_b5Blocks.prototype._cleanCustom = function () {
+_b5Blocks.prototype.cleanCustom = function () {
   // Clear all custom blocks
   for (let c in this.custom) delete this.custom[c]
 }

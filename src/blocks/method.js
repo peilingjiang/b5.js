@@ -16,3 +16,7 @@ export const mustValid = (value, checks = [null]) => {
   }
   return checks[0]
 }
+
+export const isEmpty = obj => {
+  return Object.keys(obj).length === 0
+}

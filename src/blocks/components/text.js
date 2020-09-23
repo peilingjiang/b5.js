@@ -18,9 +18,7 @@ _b5Blocks.prototype.string = {
   ],
   default: ['happy'],
   run: function (p, o, a) {
-    return {
-      0: valid(a, this.default[0]),
-    }
+    o[0] = valid(a, this.default[0])
   },
   // 'input' kind block special
   inlineData: [

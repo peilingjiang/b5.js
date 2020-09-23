@@ -1,4 +1,4 @@
-export function _findArgs(allBlocks, input, inlineData) {
+export function _findArgs(allBlocks, input, inlineData, overrideInputs) {
   let args = []
 
   // Find input data
@@ -11,5 +11,15 @@ export function _findArgs(allBlocks, input, inlineData) {
   // Find data data
   if (inlineData) args.push(...inlineData)
 
+  // Override Inputs
+  if (overrideInputs !== null)
+    for (let i in overrideInputs) args[i] = overrideInputs[i]
+
   return args
+}
+
+export function _isEmpty(obj) {
+  // Check if an object is empty
+  // Return true if IS empty
+  return Object.keys(obj).length === 0
 }

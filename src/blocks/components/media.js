@@ -1,8 +1,8 @@
 import _b5Blocks from '../main'
-import { valid } from '../method'
+import { valid, isEmpty } from '../method'
 
 _b5Blocks.prototype.cameraVideo = {
-  text: 'camera',
+  text: '📹camera',
   type: 'draw',
   kind: 'normal',
   source: 'original',
@@ -46,12 +46,12 @@ _b5Blocks.prototype.cameraVideo = {
   },
   run: function (p, o, x, y, w, h) {
     const d = this.default(p)
-    if (o === null) {
+    if (isEmpty(o)) {
       // Capture never created
-      o = {}
+      // * o.storage is the VIDEO object
       o.storage = p.createCapture(p.VIDEO)
       o.storage.size(valid(w, d[2]), valid(h, d[3]))
-      o[0] = o.storage
+      o[0] = o.storage // ? Do we need to modify for the output?
       o.storage.hide() // Hide DOM element
     }
     // Use created video from o.storage
@@ -63,8 +63,6 @@ _b5Blocks.prototype.cameraVideo = {
       valid(w, d[2]),
       valid(h, d[3])
     )
-
-    return o
   },
   // 'input' kind block special
   inlineData: [

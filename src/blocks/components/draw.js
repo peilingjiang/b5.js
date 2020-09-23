@@ -1,5 +1,5 @@
 import _b5Blocks from '../main'
-import { valid, mustValid } from '../method'
+import { valid } from '../method'
 
 _b5Blocks.prototype.createCanvas = {
   text: 'canvas',
@@ -23,7 +23,7 @@ _b5Blocks.prototype.createCanvas = {
     {
       text: 'type',
       name: 'type',
-      description: 'Type of the canvas (P2D or WEBGL).',
+      description: 'Type of the canvas (2D or 3D).',
       type: ['object', 'string'],
     },
   ],
@@ -35,16 +35,14 @@ _b5Blocks.prototype.createCanvas = {
       type: ['object', 'canvas'],
     },
   ],
-  default: [400, 300, 'P2D'],
+  default: [400, 300, '2D'],
   run: function (p, o, x, y, t) {
     const d = this.default
-    const cnv = p.createCanvas(
-      valid(x, d[0]),
-      valid(y, d[1]),
-      mustValid(t, [d[2], 'WEBGL'])
-    )
+    // Convert b5 language to p5 language
+    t === '2D' ? (t = 'P2D') : t === '3D' ? (t = 'WEBGL') : (t = null)
+
+    o[0] = p.createCanvas(valid(x, d[0]), valid(y, d[1]), valid(t, 'P2D'))
     p.background(255, 255, 255, 255) // Draw a white background by default
-    return { 0: cnv } // Return the directly readable output
     // The index should be corresponding to info in inputNodes
   },
 }

@@ -18,9 +18,7 @@ _b5Blocks.prototype.number = {
   ],
   default: [1],
   run: function (p, o, a) {
-    return {
-      0: valid(a, this.default[0]),
-    }
+    o[0] = valid(a, this.default[0])
   },
   // 'input' kind block special
   inlineData: [
@@ -49,9 +47,7 @@ _b5Blocks.prototype.numberSlider = {
   ],
   default: [50, 0, 100, 5], // default here is for default inline data instead of input
   run: function (p, o, a) {
-    return {
-      0: valid(a, this.default[0]),
-    }
+    o[0] = valid(a, this.default[0])
   },
   // 'slider' kind block special
   inlineData: [
@@ -116,10 +112,8 @@ _b5Blocks.prototype.constrain = {
   run: function (p, o, x, min, max) {
     min = valid(min, -Infinity)
     max = valid(max, Infinity)
-    x = isValid(x) ? (x <= min ? min : x >= max ? max : x) : this.default[0]
-    return {
-      0: x,
-    }
+
+    o[0] = isValid(x) ? (x <= min ? min : x >= max ? max : x) : this.default[0]
   },
 }
 

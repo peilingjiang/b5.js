@@ -2,7 +2,7 @@ import equal from 'react-fast-compare'
 
 import _b5BlocksObject from '../blocks/blocksObjectWrapper'
 import { _findNodes } from './preFactory'
-import { _findArgs } from './b5Frags'
+import { _findArgs, _isEmpty } from './b5Frags'
 
 export default class b5 {
   constructor(data) {
@@ -70,6 +70,10 @@ export default class b5 {
       )
 
     // FUNCTION
+    for (let i in f.function)
+      this.factory.function[f.function[i].name] = new _functionSectionObject(
+        f.function[i]
+      )
 
     // OBJECT
   }
@@ -99,6 +103,8 @@ class _sectionObject {
     this.lineStyles = {} // Object of _lineStyleObject/s
     this.blocks = {} // Object of _blockObject/s
 
+    this.output = {}
+
     for (let r in blocks) {
       if (!this.blocks[r]) this.blocks[r] = {}
       for (let c in blocks[r]) {
@@ -109,7 +115,7 @@ class _sectionObject {
 
   unplug = () => {
     delete this.output
-    this.output = null
+    this.output = {}
   }
 }
 
@@ -134,9 +140,9 @@ class _variableSectionObject extends _sectionObject {
     }
 
     */
-    this.output = null
+
     // Add to _b5BlocksObject
-    _b5BlocksObject._createCustom(
+    _b5BlocksObject.createCustom(
       this.name,
       this.type,
       this.kind,
@@ -146,21 +152,64 @@ class _variableSectionObject extends _sectionObject {
     )
   }
 
-  run = p => {
+  run = (p, o) => {
     // variable blocks only run once and use local storage for future outputs
     // Run sub-blocks
-    if (this.output === null) {
+    if (_isEmpty(this.output)) {
       for (let r in this.blocks)
-        for (let c in this.blocks[r])
-          this.blocks[r][c].run(p, this.blocks[r][c].output)
+        for (let c in this.blocks[r]) this.blocks[r][c].blockRun(p)
+      /* this.blocks[r][c].blockRun(p, this.blocks[r][c].output) */
 
       // Construct LOCAL STORAGE
-      this.output = {}
       for (let i in this.outputNodes.positions) {
         const [y, x, node] = this.outputNodes.positions[i]
         this.output[i] = this.blocks[y][x].output[node]
       }
-    } else return this.output
+    } else if (_isEmpty(o)) {
+      o = this.output
+    }
+  }
+}
+
+class _functionSectionObject extends _sectionObject {
+  constructor(props) {
+    super(props)
+
+    this.inputNodes = _findNodes('input', props.blocks)
+    this.outputNodes = _findNodes('output', props.blocks)
+
+    _b5BlocksObject.createCustom(
+      this.name,
+      this.type,
+      this.kind,
+      this.inputNodes.details,
+      this.outputNodes.details,
+      this.run
+    )
+  }
+
+  run = (p, o, ...args) => {
+    // Run sub-blocks
+    for (let r in this.blocks)
+      for (let c in this.blocks[r])
+        this.blocks[r][c].blockRun(p, this._getInputArgs(r, c, args))
+
+    // ! Clean this.output on block update
+    for (let i in this.outputNodes.positions) {
+      const [y, x, node] = this.outputNodes.positions[i]
+      this.output[i] = this.blocks[y][x].output[node]
+    }
+    if (_isEmpty(o)) o = this.output
+  }
+
+  _getInputArgs = (r, c, args) => {
+    let a = {}
+    const { positions } = this.inputNodes
+    for (let i in positions)
+      if (positions[i][0] === r && positions[i][1] === c)
+        a[positions[i][2]] = args[i]
+
+    return a
   }
 }
 
@@ -169,9 +218,11 @@ class _blockObject {
     this.parent = parent
     this.name = name
     this.source = source
-    this.input = input
-    this.inlineData = inlineData
-    this.output = null // LOCAL STORAGE / s
+    this.input = input || null
+    this.inlineData = inlineData || null
+    this.output = {} // LOCAL STORAGE / o
+
+    // ! this.output starts as an empty object instead of null
 
     /*
 
@@ -183,15 +234,28 @@ class _blockObject {
 
     If the block has both input and data that are not 'null', the
     'input' values will always be ahead of 'inlineData' values in run()
+    * p - o - input - inlineData
     */
   }
 
-  run(p) {
-    let _args = _findArgs(this.parent.blocks, this.input, this.inlineData)
-    this.output = _b5BlocksObject[this.source][this.name].run(
-      p,
-      this.output,
-      ..._args
+  blockRun(p, overrideInputs = null) {
+    /*
+    overrideInputs override the args found with given input blocks
+    Primarily for function blocks
+
+    > overrideInputs
+    {
+      '2': 12,
+    }
+    */
+    // TODO: Construct this.args at constructor and on update
+    let _args = _findArgs(
+      this.parent.blocks,
+      this.input,
+      this.inlineData,
+      overrideInputs
     )
+    // ! Do not return this.output but only manipulate inside run TODO
+    _b5BlocksObject[this.source][this.name].run(p, this.output, ..._args)
   }
 }

@@ -1,8 +1,8 @@
 import _b5Blocks from '../main'
 import equal from 'react-fast-compare'
 
-_b5Blocks.prototype.console = {
-  text: 'console',
+_b5Blocks.prototype.log = {
+  text: 'log',
   type: 'default',
   kind: 'normal',
   source: 'original',
@@ -21,8 +21,8 @@ _b5Blocks.prototype.console = {
   },
 }
 
-_b5Blocks.prototype.lazyConsole = {
-  text: 'lazyCon.',
+_b5Blocks.prototype.lazyLog = {
+  text: '😴log',
   type: 'default',
   kind: 'normal',
   source: 'original',
@@ -39,8 +39,6 @@ _b5Blocks.prototype.lazyConsole = {
   outputNodes: null,
   run: function (p, o, a) {
     if ((o !== null && !equal(a, o.storage)) || o === null) console.log(a)
-    return {
-      storage: a,
-    }
+    o.storage = a
   },
 }
