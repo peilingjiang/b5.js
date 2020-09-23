@@ -22,12 +22,11 @@ _b5Blocks.prototype.log = {
 }
 
 _b5Blocks.prototype.lazyLog = {
-  text: '😴log',
+  text: '😴 log',
   type: 'default',
   kind: 'normal',
   source: 'original',
-  description:
-    'Lazily log the value (only when it changes) to the page console.',
+  description: 'Lazily log the value only when it changes.',
   inputNodes: [
     {
       text: 'value',

@@ -2,7 +2,7 @@ import _b5Blocks from '../main'
 import { valid, isEmpty } from '../method'
 
 _b5Blocks.prototype.cameraVideo = {
-  text: '📹camera',
+  text: '📹 camera',
   type: 'draw',
   kind: 'normal',
   source: 'original',

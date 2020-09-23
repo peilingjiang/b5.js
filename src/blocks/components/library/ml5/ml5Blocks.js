@@ -1,7 +1,7 @@
 import * as ml5 from 'ml5'
 
 import _b5Blocks from '../../../main'
-import { valid } from '../../../method'
+import { valid, isEmpty } from '../../../method'
 
 _b5Blocks.prototype.library.ml5PoseNet = {
   text: 'poseNet',
@@ -48,7 +48,7 @@ _b5Blocks.prototype.library.ml5PoseNet = {
     // TODO: Debug...
     if (v && v.elt && v.elt.constructor.name === 'HTMLVideoElement') {
       // If has VIDEO
-      if (!o) {
+      if (isEmpty(o)) {
         const gotPoses = poses => {
           o.storage.poses = poses
         }
@@ -69,15 +69,14 @@ _b5Blocks.prototype.library.ml5PoseNet = {
           o[0].push(po.position.x)
           o[1].push(po.position.y)
         }
-      return o
     } else {
       // If NO VIDEO
       if (o && o.storage) {
         delete o.storage.poseNet
         delete o.storage.loaded
         delete o.storage
+        o = {}
       }
-      return { 0: null, 1: null }
     }
   },
 }
