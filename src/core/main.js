@@ -103,8 +103,6 @@ class _sectionObject {
     this.lineStyles = {} // Object of _lineStyleObject/s
     this.blocks = {} // Object of _blockObject/s
 
-    this.output = {}
-
     for (let r in blocks) {
       if (!this.blocks[r]) this.blocks[r] = {}
       for (let c in blocks[r]) {
@@ -122,6 +120,8 @@ class _sectionObject {
 class _variableSectionObject extends _sectionObject {
   constructor(props) {
     super(props)
+
+    this.output = {}
 
     // No need for variable section blocks to find input
     this.outputNodes = _findNodes('output', props.blocks)
@@ -152,7 +152,7 @@ class _variableSectionObject extends _sectionObject {
     )
   }
 
-  run = (p, o) => {
+  run = (p, o, ...args) => {
     // variable blocks only run once and use local storage for future outputs
     // Run sub-blocks
     if (_isEmpty(this.output)) {
@@ -165,9 +165,8 @@ class _variableSectionObject extends _sectionObject {
         const [y, x, node] = this.outputNodes.positions[i]
         this.output[i] = this.blocks[y][x].output[node]
       }
-    } else if (_isEmpty(o)) {
-      o = this.output
-    }
+    } else if (o && _isEmpty(o))
+      for (let i in this.output) o[i] = this.output[i]
   }
 }
 
@@ -194,12 +193,11 @@ class _functionSectionObject extends _sectionObject {
       for (let c in this.blocks[r])
         this.blocks[r][c].blockRun(p, this._getInputArgs(r, c, args))
 
-    // ! Clean this.output on block update
+    // * No need for this.output
     for (let i in this.outputNodes.positions) {
       const [y, x, node] = this.outputNodes.positions[i]
-      this.output[i] = this.blocks[y][x].output[node]
+      o[i] = this.blocks[y][x].output[node]
     }
-    if (_isEmpty(o)) o = this.output
   }
 
   _getInputArgs = (r, c, args) => {
