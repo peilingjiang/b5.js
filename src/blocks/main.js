@@ -2,7 +2,7 @@ class _b5Blocks {
   constructor() {
     this.custom = {}
     this.library = this.__proto__.library
-    this.original = this.__proto__ // Is it dangerous?
+    this.original = this.__proto__ // ? Is it dangerous?
   }
 }
 
@@ -30,7 +30,10 @@ _b5Blocks.prototype.createCustom = function (
       return run(...args)
     },
   }
-  // console.log(this.custom)
+}
+
+_b5Blocks.prototype.deleteCustom = function (name) {
+  delete this.custom[name]
 }
 
 _b5Blocks.prototype.cleanCustom = function () {

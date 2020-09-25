@@ -17,6 +17,12 @@ export const mustValid = (value, checks = [null]) => {
   return checks[0]
 }
 
+export const allValid = (valueList, fallbackList) => {
+  // Check valid for the whole args list
+  for (let i in valueList) valueList[i] = valid(valueList[i], fallbackList[i])
+  return valueList
+}
+
 export const isEmpty = obj => {
   return Object.keys(obj).length === 0
 }

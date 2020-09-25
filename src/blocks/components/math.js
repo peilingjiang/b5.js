@@ -1,5 +1,5 @@
 import _b5Blocks from '../main'
-import { valid, isValid } from '../method'
+import { valid, isValid, allValid } from '../method'
 
 _b5Blocks.prototype.number = {
   text: 'number',
@@ -84,7 +84,7 @@ _b5Blocks.prototype.constrain = {
     {
       text: 'x',
       name: 'value',
-      description: 'Original value',
+      description: 'Original value.',
       type: ['object', 'number'],
     },
     {
@@ -114,6 +114,60 @@ _b5Blocks.prototype.constrain = {
     max = valid(max, Infinity)
 
     o[0] = isValid(x) ? (x <= min ? min : x >= max ? max : x) : this.default[0]
+  },
+}
+
+_b5Blocks.prototype.map = {
+  text: 'map',
+  type: 'default',
+  kind: 'normal',
+  source: 'original',
+  description: 'Remap the value from one domain to another.',
+  inputNodes: [
+    {
+      text: 'x',
+      name: 'value',
+      description: 'Original value.',
+      type: ['object', 'number'],
+    },
+    {
+      text: 'min1',
+      name: 'min1',
+      description: 'The lower boundary of 1st domain.',
+      type: ['object', 'number'],
+    },
+    {
+      text: 'max1',
+      name: 'max1',
+      description: 'The upper boundary of 1st domain.',
+      type: ['object', 'number'],
+    },
+    {
+      text: 'min2',
+      name: 'min2',
+      description: 'The lower boundary of 2nd domain.',
+      type: ['object', 'number'],
+    },
+    {
+      text: 'max2',
+      name: 'max2',
+      description: 'The upper boundary of 2nd domain.',
+      type: ['object', 'number'],
+    },
+  ],
+  outputNodes: [
+    {
+      text: 'value',
+      name: 'value',
+      description: 'The remapped value.',
+      type: ['object', 'number'],
+    },
+  ],
+  default: [0, 0, 10, 0, 100],
+  run: function (p, o, ...args) {
+    let [x, min1, max1, min2, max2] = allValid(args, this.default)
+    if (min1 === max1 || min2 === max2) o[0] = x
+    else o[0] = min2 + ((max2 - min2) * (x - min1)) / (max1 - min1)
   },
 }
 

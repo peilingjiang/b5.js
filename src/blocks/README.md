@@ -30,11 +30,17 @@ _b5Blocks.prototype.number = {
   /* Default value of the block output */
   default: [1],
   /* Run - p stands for p5 object */
-  run: function (p, a) {
-    /* Always return an object with keys as the position of the node */
-    return {
-      0: valid(a) ? a : this.default[0],
-    }
+  run: function (p, o, a) {
+    /* Directly manipulate the o (this.output) from the block object */
+    o[0] = valid(a, this.default[0])
   },
+  // 'input' kind block special
+  inlineData: [
+    {
+      name: 'value',
+      description: 'The value of the number.',
+      type: ['object', 'number'],
+    },
+  ],
 }
 ```

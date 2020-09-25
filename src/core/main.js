@@ -1,6 +1,7 @@
 import equal from 'react-fast-compare'
 
 import _b5BlocksObject from '../blocks/blocksObjectWrapper'
+
 import { _findNodes } from './preFactory'
 import { _findArgs, _isEmpty } from './b5Frags'
 
