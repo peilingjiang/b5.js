@@ -41,3 +41,16 @@ _b5Blocks.prototype.lazyLog = {
     o.storage = a
   },
 }
+
+_b5Blocks.prototype.clearLog = {
+  text: 'clear log',
+  type: 'default',
+  kind: 'normal',
+  source: 'original',
+  description: 'Clear the console.',
+  inputNodes: null,
+  outputNodes: null,
+  run: function (p, o) {
+    console.clear()
+  },
+}

@@ -47,6 +47,28 @@ _b5Blocks.prototype.createCanvas = {
   },
 }
 
+_b5Blocks.prototype.frameRate = {
+  text: 'fr rate',
+  type: 'draw',
+  kind: 'input',
+  source: 'original',
+  description: 'Set a number.',
+  inputNodes: null,
+  outputNodes: null,
+  default: [60],
+  run: function (p, o, rateInline) {
+    p.frameRate(valid(rateInline, this.default[0]))
+  },
+  // 'input' kind block special
+  inlineData: [
+    {
+      name: 'value',
+      description: 'The value of the frameRate.',
+      type: ['object', 'number'],
+    },
+  ],
+}
+
 _b5Blocks.prototype.background = {
   text: 'background',
   type: 'draw',

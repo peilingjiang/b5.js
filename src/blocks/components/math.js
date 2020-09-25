@@ -1,5 +1,5 @@
 import _b5Blocks from '../main'
-import { valid, isValid, allValid } from '../method'
+import { valid, isValid, allValid, remap, isEmpty, mustValid } from '../method'
 
 _b5Blocks.prototype.number = {
   text: 'number',
@@ -31,7 +31,7 @@ _b5Blocks.prototype.number = {
 }
 
 _b5Blocks.prototype.numberSlider = {
-  text: 'numberSlider',
+  text: 'number',
   type: 'object',
   kind: 'slider',
   source: 'original',
@@ -167,7 +167,116 @@ _b5Blocks.prototype.map = {
   run: function (p, o, ...args) {
     let [x, min1, max1, min2, max2] = allValid(args, this.default)
     if (min1 === max1 || min2 === max2) o[0] = x
-    else o[0] = min2 + ((max2 - min2) * (x - min1)) / (max1 - min1)
+    else o[0] = remap(x, min1, max1, min2, max2)
+  },
+}
+
+_b5Blocks.prototype.random = {
+  text: 'random',
+  type: 'default',
+  kind: 'normal',
+  source: 'original',
+  description: 'Get a random number within domain.',
+  inputNodes: [
+    {
+      text: 'new',
+      name: 'new',
+      description: 'Get a new random number when set to true.',
+      type: ['object', 'boolean'],
+    },
+    {
+      text: 'min',
+      name: 'min',
+      description: 'The lower boundary.',
+      type: ['object', 'number'],
+    },
+    {
+      text: 'max',
+      name: 'max',
+      description: 'The upper boundary.',
+      type: ['object', 'number'],
+    },
+  ],
+  outputNodes: [
+    {
+      text: 'value',
+      name: 'value',
+      description: 'The random value.',
+      type: ['object', 'number'],
+    },
+  ],
+  default: [false, 0, 100],
+  run: function (p, o, ...args) {
+    let [n, min, max] = allValid(args, this.default)
+    if (isEmpty(o) || n) {
+      o.storage = Math.ceil(remap(Math.random(), 0, 1, min, max))
+    }
+    o[0] = o.storage
+  },
+}
+
+_b5Blocks.prototype.random01 = {
+  text: 'random [0, 1)',
+  type: 'default',
+  kind: 'normal',
+  source: 'original',
+  description: 'Get a random number between 0 and 1.',
+  inputNodes: [
+    {
+      text: 'new',
+      name: 'new',
+      description: 'Get a new random number when set to true.',
+      type: ['object', 'boolean'],
+    },
+  ],
+  outputNodes: [
+    {
+      text: 'value',
+      name: 'value',
+      description: 'The random value.',
+      type: ['object', 'number'],
+    },
+  ],
+  default: [false],
+  run: function (p, o, n) {
+    if (isEmpty(o) || mustValid(n, [false, true])) {
+      o.storage = Math.round((Math.random() + Number.EPSILON) * 100) / 100
+    }
+    o[0] = o.storage
+  },
+}
+
+_b5Blocks.prototype.dice = {
+  text: '🎲 dice',
+  type: 'default',
+  kind: 'normal',
+  source: 'original',
+  description: 'Dice and get a random number from 1 to 6.',
+  inputNodes: [
+    {
+      text: 'new',
+      name: 'new',
+      description: 'Dice again when set to true.',
+      type: ['object', 'boolean'],
+    },
+  ],
+  outputNodes: [
+    {
+      text: 'value',
+      name: 'value',
+      description: 'The random value.',
+      type: ['object', 'number'],
+    },
+  ],
+  default: [false],
+  diceList: [1, 2, 3, 4, 5, 6],
+  run: function (p, o, n) {
+    if (isEmpty(o) || mustValid(n, [false, true])) {
+      o.storage = this.diceList[
+        Math.floor(Math.random() * this.diceList.length)
+      ]
+    }
+    o[0] = o.storage
   },
 }
 
