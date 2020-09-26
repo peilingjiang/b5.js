@@ -52,7 +52,7 @@ _b5Blocks.prototype.frameRate = {
   type: 'draw',
   kind: 'input',
   source: 'original',
-  description: 'Set a number.',
+  description: 'Set the frame rate.',
   inputNodes: null,
   outputNodes: null,
   default: [60],
