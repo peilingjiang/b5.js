@@ -1,0 +1,32 @@
+{
+  "name": "b5.js",
+  "version": "0.0.1",
+  "description": "Read and add magic to b5 files.",
+  "main": "src/app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/peilingjiang/b5.js.git"
+  },
+  "author": "Peiling Jiang",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/peilingjiang/b5.js/issues"
+  },
+  "homepage": "https://github.com/peilingjiang/b5.js#readme",
+  "devDependencies": {
+    "husky": "^4.3.0",
+    "lint-staged": "^10.4.0",
+    "prettier": "^2.1.2"
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "lint-staged"
+    }
+  },
+  "lint-staged": {
+    "*.{js,css,md}": "prettier --write"
+  }
+}

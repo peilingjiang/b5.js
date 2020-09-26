@@ -32,7 +32,7 @@ _b5Blocks.prototype.canvasSize = {
 }
 
 _b5Blocks.prototype.getFrameRate = {
-  text: 'get fr rate',
+  text: 'frame rate',
   type: 'object',
   kind: 'normal',
   source: 'original',
