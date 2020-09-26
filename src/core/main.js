@@ -29,6 +29,8 @@ export default class b5 {
     // Clear all section block values
     for (let f in this.factory)
       for (let i in this.factory[f]) this.factory[f][i].unplug()
+
+    this._unplugPlayground()
   }
 
   _clear(clearFactory = false, clearPlayground = true) {
@@ -43,6 +45,7 @@ export default class b5 {
     }
 
     if (clearPlayground) {
+      this._unplugPlayground()
       if (this.playground) delete this.playground
       this.playground = {
         // Equivalent to _sectionObject
@@ -92,6 +95,14 @@ export default class b5 {
 
     // lineStyles
   }
+
+  _unplugPlayground() {
+    // Unplug all in playground
+    if (this.playground)
+      for (let r in this.playground.blocks)
+        for (let c in this.playground.blocks[r])
+          this.playground.blocks[r][c].blockUnplug()
+  }
 }
 
 class _sectionObject {
@@ -115,6 +126,9 @@ class _sectionObject {
   unplug = () => {
     delete this.output
     this.output = {}
+
+    for (let i in this.blocks)
+      for (let j in this.blocks[i]) this.blocks[i][j].blockUnplug()
   }
 }
 
@@ -256,5 +270,13 @@ class _blockObject {
     )
     // ! Do not return this.output but only manipulate inside run TODO
     _b5BlocksObject[this.source][this.name].run(p, this.output, ..._args)
+  }
+
+  blockUnplug() {
+    if (_b5BlocksObject[this.source][this.name].unplug)
+      _b5BlocksObject[this.source][this.name].unplug(this.output)
+
+    delete this.output
+    this.output = {}
   }
 }
