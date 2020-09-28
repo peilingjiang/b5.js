@@ -69,6 +69,19 @@ _b5Blocks.prototype.frameRate = {
   ],
 }
 
+_b5Blocks.prototype.clear = {
+  text: 'clear canvas',
+  type: 'draw',
+  kind: 'normal',
+  source: 'original',
+  description: 'Clear the whole canvas.',
+  inputNodes: null,
+  outputNodes: null,
+  run: function (p, o) {
+    p.clear()
+  },
+}
+
 _b5Blocks.prototype.background = {
   text: 'background',
   type: 'draw',
