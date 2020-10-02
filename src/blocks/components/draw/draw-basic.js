@@ -1,5 +1,5 @@
 import _b5Blocks from '../../main'
-import { randomColor, valid } from '../../method'
+import { valid } from '../../method'
 
 _b5Blocks.prototype.createCanvas = {
   text: 'canvas',
@@ -48,7 +48,7 @@ _b5Blocks.prototype.createCanvas = {
 }
 
 _b5Blocks.prototype.frameRate = {
-  text: 'fr rate',
+  text: 'frame rate',
   type: 'draw',
   kind: 'input',
   source: 'original',
@@ -101,7 +101,7 @@ _b5Blocks.prototype.fillPicker = {
   //   },
   // ],
   default: function () {
-    return [randomColor()]
+    return [window.sessionStorage.getItem('color') || '#f35c87']
   },
   run: function (p, o, fillInline) {
     p.fill(fillInline)
@@ -135,7 +135,7 @@ _b5Blocks.prototype.strokePicker = {
   // ],
   // default: ['#f35c87'],
   default: function () {
-    return [randomColor()]
+    return [window.sessionStorage.getItem('color') || '#f35c87']
   },
   run: function (p, o, strokeInline) {
     p.stroke(strokeInline)

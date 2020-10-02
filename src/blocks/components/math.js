@@ -2,7 +2,7 @@ import _b5Blocks from '../main'
 import { valid, isValid, allValid, remap, isEmpty, mustValid } from '../method'
 
 _b5Blocks.prototype.number = {
-  text: 'number',
+  text: 'num',
   type: 'object',
   kind: 'input',
   source: 'original',
@@ -31,7 +31,7 @@ _b5Blocks.prototype.number = {
 }
 
 _b5Blocks.prototype.numberSlider = {
-  text: 'number',
+  text: 'num',
   type: 'object',
   kind: 'slider',
   source: 'original',

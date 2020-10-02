@@ -2,7 +2,7 @@ import _b5Blocks from '../main'
 import { valid } from '../method'
 
 _b5Blocks.prototype.string = {
-  text: 'string',
+  text: 'str',
   type: 'object',
   kind: 'input',
   source: 'original',

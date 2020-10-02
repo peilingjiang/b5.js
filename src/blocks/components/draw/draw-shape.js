@@ -112,7 +112,7 @@ _b5Blocks.prototype.circle = {
   ],
   outputNodes: null,
   default: function (p) {
-    return [p.width / 2, p.height / 2, 10]
+    return [p.width / 2, p.height / 2, 50]
   },
   run: function (p, o, x, y, r) {
     const d = this.default(p)
