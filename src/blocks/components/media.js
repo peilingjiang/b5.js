@@ -64,14 +64,6 @@ _b5Blocks.prototype.cameraVideo = {
       valid(h, d[3])
     )
   },
-  // 'input' kind block special
-  inlineData: [
-    {
-      name: 'value',
-      description: 'The value of the number.',
-      type: ['object', 'number'],
-    },
-  ],
   // Special unplug function
   unplug: function (o) {
     if (o.storage)

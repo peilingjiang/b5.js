@@ -33,3 +33,7 @@ export const remap = (x, min1, max1, min2, max2) => {
   // Equivalent to p5 map() function
   return min2 + ((max2 - min2) * (x - min1)) / (max1 - min1)
 }
+
+export const randomColor = () => {
+  return '#' + Math.floor(Math.random() * 16777215).toString(16) + 'ff'
+}
