@@ -105,7 +105,7 @@ _b5Blocks.prototype.fillPicker = {
   },
   run: function (p, o, fillInline) {
     p.fill(fillInline)
-    o[0] = fillInline
+    // o[0] = fillInline
   },
   // 'input' kind block special
   inlineData: [
@@ -115,6 +115,8 @@ _b5Blocks.prototype.fillPicker = {
       type: ['object', 'string'],
     },
   ],
+  // Effect block special
+  effectName: 'fill',
 }
 
 _b5Blocks.prototype.strokePicker = {
@@ -139,7 +141,7 @@ _b5Blocks.prototype.strokePicker = {
   },
   run: function (p, o, strokeInline) {
     p.stroke(strokeInline)
-    o[0] = strokeInline
+    // o[0] = strokeInline
   },
   // 'input' kind block special
   inlineData: [
@@ -149,6 +151,7 @@ _b5Blocks.prototype.strokePicker = {
       type: ['object', 'string'],
     },
   ],
+  effectName: 'stroke',
 }
 
 export default _b5Blocks
