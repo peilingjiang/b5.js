@@ -54,3 +54,23 @@ _b5Blocks.prototype.clearLog = {
     console.clear()
   },
 }
+
+_b5Blocks.prototype.comment = {
+  text: 'note',
+  type: 'comment', // ? Should be default?
+  kind: 'comment',
+  source: 'original',
+  description: 'Take a note.',
+  inputNodes: null,
+  outputNodes: null,
+  inlineData: [
+    {
+      name: 'note',
+      description: 'Comment for the code.',
+      type: ['object', 'string'],
+    },
+  ],
+  default: [''],
+  ignore: true,
+  run: function (p, o) {}, // This block is ignored by b5
+}

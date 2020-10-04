@@ -23,3 +23,5 @@ export function _isEmpty(obj) {
   // Return true if IS empty
   return Object.keys(obj).length === 0
 }
+
+export const _blocksToIgnore = ['comment']

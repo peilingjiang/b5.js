@@ -3,7 +3,7 @@ import equal from 'react-fast-compare'
 import _b5BlocksObject from '../blocks/blocksObjectWrapper'
 
 import { _findNodes } from './preFactory'
-import { _findArgs, _isEmpty } from './b5Frags'
+import { _blocksToIgnore, _findArgs, _isEmpty } from './b5Frags'
 
 export default class b5 {
   constructor(data) {
@@ -84,14 +84,7 @@ export default class b5 {
 
   _consPlayground({ lineStyles, blocks }) {
     // blocks
-    for (let r in blocks) {
-      if (!this.playground.blocks[r]) this.playground.blocks[r] = {}
-      for (let c in blocks[r])
-        this.playground.blocks[r][c] = new _blockObject(
-          blocks[r][c],
-          this.playground
-        )
-    }
+    _consBlockHelper(this.playground, this.playground.blocks, blocks)
 
     // lineStyles
   }
@@ -115,12 +108,7 @@ class _sectionObject {
     this.lineStyles = {} // Object of _lineStyleObject/s
     this.blocks = {} // Object of _blockObject/s
 
-    for (let r in blocks) {
-      if (!this.blocks[r]) this.blocks[r] = {}
-      for (let c in blocks[r]) {
-        this.blocks[r][c] = new _blockObject(blocks[r][c], this)
-      }
-    }
+    _consBlockHelper(this, this.blocks, blocks)
   }
 
   unplug = () => {
@@ -278,5 +266,14 @@ class _blockObject {
 
     delete this.output
     this.output = {}
+  }
+}
+
+function _consBlockHelper(parent, blockDict, blockSource) {
+  for (let r in blockSource) {
+    if (!blockDict[r]) blockDict[r] = {}
+    for (let c in blockSource[r])
+      if (!_blocksToIgnore.includes(blockSource[r][c].name))
+        blockDict[r][c] = new _blockObject(blockSource[r][c], parent)
   }
 }
