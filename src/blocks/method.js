@@ -1,3 +1,5 @@
+// * Validation
+
 export const valid = (value, fallback = 0) => {
   return value !== null ? value : fallback
 }

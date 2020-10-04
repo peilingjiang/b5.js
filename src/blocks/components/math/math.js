@@ -1,5 +1,12 @@
-import _b5Blocks from '../main'
-import { valid, isValid, allValid, remap, isEmpty, mustValid } from '../method'
+import _b5Blocks from '../../main'
+import {
+  valid,
+  isValid,
+  allValid,
+  remap,
+  isEmpty,
+  mustValid,
+} from '../../method'
 
 _b5Blocks.prototype.number = {
   text: 'num',

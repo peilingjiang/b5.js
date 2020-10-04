@@ -29,7 +29,7 @@ _b5Blocks.prototype.createCanvas = {
   ],
   outputNodes: [
     {
-      text: 'self',
+      text: 'canvas',
       name: 'this canvas',
       description: 'A canvas for you to draw and create.',
       type: ['object', 'canvas'],

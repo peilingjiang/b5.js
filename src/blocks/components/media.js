@@ -35,7 +35,7 @@ _b5Blocks.prototype.cameraVideo = {
   ],
   outputNodes: [
     {
-      text: 'self',
+      text: 'cam vid',
       name: 'this video',
       description: 'The video captured from the camera.',
       type: ['draw', 'video'],

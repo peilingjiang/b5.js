@@ -34,14 +34,14 @@ _b5Blocks.prototype.canvasSize = {
 _b5Blocks.prototype.getFrameRate = {
   text: 'frame rate',
   type: 'object',
-  kind: 'normal',
+  kind: 'inline',
   source: 'original',
   description: 'Get current frame rate.',
   inputNodes: null,
   outputNodes: [
     {
-      text: 'rate',
-      name: 'frameRate',
+      text: 'frame rate',
+      name: 'frame rate',
       description: 'Frame rate of canvas.',
       type: ['object', 'number'],
     },
@@ -56,13 +56,13 @@ _b5Blocks.prototype.getFrameRate = {
 _b5Blocks.prototype.true = {
   text: 'true',
   type: 'object',
-  kind: 'normal',
+  kind: 'inline',
   source: 'original',
-  description: 'true.',
+  description: 'The boolean value true.',
   inputNodes: null,
   outputNodes: [
     {
-      text: 'boolean',
+      text: 'true',
       name: 'boolean true',
       description: 'The boolean value true.',
       type: ['object', 'boolean'],
@@ -77,13 +77,13 @@ _b5Blocks.prototype.true = {
 _b5Blocks.prototype.false = {
   text: 'false',
   type: 'object',
-  kind: 'normal',
+  kind: 'inline',
   source: 'original',
-  description: 'false.',
+  description: 'The boolean value false.',
   inputNodes: null,
   outputNodes: [
     {
-      text: 'boolean',
+      text: 'false',
       name: 'boolean false',
       description: 'The boolean value false.',
       type: ['object', 'boolean'],
@@ -98,14 +98,14 @@ _b5Blocks.prototype.false = {
 _b5Blocks.prototype.infinity = {
   text: 'infinity',
   type: 'object',
-  kind: 'normal',
+  kind: 'inline',
   source: 'original',
   description: 'The largest number in the world.',
   inputNodes: null,
   outputNodes: [
     {
-      text: 'value',
-      name: 'value',
+      text: 'infinity',
+      name: 'infinity',
       description: 'The value of infinity.',
       type: ['object', 'number'],
     },
@@ -113,6 +113,27 @@ _b5Blocks.prototype.infinity = {
   default: [Infinity],
   run: function (p, o) {
     o[0] = Infinity
+  },
+}
+
+_b5Blocks.prototype.negativeInfinity = {
+  text: '- ( infinity )',
+  type: 'object',
+  kind: 'inline',
+  source: 'original',
+  description: 'The smallest number in the world.',
+  inputNodes: null,
+  outputNodes: [
+    {
+      text: '-infinity',
+      name: '-infinity',
+      description: 'The value of negative infinity.',
+      type: ['object', 'number'],
+    },
+  ],
+  default: [-Infinity],
+  run: function (p, o) {
+    o[0] = -Infinity
   },
 }
 

@@ -1,5 +1,6 @@
 import _b5Blocks from '../main'
 import equal from 'react-fast-compare'
+import { isEmpty } from '../method'
 
 _b5Blocks.prototype.log = {
   text: 'log',
@@ -45,13 +46,15 @@ _b5Blocks.prototype.lazyLog = {
 _b5Blocks.prototype.clearLog = {
   text: 'clear log',
   type: 'default',
-  kind: 'normal',
+  kind: 'inline',
   source: 'original',
-  description: 'Clear the console.',
+  description: 'Clear the console every 1 second.',
   inputNodes: null,
   outputNodes: null,
   run: function (p, o) {
-    console.clear()
+    if (isEmpty(o)) o.storage = 0
+    ++o.storage
+    if (Math.floor(o.storage % 60) === 0) console.clear()
   },
 }
 
