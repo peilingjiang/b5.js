@@ -48,7 +48,7 @@ _b5Blocks.prototype.createCanvas = {
 }
 
 _b5Blocks.prototype.frameRate = {
-  text: 'frame rate',
+  text: 'fps',
   type: 'draw',
   kind: 'input',
   source: 'original',
