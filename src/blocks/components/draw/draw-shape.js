@@ -106,17 +106,17 @@ _b5Blocks.prototype.circle = {
     {
       text: 'r',
       name: 'radius',
-      description: 'Radius of the ellipse.',
+      description: 'Radius of the circle.',
       type: ['object', 'number'],
     },
   ],
   outputNodes: null,
   default: function (p) {
-    return [p.width / 2, p.height / 2, 50]
+    return [p.width / 2, p.height / 2, 25]
   },
   run: function (p, o, x, y, r) {
     const d = this.default(p)
-    p.circle(valid(x, d[0]), valid(y, d[1]), valid(r, d[2]))
+    p.circle(valid(x, d[0]), valid(y, d[1]), 2 * valid(r, d[2]))
   },
 }
 
