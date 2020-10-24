@@ -32,6 +32,22 @@ _b5Blocks.prototype.createCustom = function (
   }
 }
 
+_b5Blocks.prototype.getOriginalNames = function () {
+  const o = this.original
+  return Object.keys(this.original).reduce((result, key) => {
+    if (typeof o[key] === 'object' && key !== 'library') {
+      result.push(key)
+    }
+    return result
+  }, [])
+}
+
+_b5Blocks.prototype.getLibraryNames = function () {
+  return Object.keys(this.library)
+}
+
+_b5Blocks.prototype.getAllBlockNames = function () {}
+
 _b5Blocks.prototype.deleteCustom = function (name) {
   delete this.custom[name]
 }

@@ -7,6 +7,9 @@ import { _blocksToIgnore, _findArgs, _isEmpty } from './b5Frags'
 
 export default class b5 {
   constructor(data) {
+    this.initialBlockNames = _b5BlocksObject.getOriginalNames()
+    this.initialBlockNames.push(..._b5BlocksObject.getLibraryNames())
+
     this.data = data
     this._clear()
     this._init(data)
@@ -31,6 +34,14 @@ export default class b5 {
       for (let i in this.factory[f]) this.factory[f][i].unplug()
 
     this._unplugPlayground()
+  }
+
+  updateBlockNames() {
+    if (this.factory)
+      this.unavailableNames = this.initialBlockNames.concat(
+        Object.keys(this.factory.variable),
+        Object.keys(this.factory.function)
+      )
   }
 
   _clear(clearFactory = false, clearPlayground = true) {
@@ -62,6 +73,9 @@ export default class b5 {
 
       // Construct playground flow
       this._consPlayground(data.playground)
+
+      // Update block names that have been used
+      this.updateBlockNames()
     }
   }
 
