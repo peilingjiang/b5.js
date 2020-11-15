@@ -49,11 +49,11 @@ _b5Blocks.prototype.getLibraryNames = function () {
 _b5Blocks.prototype.getAllBlockNames = function () {}
 
 _b5Blocks.prototype.deleteCustom = function (name) {
-  delete this.custom[name]
+  if (this.custom[name]) delete this.custom[name]
 }
 
 _b5Blocks.prototype.cleanCustom = function () {
-  // Clear all custom blocks
+  // Delete all custom blocks
   for (let c in this.custom) delete this.custom[c]
 }
 

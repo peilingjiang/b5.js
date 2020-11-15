@@ -2,10 +2,15 @@ import equal from 'react-fast-compare'
 
 import _b5BlocksObject from '../blocks/blocksObjectWrapper'
 
-import { _findNodes } from './preFactory'
-import { _blocksToIgnore, _findArgs, _isEmpty } from './b5Frags'
+import {
+  _blockObject,
+  _variableSectionObject,
+  _functionSectionObject,
+  _consBlockHelper,
+  _blocksToIgnore,
+} from './b5Frags'
 
-export default class b5 {
+class b5 {
   constructor(data) {
     this.initialBlockNames = _b5BlocksObject.getOriginalNames()
     this.initialBlockNames.push(..._b5BlocksObject.getLibraryNames())
@@ -28,15 +33,8 @@ export default class b5 {
     this.data = data
   }
 
-  unplug() {
-    // Clear all section block values
-    for (let f in this.factory)
-      for (let i in this.factory[f]) this.factory[f][i].unplug()
-
-    this._unplugPlayground()
-  }
-
   updateBlockNames() {
+    // Update unavailable names
     if (this.factory)
       this.unavailableNames = this.initialBlockNames.concat(
         Object.keys(this.factory.variable),
@@ -56,6 +54,7 @@ export default class b5 {
     }
 
     if (clearPlayground) {
+      // Also used in _init()!
       this._unplugPlayground()
       if (this.playground) delete this.playground
       this.playground = {
@@ -103,6 +102,14 @@ export default class b5 {
     // lineStyles
   }
 
+  unplug() {
+    // Clear all section block values
+    for (let f in this.factory)
+      for (let i in this.factory[f]) this.factory[f][i].unplug()
+
+    this._unplugPlayground()
+  }
+
   _unplugPlayground() {
     // Unplug all in playground
     if (this.playground)
@@ -112,182 +119,141 @@ export default class b5 {
   }
 }
 
-class _sectionObject {
-  // Mimic original block setup
-  constructor({ name, type, lineStyles, blocks }) {
-    this.name = name
-    this.type = type
-    this.kind = 'normal' // TODO: Can it be other kinds, e.g. inline, display?
-    this.source = 'custom'
-    this.lineStyles = {} // Object of _lineStyleObject/s
-    this.blocks = {} // Object of _blockObject/s
+b5.prototype.handleBlock = function (
+  data,
+  thisBlocks,
+  task,
+  source,
+  sectionName
+) {
+  let thisParent, thisObjects
+  let isSection = false
 
-    _consBlockHelper(this, this.blocks, blocks)
+  if (source === 'playground') {
+    thisParent = this.playground
+    thisObjects = thisParent.blocks
+  } else {
+    thisParent = this.factory[source][sectionName]
+    thisObjects = thisParent.blocks
+    isSection = true
   }
 
-  unplug = () => {
-    delete this.output
-    this.output = {}
+  switch (task) {
+    case 'addBlock':
+      const [newBlockData, y, x] = data
+      if (!thisObjects[y]) thisObjects[y] = {}
+      thisObjects[y][x] = new _blockObject(newBlockData, thisParent)
+      break
 
-    for (let i in this.blocks)
-      for (let j in this.blocks[i]) this.blocks[i][j].blockUnplug()
-  }
-}
+    case 'addConnection':
+      const [[inY, inX], inputNodeInd, inputNodeInput] = data
+      thisObjects[inY][inX].input[inputNodeInd] = JSON.parse(
+        JSON.stringify(inputNodeInput)
+      )
+      break
 
-class _variableSectionObject extends _sectionObject {
-  constructor(props) {
-    super(props)
+    case 'removeConnection':
+      const [blockY, blockX, nodeInd] = data
+      thisObjects[blockY][blockX].input[nodeInd] = null
+      break
 
-    this.output = {}
+    case 'relocateBlock':
+      const [x1, y1, x2, y2, name1] = data
+      if (
+        !_blocksToIgnore.includes(name1) &&
+        thisObjects[y1] &&
+        thisObjects[y1][x1]
+      ) {
+        const b = thisObjects[y1][x1]
 
-    // No need for variable section blocks to find input
-    this.outputNodes = _findNodes('output', props.blocks)
-    /*
-    
-    > this.outputNodes
-    {
-      positions: [['1', '0', '0']], // Positions of the nodes in original codeCanvas
-      
-      details: [{
-        text: 'canvas',
-        name: 'canvas',
-        description: 'A canvas for you to draw and create.',
-        type: ['object', 'canvas'],
-      }], // Details from the original node
-    }
+        if (!thisObjects[y2]) thisObjects[y2] = {}
+        thisObjects[y2][x2] = new _blockObject(
+          {
+            name: b.name,
+            source: b.source,
+            input: b.input,
+            inlineData: b.inlineData,
+          },
+          b.parent
+        )
+        thisObjects[y2][x2].output = JSON.parse(
+          JSON.stringify(thisObjects[y1][x1].output)
+        )
 
-    */
-
-    // Add to _b5BlocksObject
-    _b5BlocksObject.createCustom(
-      this.name,
-      this.type,
-      this.kind,
-      null, // this.inputNodes
-      this.outputNodes.details, // Only need details
-      this.run
-    )
-  }
-
-  run = (p, o, ...args) => {
-    // variable blocks only run once and use local storage for future outputs
-    // Run sub-blocks
-    if (_isEmpty(this.output)) {
-      for (let r in this.blocks)
-        for (let c in this.blocks[r]) this.blocks[r][c].blockRun(p)
-      /* this.blocks[r][c].blockRun(p, this.blocks[r][c].output) */
-
-      // Construct LOCAL STORAGE
-      for (let i in this.outputNodes.positions) {
-        const [y, x, node] = this.outputNodes.positions[i]
-        this.output[i] = this.blocks[y][x].output[node]
+        delete thisObjects[y1][x1]
+        if (Object.keys(thisObjects[y1]).length === 0) delete thisObjects[y1]
       }
-    } else if (o && _isEmpty(o))
-      for (let i in this.output) o[i] = this.output[i]
+      break
+
+    case 'deleteBlock':
+      const [deleteY, deleteX, outputs] = data
+
+      if (thisObjects[deleteY] && thisObjects[deleteY][deleteX]) {
+        // Delete the block
+        delete thisObjects[deleteY][deleteX]
+        if (Object.keys(thisObjects[deleteY]).length === 0)
+          delete thisObjects[deleteY]
+
+        // Delete outputs' input
+        if (outputs)
+          for (let i of outputs) thisObjects[i[0]][i[1]].input[i[2]] = null
+      }
+      break
+
+    case 'inlineDataChange':
+      thisObjects[data[1]][data[0]].inlineData[data[2]] = data[3]
+      break
+
+    default:
+      break
+  }
+
+  if (isSection) thisParent.reConstructor(thisBlocks)
+}
+
+b5.prototype.handleSection = function (task, type, data) {
+  const category = this.factory[type]
+
+  switch (task) {
+    case 'add':
+      const sudoSection = {
+        name: data[0],
+        type: type,
+        lineStyles: {},
+        blocks: {},
+      }
+      if (type === 'variable')
+        category[data[0]] = new _variableSectionObject(sudoSection)
+      else if (type === 'function')
+        category[data[0]] = new _functionSectionObject(sudoSection)
+      break
+
+    case 'delete':
+      delete category[data[0]]
+      break
+
+    case 'rename':
+      const [oldName, newName, oldLineStyles, oldBlocks] = data
+      if (!equal(oldName, newName)) {
+        const section = {
+          name: newName,
+          type: type,
+          lineStyles: JSON.parse(JSON.stringify(oldLineStyles)),
+          blocks: JSON.parse(JSON.stringify(oldBlocks)),
+        }
+
+        if (type === 'variable')
+          category[newName] = new _variableSectionObject(section)
+        else if (type === 'function')
+          category[newName] = new _functionSectionObject(section)
+
+        delete category[oldName]
+      }
+      break
+
+    default:
+      break
   }
 }
 
-class _functionSectionObject extends _sectionObject {
-  constructor(props) {
-    super(props)
-
-    this.inputNodes = _findNodes('input', props.blocks)
-    this.outputNodes = _findNodes('output', props.blocks)
-
-    _b5BlocksObject.createCustom(
-      this.name,
-      this.type,
-      this.kind,
-      this.inputNodes.details,
-      this.outputNodes.details,
-      this.run
-    )
-  }
-
-  run = (p, o, ...args) => {
-    // Run sub-blocks
-    for (let r in this.blocks)
-      for (let c in this.blocks[r])
-        this.blocks[r][c].blockRun(p, this._getInputArgs(r, c, args))
-
-    // * No need for this.output
-    for (let i in this.outputNodes.positions) {
-      const [y, x, node] = this.outputNodes.positions[i]
-      o[i] = this.blocks[y][x].output[node]
-    }
-  }
-
-  _getInputArgs = (r, c, args) => {
-    let a = {}
-    const { positions } = this.inputNodes
-    for (let i in positions)
-      if (positions[i][0] === r && positions[i][1] === c)
-        a[positions[i][2]] = args[i]
-
-    return a
-  }
-}
-
-class _blockObject {
-  constructor({ name, source, input, inlineData }, parent) {
-    this.parent = parent
-    this.name = name
-    this.source = source
-    this.input = input || null
-    this.inlineData = inlineData || null
-    this.output = {} // LOCAL STORAGE / o
-
-    // ! this.output starts as an empty object instead of null
-
-    /*
-
-    > this.input
-    [
-      [0, 0, 0], // Line number, column number, index of the node
-      [0, 1, 0],
-    ]
-
-    If the block has both input and data that are not 'null', the
-    'input' values will always be ahead of 'inlineData' values in run()
-    * p - o - input - inlineData
-    */
-  }
-
-  blockRun(p, overrideInputs = null) {
-    /*
-    overrideInputs override the args found with given input blocks
-    Primarily for function blocks
-
-    > overrideInputs
-    {
-      '2': 12,
-    }
-    */
-    // TODO: Construct this.args at constructor and on update
-    let _args = _findArgs(
-      this.parent.blocks,
-      this.input,
-      this.inlineData,
-      overrideInputs
-    )
-    // ! Do not return this.output but only manipulate inside run TODO
-    _b5BlocksObject[this.source][this.name].run(p, this.output, ..._args)
-  }
-
-  blockUnplug() {
-    if (_b5BlocksObject[this.source][this.name].unplug)
-      _b5BlocksObject[this.source][this.name].unplug(this.output)
-
-    delete this.output
-    this.output = {}
-  }
-}
-
-function _consBlockHelper(parent, blockDict, blockSource) {
-  for (let r in blockSource) {
-    if (!blockDict[r]) blockDict[r] = {}
-    for (let c in blockSource[r])
-      if (!_blocksToIgnore.includes(blockSource[r][c].name))
-        blockDict[r][c] = new _blockObject(blockSource[r][c], parent)
-  }
-}
+export default b5
