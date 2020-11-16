@@ -14,6 +14,7 @@ class b5 {
   constructor(data) {
     this.initialBlockNames = _b5BlocksObject.getOriginalNames()
     this.initialBlockNames.push(..._b5BlocksObject.getLibraryNames())
+    this.ignored = _blocksToIgnore
 
     this.data = data
     this._clear()
@@ -158,12 +159,8 @@ b5.prototype.handleBlock = function (
       break
 
     case 'relocateBlock':
-      const [x1, y1, x2, y2, name1] = data
-      if (
-        !_blocksToIgnore.includes(name1) &&
-        thisObjects[y1] &&
-        thisObjects[y1][x1]
-      ) {
+      const [x1, y1, x2, y2] = data
+      if (thisObjects[y1] && thisObjects[y1][x1]) {
         const b = thisObjects[y1][x1]
 
         if (!thisObjects[y2]) thisObjects[y2] = {}
@@ -176,10 +173,19 @@ b5.prototype.handleBlock = function (
           },
           b.parent
         )
-        thisObjects[y2][x2].output = JSON.parse(
-          JSON.stringify(thisObjects[y1][x1].output)
+
+        // ? Copy from old location to new location
+        // try {
+        //   thisObjects[y2][x2].output = JSON.parse(
+        //     JSON.stringify(thisObjects[y1][x1].output)
+        //   )
+        // } catch (error) {}
+        thisObjects[y2][x2].output = Object.assign(
+          {},
+          thisObjects[y1][x1].output
         )
 
+        // thisObjects[y1][x1].blockUnplug()
         delete thisObjects[y1][x1]
         if (Object.keys(thisObjects[y1]).length === 0) delete thisObjects[y1]
       }
@@ -190,6 +196,7 @@ b5.prototype.handleBlock = function (
 
       if (thisObjects[deleteY] && thisObjects[deleteY][deleteX]) {
         // Delete the block
+        thisObjects[deleteY][deleteX].blockUnplug()
         delete thisObjects[deleteY][deleteX]
         if (Object.keys(thisObjects[deleteY]).length === 0)
           delete thisObjects[deleteY]
@@ -201,13 +208,17 @@ b5.prototype.handleBlock = function (
       break
 
     case 'inlineDataChange':
-      thisObjects[data[1]][data[0]].inlineData[data[2]] = data[3]
+      // Avoid ignored blocks
+      try {
+        thisObjects[data[1]][data[0]].inlineData[data[2]] = data[3]
+      } catch (error) {}
       break
 
     default:
       break
   }
 
+  // ! Refresh section
   if (isSection) thisParent.reConstructor(thisBlocks)
 }
 
@@ -229,12 +240,16 @@ b5.prototype.handleSection = function (task, type, data) {
       break
 
     case 'delete':
-      delete category[data[0]]
+      if (category[data[0]]) {
+        category[data[0]].unplug()
+        delete category[data[0]]
+        // customBlock deleted in editorMethod
+      }
       break
 
     case 'rename':
       const [oldName, newName, oldLineStyles, oldBlocks] = data
-      if (!equal(oldName, newName)) {
+      if (category[oldName] && !equal(oldName, newName)) {
         const section = {
           name: newName,
           type: type,
@@ -247,13 +262,20 @@ b5.prototype.handleSection = function (task, type, data) {
         else if (type === 'function')
           category[newName] = new _functionSectionObject(section)
 
+        category[oldName].unplug()
         delete category[oldName]
+        // customBlock deleted in editorMethod
       }
       break
 
     default:
       break
   }
+}
+
+b5.prototype.ignores = function (name) {
+  // Return true if b5 object ignores the block with this name
+  return this.ignored.includes(name)
 }
 
 export default b5

@@ -15,8 +15,10 @@ class _sectionObject {
   }
 
   unplug = () => {
-    delete this.output
-    this.output = {}
+    if (this.output) {
+      delete this.output
+      this.output = {}
+    }
 
     for (let i in this.blocks)
       for (let j in this.blocks[i]) this.blocks[i][j].blockUnplug()
@@ -190,8 +192,8 @@ export class _blockObject {
   }
 
   blockUnplug() {
-    if (_b5BlocksObject[this.source][this.name].unplug)
-      _b5BlocksObject[this.source][this.name].unplug(this.output)
+    const unplug = _b5BlocksObject[this.source][this.name].unplug
+    if (unplug) unplug(this.output)
 
     delete this.output
     this.output = {}
@@ -233,4 +235,5 @@ export function _isEmpty(obj) {
   return Object.keys(obj).length === 0
 }
 
+// ! Blocks to ignore
 export const _blocksToIgnore = ['comment']
