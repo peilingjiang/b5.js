@@ -1,9 +1,11 @@
+import equal from 'react-fast-compare'
+
 import _b5BlocksObject from '../blocks/blocksObjectWrapper'
 import { _findNodes } from './preFactory'
 
 class _sectionObject {
   // Mimic original block setup
-  constructor({ name, type, lineStyles, blocks }) {
+  constructor({ name, type, lineStyles, blocks }, originalEntities) {
     this.name = name
     this.type = type
     this.kind = 'normal' // TODO: Can it be other kinds, e.g. inline, display?
@@ -12,6 +14,9 @@ class _sectionObject {
     this.blocks = {} // Object of _blockObject/s
 
     _consBlockHelper(this, this.blocks, blocks)
+
+    // Actual Objects in playground
+    this.entities = new EntityRecorder(originalEntities)
   }
 
   unplug = () => {
@@ -26,8 +31,8 @@ class _sectionObject {
 }
 
 export class _variableSectionObject extends _sectionObject {
-  constructor(props) {
-    super(props)
+  constructor(props, e) {
+    super(props, e)
 
     // LOCAL STORAGE
     this.output = {}
@@ -187,7 +192,7 @@ export class _blockObject {
       this.inlineData,
       overrideInputs
     )
-    // ! Do not return this.output but only manipulate inside run TODO
+
     _b5BlocksObject[this.source][this.name].run(p, this.output, ..._args)
   }
 
@@ -237,3 +242,47 @@ export function _isEmpty(obj) {
 
 // ! Blocks to ignore
 export const _blocksToIgnore = ['comment']
+
+// * Manage entities (actual objects of a section block)
+
+class EntityRecorder {
+  constructor(e = []) {
+    this.e = e // entities
+  }
+
+  addEntity(y, x) {
+    for (let e of this.e) {
+      if (equal(e, [y, x])) {
+        return
+      }
+    }
+    this.e.push([y, x])
+  }
+
+  deleteEntity(y, x) {
+    let i = -1
+    for (let e in this.e)
+      if (equal(this.e[e], [y, x])) {
+        i = e
+        break
+      }
+
+    if (i !== -1) this.e.splice(i, 1)
+  }
+
+  relocateEntity(y1, x1, y2, x2) {
+    this.deleteEntity(y1, x1)
+    this.addEntity(y2, x2)
+  }
+
+  getEntities() {
+    return JSON.parse(JSON.stringify(this.e))
+  }
+}
+
+export const findEntitiesFromPlayground = (name, data) => {
+  const returner = []
+  for (let y in data)
+    for (let x in data[y]) if (name === data[y][x].name) returner.push([y, x])
+  return returner
+}

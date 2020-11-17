@@ -8,7 +8,9 @@ import {
   _functionSectionObject,
   _consBlockHelper,
   _blocksToIgnore,
+  findEntitiesFromPlayground,
 } from './b5Frags'
+import { makeBlock } from './make'
 
 class b5 {
   constructor(data) {
@@ -69,7 +71,7 @@ class b5 {
   _init(data) {
     if (data) {
       // Construct factory sections
-      this._consFactory(data.factory)
+      this._consFactory(data.factory, data.playground.blocks)
 
       // Construct playground flow
       this._consPlayground(data.playground)
@@ -79,18 +81,20 @@ class b5 {
     }
   }
 
-  _consFactory(f) {
+  _consFactory(f, playgroundData) {
     // VARIABLE
     // For each section...
     for (let i in f.variable)
       this.factory.variable[f.variable[i].name] = new _variableSectionObject(
-        f.variable[i]
+        f.variable[i],
+        findEntitiesFromPlayground(f.variable[i].name, playgroundData)
       )
 
     // FUNCTION
     for (let i in f.function)
       this.factory.function[f.function[i].name] = new _functionSectionObject(
-        f.function[i]
+        f.function[i],
+        findEntitiesFromPlayground(f.function[i].name, playgroundData)
       )
 
     // OBJECT
@@ -141,9 +145,16 @@ b5.prototype.handleBlock = function (
 
   switch (task) {
     case 'addBlock':
-      const [newBlockData, y, x] = data
+      const [addBlockData, y, x] = data
+
       if (!thisObjects[y]) thisObjects[y] = {}
-      thisObjects[y][x] = new _blockObject(newBlockData, thisParent)
+      thisObjects[y][x] = new _blockObject(addBlockData, thisParent)
+
+      if (!isSection && addBlockData.source === 'custom')
+        // Add in playground and add a custom block
+        this.factory[this.getCustomSourceFromName(addBlockData.name)][
+          addBlockData.name
+        ].entities.addEntity(y, x)
       break
 
     case 'addConnection':
@@ -159,51 +170,57 @@ b5.prototype.handleBlock = function (
       break
 
     case 'relocateBlock':
-      const [x1, y1, x2, y2] = data
+      const [x1, y1, x2, y2, relocateBlockData] = data
       if (thisObjects[y1] && thisObjects[y1][x1]) {
-        const b = thisObjects[y1][x1]
-
         if (!thisObjects[y2]) thisObjects[y2] = {}
-        thisObjects[y2][x2] = new _blockObject(
-          {
-            name: b.name,
-            source: b.source,
-            input: b.input,
-            inlineData: b.inlineData,
-          },
-          b.parent
-        )
+        thisObjects[y2][x2] = thisObjects[y1][x1]
 
         // ? Copy from old location to new location
-        // try {
-        //   thisObjects[y2][x2].output = JSON.parse(
-        //     JSON.stringify(thisObjects[y1][x1].output)
-        //   )
-        // } catch (error) {}
-        thisObjects[y2][x2].output = Object.assign(
-          {},
-          thisObjects[y1][x1].output
-        )
+        // thisObjects[y2][x2].output = Object.assign(
+        //   {},
+        //   thisObjects[y1][x1].output
+        // )
 
-        // thisObjects[y1][x1].blockUnplug()
+        thisObjects[y1][x1] = null
         delete thisObjects[y1][x1]
-        if (Object.keys(thisObjects[y1]).length === 0) delete thisObjects[y1]
+        if (equal(thisObjects[y1], {})) delete thisObjects[y1]
+
+        if (!isSection && relocateBlockData.source === 'custom')
+          // Relocate in playground and relocate a custom block
+          this.factory[this.getCustomSourceFromName(relocateBlockData.name)][
+            relocateBlockData.name
+          ].entities.relocateEntity(y1, x1, y2, x2)
+      }
+
+      // Remap outputs' inputs
+      // Find outputs through thisBlocks
+      if (thisBlocks[y2][x2].output) {
+        for (let i in thisBlocks[y2][x2].output)
+          for (let j in thisBlocks[y2][x2].output[i]) {
+            const thisOutput = thisBlocks[y2][x2].output[i][j]
+            const toBlock = thisObjects[thisOutput[0]][thisOutput[1]]
+            toBlock.input[thisOutput[2]] = [y2, x2, i]
+          }
       }
       break
 
     case 'deleteBlock':
-      const [deleteY, deleteX, outputs] = data
+      const [deleteY, deleteX, outputs, deleteBlockData] = data
 
       if (thisObjects[deleteY] && thisObjects[deleteY][deleteX]) {
         // Delete the block
         thisObjects[deleteY][deleteX].blockUnplug()
         delete thisObjects[deleteY][deleteX]
-        if (Object.keys(thisObjects[deleteY]).length === 0)
-          delete thisObjects[deleteY]
+        if (equal(thisObjects[deleteY], {})) delete thisObjects[deleteY]
 
-        // Delete outputs' input
+        // Delete outputs' inputs
         if (outputs)
           for (let i of outputs) thisObjects[i[0]][i[1]].input[i[2]] = null
+
+        if (!isSection && deleteBlockData.source === 'custom')
+          this.factory[this.getCustomSourceFromName(deleteBlockData.name)][
+            deleteBlockData.name
+          ].entities.deleteEntity(deleteY, deleteX)
       }
       break
 
@@ -222,11 +239,16 @@ b5.prototype.handleBlock = function (
   if (isSection) thisParent.reConstructor(thisBlocks)
 }
 
-b5.prototype.handleSection = function (task, type, data) {
+b5.prototype.handleSection = function (task, type, data, playgroundBlocks) {
   const category = this.factory[type]
 
   switch (task) {
     case 'add':
+      // data - [name, sectionNames]
+
+      // Clear category for async rendering
+      this._clearCategories(type, data[1])
+
       const sudoSection = {
         name: data[0],
         type: type,
@@ -234,21 +256,46 @@ b5.prototype.handleSection = function (task, type, data) {
         blocks: {},
       }
       if (type === 'variable')
-        category[data[0]] = new _variableSectionObject(sudoSection)
+        category[data[0]] = new _variableSectionObject(sudoSection, [])
       else if (type === 'function')
-        category[data[0]] = new _functionSectionObject(sudoSection)
-      break
+        category[data[0]] = new _functionSectionObject(sudoSection, [])
+      return
 
     case 'delete':
-      if (category[data[0]]) {
-        category[data[0]].unplug()
-        delete category[data[0]]
-        // customBlock deleted in editorMethod
+      // data - [name, entities]
+      const entities = data[1]
+
+      for (let e of entities) {
+        // For playground
+        if (playgroundBlocks[e[0]] && playgroundBlocks[e[0]][e[1]]) {
+          const thisBlock = Object.assign({}, playgroundBlocks[e[0]][e[1]])
+
+          // Delete neighbors inputs and outputs
+          const outputs = this._clearNeighborsIO(e[0], e[1], playgroundBlocks)
+
+          // Delete from b5 - outputs' inputs deleted here
+          this.handleBlock(
+            [...e, outputs, thisBlock],
+            playgroundBlocks,
+            'deleteBlock',
+            'playground',
+            null
+          )
+
+          // Delete itself from editor data
+          delete playgroundBlocks[e[0]][e[1]]
+          if (equal(playgroundBlocks[e[0]], {})) {
+            delete playgroundBlocks[e[0]]
+          }
+        }
       }
-      break
+
+      this._handleDeleteSection(category, data[0])
+      return
 
     case 'rename':
-      const [oldName, newName, oldLineStyles, oldBlocks] = data
+      // data - [oldName, newName, oldLineStyles, oldBlocks]
+      const [oldName, newName, oldLineStyles, oldBlocks, renameEntities] = data
       if (category[oldName] && !equal(oldName, newName)) {
         const section = {
           name: newName,
@@ -258,24 +305,122 @@ b5.prototype.handleSection = function (task, type, data) {
         }
 
         if (type === 'variable')
-          category[newName] = new _variableSectionObject(section)
+          category[newName] = new _variableSectionObject(
+            section,
+            category[oldName].entities.getEntities()
+          )
         else if (type === 'function')
-          category[newName] = new _functionSectionObject(section)
+          category[newName] = new _functionSectionObject(
+            section,
+            category[oldName].entities.getEntities()
+          )
 
         category[oldName].unplug()
         delete category[oldName]
-        // customBlock deleted in editorMethod
+
+        _b5BlocksObject.deleteCustom(oldName)
       }
-      break
+
+      // Rename playground blocks
+      for (let e of renameEntities) {
+        playgroundBlocks[e[0]][e[1]].name = newName
+        this.playground.blocks[e[0]][e[1]].name = newName
+      }
+      return
 
     default:
       break
   }
 }
 
+b5.prototype.handleBumpSectionUpdate = function (
+  source,
+  secName,
+  thisBlocks,
+  task
+) {
+  // Promote for block changes inside section
+  // TODO: Tune for each task
+
+  const thisObjects = this.playground.blocks
+  for (let loc of this.factory[source][secName].entities.e) {
+    // e for entities
+
+    // data
+    const outputs = this._clearNeighborsIO(loc[0], loc[1], thisBlocks)
+    thisBlocks[loc[0]][loc[1]] = makeBlock(secName, 'custom')
+
+    // b5
+    delete thisObjects[loc[0]][loc[1]]
+    thisObjects[loc[0]][loc[1]] = new _blockObject(
+      thisBlocks[loc[0]][loc[1]],
+      this.playground
+    )
+
+    if (outputs)
+      for (let i of outputs) thisObjects[i[0]][i[1]].input[i[2]] = null
+  }
+}
+
+/* --------------------------------- Helpers -------------------------------- */
+
 b5.prototype.ignores = function (name) {
   // Return true if b5 object ignores the block with this name
   return this.ignored.includes(name)
+}
+
+b5.prototype.getCustomSourceFromName = function (name) {
+  return this.factory.variable[name]
+    ? 'variable'
+    : this.factory.function[name]
+    ? 'function'
+    : null
+}
+
+b5.prototype._clearCategories = function (type, sectionNames) {
+  const fType = this.factory[type]
+  for (let name in fType)
+    if (!sectionNames.includes(name)) {
+      // Clear if not in actual section
+      this._handleDeleteSection(fType, name)
+    }
+}
+
+b5.prototype._handleDeleteSection = function (category, name) {
+  if (category[name]) {
+    category[name].unplug()
+    delete category[name]
+    _b5BlocksObject.deleteCustom(name)
+  }
+}
+
+b5.prototype._clearNeighborsIO = function (thisBlockY, thisBlockX, allBlocks) {
+  const thisBlock = allBlocks[thisBlockY][thisBlockX]
+  const outputs = []
+
+  // Delete for input's output
+  if (thisBlock.input) {
+    const ins = thisBlock.input
+    for (let i in ins)
+      if (ins[i] !== null) {
+        const thisParentOutput =
+          allBlocks[ins[i][0]][ins[i][1]].output[ins[i][2]]
+        for (let j in thisParentOutput)
+          if (equal(thisParentOutput[j], [thisBlockY, thisBlockX, i]))
+            thisParentOutput.splice(j, 1)
+      }
+  }
+  // Delete for output's input
+  if (thisBlock.output)
+    for (let i in thisBlock.output)
+      if (thisBlock.output[i].length !== 0) {
+        const thisOutput = thisBlock.output[i]
+        outputs.push(...thisOutput)
+
+        for (let j of thisOutput) allBlocks[j[0]][j[1]].input[j[2]] = null
+      }
+
+  return outputs
 }
 
 export default b5
