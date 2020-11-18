@@ -1,5 +1,5 @@
 import _b5Blocks from '../main'
-import { valid } from '../method'
+import { mouseIsInCanvas, valid } from '../method'
 
 _b5Blocks.prototype.mouse = {
   text: 'mouse',
@@ -50,7 +50,8 @@ _b5Blocks.prototype.mouseIsPressed = {
   ],
   default: [false],
   run: function (p, o) {
-    o[0] = p.mouseIsPressed
+    o[0] =
+      p.mouseIsPressed && mouseIsInCanvas(p.mouseX, p.mouseY, p.width, p.height)
   },
 }
 

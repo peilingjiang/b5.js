@@ -35,3 +35,9 @@ export const remap = (x, min1, max1, min2, max2) => {
   // Equivalent to p5 map() function
   return min2 + ((max2 - min2) * (x - min1)) / (max1 - min1)
 }
+
+// * Interactive
+
+export const mouseIsInCanvas = (mX, mY, cW, cH) => {
+  return mX >= 0 && mY >= 0 && mX <= cW && mY <= cH
+}
