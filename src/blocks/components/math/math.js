@@ -31,7 +31,7 @@ _b5Blocks.prototype.number = {
   inlineData: [
     {
       name: 'value',
-      description: 'The value of the number.',
+      description: 'The value of number.',
       type: ['object', 'number'],
     },
   ],
