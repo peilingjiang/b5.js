@@ -69,7 +69,7 @@ _b5Blocks.prototype.multiply = {
     {
       text: 'value',
       name: 'number',
-      description: 'The value from multiply function.',
+      description: 'The product from multiply function.',
       type: ['object', 'number'],
     },
   ],

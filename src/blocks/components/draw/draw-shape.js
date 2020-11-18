@@ -6,30 +6,30 @@ _b5Blocks.prototype.background = {
   type: 'draw',
   kind: 'normal',
   source: 'original',
-  description: 'Draw background for the whole canvas.',
+  description: 'Draw background for whole canvas.',
   inputNodes: [
     {
       text: 'r',
       name: 'red',
-      description: 'Red value of the color (0-255).',
+      description: 'Red value of color (0-255).',
       type: ['object', 'number'],
     },
     {
       text: 'g',
       name: 'green',
-      description: 'Green value of the color (0-255).',
+      description: 'Green value of color (0-255).',
       type: ['object', 'number'],
     },
     {
       text: 'b',
       name: 'blue',
-      description: 'Blue value of the color (0-255).',
+      description: 'Blue value of color (0-255).',
       type: ['object', 'number'],
     },
     {
       text: 'a',
       name: 'alpha',
-      description: 'Alpha value (transparency) of the color (0-255).',
+      description: 'Alpha value (transparency) of color (0-255).',
       type: ['object', 'number'],
     },
   ],
@@ -51,32 +51,32 @@ _b5Blocks.prototype.ellipse = {
     {
       text: 'x',
       name: 'x position',
-      description: 'Position on the X axis.',
+      description: 'Position on X axis.',
       type: ['object', 'number'],
     },
     {
       text: 'y',
       name: 'y position',
-      description: 'Position on the Y axis.',
+      description: 'Position on Y axis.',
       type: ['object', 'number'],
     },
     {
       text: 'w',
       name: 'width',
-      description: 'Width of the ellipse.',
+      description: 'Width of ellipse.',
       type: ['object', 'number'],
     },
     {
       text: 'h',
       name: 'height',
-      description: 'Height of the ellipse.',
+      description: 'Height of ellipse.',
       type: ['object', 'number'],
     },
   ],
   outputNodes: null,
   /* p is p5 object */
   default: function (p) {
-    return [p.width / 2, p.height / 2, 50, 50] // Default values for the block
+    return [p.width / 2, p.height / 2, 50, 50] // Default values for block
   },
   run: function (p, o, x, y, w, h) {
     const d = this.default(p)
@@ -94,19 +94,19 @@ _b5Blocks.prototype.circle = {
     {
       text: 'x',
       name: 'x position',
-      description: 'Position on the X axis.',
+      description: 'Position on X axis.',
       type: ['object', 'number'],
     },
     {
       text: 'y',
       name: 'y position',
-      description: 'Position on the Y axis.',
+      description: 'Position on Y axis.',
       type: ['object', 'number'],
     },
     {
       text: 'r',
       name: 'radius',
-      description: 'Radius of the circle.',
+      description: 'Radius of circle.',
       type: ['object', 'number'],
     },
   ],

@@ -23,7 +23,7 @@ _b5Blocks.prototype.createCanvas = {
     {
       text: 'type',
       name: 'type',
-      description: 'Type of the canvas (2D or 3D).',
+      description: 'Type of the canvas (Please put 2D or 3D).',
       type: ['object', 'string'],
     },
   ],
