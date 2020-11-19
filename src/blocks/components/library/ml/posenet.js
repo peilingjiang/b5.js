@@ -87,7 +87,7 @@ _b5Blocks.prototype.library.posenet = {
         n = constrain(valid(n, 0), 0, o.storage.poses.length - 1)
 
         for (let po of o.storage.poses[n].keypoints)
-          p.circle(po.position.x, po.position.y, 10)
+          p.circle(po.position.x, po.position.y, 9)
       }
     }
     // else {
