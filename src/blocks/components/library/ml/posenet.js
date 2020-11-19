@@ -25,10 +25,10 @@ _b5Blocks.prototype.library.posenet = {
       type: ['draw', 'video'],
     },
     {
-      text: 'n',
-      name: 'number',
+      text: 'i',
+      name: 'index',
       description:
-        'Which pose to deconstruct, default is the first one with the highest score.',
+        'Which pose to deconstruct, default is the first one (0) with the highest confidence score.',
       type: ['object', 'number'],
     },
     {
@@ -87,15 +87,10 @@ _b5Blocks.prototype.library.posenet = {
       // o[1] = []
 
       if (valid(d, true) && o.storage.poses && o.storage.poses.length) {
-        p.push()
-        p.stroke(0)
-        p.fill(255)
         n = constrain(valid(n, 0), 0, o.storage.poses.length - 1)
 
         for (let po of o.storage.poses[n].keypoints)
-          p.circle(po.position.x, po.position.y, 10)
-
-        p.pop()
+          p.circle(po.position.x, po.position.y, 9)
       }
     }
     // else {
