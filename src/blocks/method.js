@@ -36,6 +36,11 @@ export const remap = (x, min1, max1, min2, max2) => {
   return min2 + ((max2 - min2) * (x - min1)) / (max1 - min1)
 }
 
+export const constrain = (v, a, b) => {
+  // Assume b >= a
+  return Math.max(Math.min(v, b), a)
+}
+
 // * Interactive
 
 export const mouseIsInCanvas = (mX, mY, cW, cH) => {

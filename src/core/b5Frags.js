@@ -159,6 +159,8 @@ export class _blockObject {
     this.inlineData = inlineData ? JSON.parse(JSON.stringify(inlineData)) : null
     this.output = {} // LOCAL STORAGE / o
 
+    this.blockInit()
+
     // ! this.output starts as an empty object instead of null
 
     /*
@@ -173,6 +175,11 @@ export class _blockObject {
     'input' values will always be ahead of 'inlineData' values in run()
     * p - o - input - inlineData
     */
+  }
+
+  async blockInit() {
+    const init = _b5BlocksObject[this.source][this.name].init
+    if (init) this.output = await init()
   }
 
   blockRun(p, overrideInputs = null) {

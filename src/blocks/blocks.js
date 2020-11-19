@@ -15,6 +15,6 @@ import './components/interaction'
 import './components/media'
 import './components/moving'
 
-// import './components/library/ml5/ml5Blocks'
+import './components/library/ml/posenet'
 
 export default _b5Blocks

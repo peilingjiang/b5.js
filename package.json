@@ -1,6 +1,6 @@
 {
   "name": "b5.js",
-  "version": "0.0.1",
+  "version": "0.1.0",
   "description": "Read and add magic to b5 files.",
   "main": "src/app.js",
   "scripts": {
@@ -28,5 +28,10 @@
   },
   "lint-staged": {
     "*.{js,css,md}": "prettier --write"
+  },
+  "dependencies": {
+    "@tensorflow-models/posenet": "^2.2.1",
+    "@tensorflow/tfjs-converter": "^1.7.4",
+    "@tensorflow/tfjs-core": "^1.7.4"
   }
 }

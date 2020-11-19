@@ -32,7 +32,7 @@ _b5Blocks.prototype.createCanvas = {
       text: 'canvas',
       name: 'this canvas',
       description: 'A canvas for you to draw and create.',
-      type: ['object', 'canvas'],
+      type: ['draw', 'canvas'],
     },
   ],
   default: [400, 300, '2D'],
@@ -44,6 +44,48 @@ _b5Blocks.prototype.createCanvas = {
     o[0] = p.createCanvas(valid(x, d[0]), valid(y, d[1]), valid(t, 'P2D'))
     p.background(255, 255, 255, 255) // Draw a white background by default
     // The index should be corresponding to info in inputNodes
+  },
+}
+
+_b5Blocks.prototype.p2d = {
+  text: '2D',
+  type: 'object',
+  kind: 'inline',
+  source: 'original',
+  description: `A string '2D'.`,
+  inputNodes: null,
+  outputNodes: [
+    {
+      text: '2D',
+      name: '2D',
+      description: '2D',
+      type: ['object', 'string'],
+    },
+  ],
+  default: ['2D'],
+  run: function (p, o) {
+    o[0] = '2D'
+  },
+}
+
+_b5Blocks.prototype.webgl = {
+  text: '3D',
+  type: 'object',
+  kind: 'inline',
+  source: 'original',
+  description: `A string '3D'.`,
+  inputNodes: null,
+  outputNodes: [
+    {
+      text: '3D',
+      name: '3D',
+      description: '3D',
+      type: ['object', 'string'],
+    },
+  ],
+  default: ['3D'],
+  run: function (p, o) {
+    o[0] = '3D'
   },
 }
 
