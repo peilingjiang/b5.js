@@ -28,7 +28,7 @@ _b5Blocks.prototype.library.posenet = {
       text: 'i',
       name: 'index',
       description:
-        'Which pose to deconstruct, default is the first one (0) with the highest confidence score.',
+        'Read which pose? Default is the first one (0) with the highest confidence score.',
       type: ['object', 'number'],
     },
     {
@@ -82,9 +82,6 @@ _b5Blocks.prototype.library.posenet = {
         .then(function (estimatedPoses) {
           o.storage.poses = estimatedPoses
         })
-
-      // o[0] = []
-      // o[1] = []
 
       if (valid(d, true) && o.storage.poses && o.storage.poses.length) {
         n = constrain(valid(n, 0), 0, o.storage.poses.length - 1)
