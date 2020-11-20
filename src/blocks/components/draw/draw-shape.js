@@ -132,5 +132,3 @@ _b5Blocks.prototype.lineXY = {
     p.line(valid(x1, 0), valid(y1, 0), valid(x2, 100), valid(y2, 100))
   },
 }
-
-export default _b5Blocks

@@ -1,6 +1,7 @@
 import _b5Blocks from './main'
 
 import './components/constant'
+import './components/object'
 
 import './components/math/arithmetic'
 import './components/math/math'

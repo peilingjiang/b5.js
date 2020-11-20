@@ -163,5 +163,3 @@ _b5Blocks.prototype.negativeInfinity = {
     o[0] = -Infinity
   },
 }
-
-export default _b5Blocks

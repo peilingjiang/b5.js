@@ -1,5 +1,5 @@
 import _b5Blocks from '../main'
-import { isEmpty, allValid } from '../method'
+import { allValid } from '../method'
 
 _b5Blocks.prototype.bounce = {
   text: '🏀 bounce',
@@ -42,10 +42,19 @@ _b5Blocks.prototype.bounce = {
     },
   ],
   default: [50, 0, 100, 1],
+  init: function () {
+    return {
+      storage: {
+        x: 50,
+        current: 50,
+        direction: true,
+      },
+    }
+  },
   run: function (p, o, ...args) {
     let [x, b0, b1, step] = allValid(args, this.default)
     // Init
-    if (isEmpty(o) || o.storage.x !== x)
+    if (o.storage.x !== x)
       o.storage = {
         x: x,
         current: x,
@@ -72,5 +81,3 @@ _b5Blocks.prototype.bounce = {
     o[0] = o.storage.current
   },
 }
-
-export default _b5Blocks

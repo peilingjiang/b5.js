@@ -223,8 +223,12 @@ export class _blockObject {
     const unplug = _b5BlocksObject[this.source][this.name].unplug
     if (unplug) unplug(this.output)
 
+    // ! To remove...
     delete this.output
     this.output = {}
+
+    // * Should move to a separate process...
+    this.blockInit()
   }
 }
 

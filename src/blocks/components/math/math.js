@@ -178,6 +178,8 @@ _b5Blocks.prototype.map = {
   },
 }
 
+/* --------------------------------- Random --------------------------------- */
+
 _b5Blocks.prototype.random = {
   text: 'random',
   type: 'default',
@@ -286,5 +288,3 @@ _b5Blocks.prototype.dice = {
     o[0] = o.storage
   },
 }
-
-export default _b5Blocks

@@ -47,5 +47,3 @@ _b5Blocks.prototype.brush = {
     o.storage.lastMousePressed = p.mouseIsPressed
   },
 }
-
-export default _b5Blocks

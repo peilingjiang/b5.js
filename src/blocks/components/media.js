@@ -74,5 +74,3 @@ _b5Blocks.prototype.cameraVideo = {
         .forEach(track => track.stop())
   },
 }
-
-export default _b5Blocks

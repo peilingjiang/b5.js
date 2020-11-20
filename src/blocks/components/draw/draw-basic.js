@@ -180,5 +180,3 @@ _b5Blocks.prototype.startDraw = {
   },
   effectName: 'stopStartDraw',
 }
-
-export default _b5Blocks

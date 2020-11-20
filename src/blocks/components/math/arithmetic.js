@@ -179,5 +179,3 @@ _b5Blocks.prototype.exponential = {
     o[0] = valid(a, 1) ** valid(b, 0)
   },
 }
-
-export default _b5Blocks

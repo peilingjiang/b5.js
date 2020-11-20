@@ -1,3 +1,5 @@
+import { v4 as uuidv4 } from 'uuid'
+
 import _b5BlocksObject from '../blocks/blocksObjectWrapper'
 
 const _isFunction = functionToCheck => {
@@ -22,6 +24,7 @@ export const makeBlock = (name, source = null) => {
   const sudoData = {
     name: name,
     source: source,
+    uuid: uuidv4(),
   }
 
   if (block.inputNodes) {

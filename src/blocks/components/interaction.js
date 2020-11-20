@@ -54,5 +54,3 @@ _b5Blocks.prototype.mouseIsPressed = {
       p.mouseIsPressed && mouseIsInCanvas(p.mouseX, p.mouseY, p.width, p.height)
   },
 }
-
-export default _b5Blocks
