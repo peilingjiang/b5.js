@@ -1,6 +1,7 @@
 import equal from 'react-fast-compare'
 
 import _b5BlocksObject from '../blocks/blocksObjectWrapper'
+import { colorEffectOpacity } from './constants'
 import { _findNodes } from './preFactory'
 
 class _sectionObject {
@@ -179,7 +180,9 @@ export class _blockObject {
 
   async blockInit() {
     const init = _b5BlocksObject[this.source][this.name].init
-    if (init) this.output = await init()
+    if (init && init.constructor.name === 'AsyncFunction')
+      this.output = await init()
+    else if (init) this.output = init()
   }
 
   blockRun(p, overrideInputs = null) {
@@ -201,6 +204,19 @@ export class _blockObject {
     )
 
     _b5BlocksObject[this.source][this.name].run(p, this.output, ..._args)
+  }
+
+  blockColorEffect() {
+    try {
+      // Always return Hex8String
+      return (
+        _b5BlocksObject[this.source][this.name]
+          .colorEffect(this.output, this.inlineData)
+          .slice(0, 7) + colorEffectOpacity
+      )
+    } catch (error) {
+      return '#cccccc' + colorEffectOpacity
+    }
   }
 
   blockUnplug() {

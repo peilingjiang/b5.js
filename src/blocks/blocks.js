@@ -4,9 +4,11 @@ import './components/constant'
 
 import './components/math/arithmetic'
 import './components/math/math'
+import './components/math/logic'
 
 import './components/draw/draw-basic'
 import './components/draw/draw-shape'
+import './components/draw/draw-color'
 import './components/draw/draw-interactive'
 
 import './components/text'

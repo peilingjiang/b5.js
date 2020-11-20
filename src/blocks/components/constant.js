@@ -1,5 +1,4 @@
 import _b5Blocks from '../main'
-import { valid } from '../method'
 
 // ! CANVAS
 
@@ -26,8 +25,36 @@ _b5Blocks.prototype.canvasSize = {
   ],
   default: [0, 0], // When there's no inputNodes, default is for outputNodes
   run: function (p, o) {
-    o[0] = valid(p.width, this.default[0])
-    o[1] = valid(p.height, this.default[0])
+    o[0] = p.width
+    o[1] = p.height
+  },
+}
+
+_b5Blocks.prototype.canvasCenter = {
+  text: 'canvas center',
+  type: 'object',
+  kind: 'normal',
+  source: 'original',
+  description: 'Get the center point of canvas.',
+  inputNodes: null,
+  outputNodes: [
+    {
+      text: 'x',
+      name: 'x',
+      description: 'Position on x axis.',
+      type: ['object', 'number'],
+    },
+    {
+      text: 'y',
+      name: 'y',
+      description: 'Position on y axis.',
+      type: ['object', 'number'],
+    },
+  ],
+  default: [0, 0],
+  run: function (p, o) {
+    o[0] = p.width / 2
+    o[1] = p.height / 2
   },
 }
 

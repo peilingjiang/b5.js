@@ -1,7 +1,7 @@
 import * as posenet from '@tensorflow-models/posenet'
 
 import _b5Blocks from '../../../main'
-import { constrain, valid } from '../../../method'
+import { constrain, valid, mustValid } from '../../../method'
 
 const netSettings = {
   flipHorizontal: false,
@@ -9,6 +9,8 @@ const netSettings = {
   scoreThreshold: 0.6,
   nmsRadius: 20,
 }
+
+const _checksForD = [true, false]
 
 _b5Blocks.prototype.library.posenet = {
   text: 'posenet*',
@@ -83,7 +85,11 @@ _b5Blocks.prototype.library.posenet = {
           o.storage.poses = estimatedPoses
         })
 
-      if (valid(d, true) && o.storage.poses && o.storage.poses.length) {
+      if (
+        mustValid(d, _checksForD) &&
+        o.storage.poses &&
+        o.storage.poses.length
+      ) {
         n = constrain(valid(n, 0), 0, o.storage.poses.length - 1)
 
         for (let po of o.storage.poses[n].keypoints)

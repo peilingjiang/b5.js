@@ -44,3 +44,18 @@ _b5Blocks.prototype.number = {
   ],
 }
 ```
+
+## What does `o` have?
+
+`o` stands for `output`.
+
+```js
+o = {
+  ready: false,
+  1: 'Output value from the first node.',
+  2: 'From the second node...',
+  storage: {
+    key: 'Things stored in the storage for later use.',
+  },
+}
+```

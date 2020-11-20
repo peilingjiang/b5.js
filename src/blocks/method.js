@@ -1,4 +1,4 @@
-// * Validation
+/* ------------------------------- Validation ------------------------------- */
 
 export const valid = (value, fallback = 0) => {
   return value !== null ? value : fallback
@@ -25,11 +25,26 @@ export const allValid = (valueList, fallbackList) => {
   return valueList
 }
 
+/* --------------------------------- Numbers -------------------------------- */
+
+export const numberValid = n => {
+  return Number(n) === n
+}
+
+export const colorNumberValid = (n, fallback = 255) => {
+  if (numberValid(n)) {
+    return constrain(n, 0, 255)
+  }
+  return fallback
+}
+
+/* --------------------------------- Object --------------------------------- */
+
 export const isEmpty = obj => {
   return Object.keys(obj).length === 0
 }
 
-// * Calculations
+/* ------------------------------ Calculations ------------------------------ */
 
 export const remap = (x, min1, max1, min2, max2) => {
   // Equivalent to p5 map() function
@@ -41,7 +56,7 @@ export const constrain = (v, a, b) => {
   return Math.max(Math.min(v, b), a)
 }
 
-// * Interactive
+/* ------------------------------- Interactive ------------------------------ */
 
 export const mouseIsInCanvas = (mX, mY, cW, cH) => {
   return mX >= 0 && mY >= 0 && mX <= cW && mY <= cH

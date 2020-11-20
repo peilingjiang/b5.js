@@ -1,5 +1,6 @@
 import _b5Blocks from '../../main'
 import { valid } from '../../method'
+import { rgbaInputNodes } from '../../constants'
 
 _b5Blocks.prototype.background = {
   text: 'background',
@@ -7,37 +8,11 @@ _b5Blocks.prototype.background = {
   kind: 'normal',
   source: 'original',
   description: 'Draw background for whole canvas.',
-  inputNodes: [
-    {
-      text: 'r',
-      name: 'red',
-      description: 'Red value of color (0-255).',
-      type: ['object', 'number'],
-    },
-    {
-      text: 'g',
-      name: 'green',
-      description: 'Green value of color (0-255).',
-      type: ['object', 'number'],
-    },
-    {
-      text: 'b',
-      name: 'blue',
-      description: 'Blue value of color (0-255).',
-      type: ['object', 'number'],
-    },
-    {
-      text: 'a',
-      name: 'alpha',
-      description: 'Alpha value (transparency) of color (0-255).',
-      type: ['object', 'number'],
-    },
-  ],
+  inputNodes: rgbaInputNodes,
   outputNodes: null,
   default: [255, 255, 255, 255],
   run: function (p, o, r, g, b, a) {
-    const d = this.default
-    p.background(valid(r, d[0]), valid(g, d[1]), valid(b, d[2]), valid(a, d[3]))
+    p.background(valid(r, 255), valid(g, 255), valid(b, 255), valid(a, 255))
   },
 }
 
@@ -117,6 +92,44 @@ _b5Blocks.prototype.circle = {
   run: function (p, o, x, y, r) {
     const d = this.default(p)
     p.circle(valid(x, d[0]), valid(y, d[1]), 2 * valid(r, d[2]))
+  },
+}
+
+_b5Blocks.prototype.lineXY = {
+  text: 'line',
+  type: 'draw',
+  kind: 'normal',
+  source: 'original',
+  description: 'Draw a line.',
+  inputNodes: [
+    {
+      text: 'x1',
+      name: 'point1 x',
+      description: 'x of the first point.',
+      type: ['object', 'number'],
+    },
+    {
+      text: 'y1',
+      name: 'point1 y',
+      description: 'y of the first point.',
+      type: ['object', 'number'],
+    },
+    {
+      text: 'x2',
+      name: 'point2 x',
+      description: 'x of the second point.',
+      type: ['object', 'number'],
+    },
+    {
+      text: 'y2',
+      name: 'point2 y',
+      description: 'y of the second point.',
+      type: ['object', 'number'],
+    },
+  ],
+  outputNodes: null,
+  run: function (p, o, x1, y1, x2, y2) {
+    p.line(valid(x1, 0), valid(y1, 0), valid(x2, 100), valid(y2, 100))
   },
 }
 

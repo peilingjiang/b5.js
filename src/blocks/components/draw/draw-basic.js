@@ -1,3 +1,4 @@
+import { darkColorEffects, whiteColorEffects } from '../../constants'
 import _b5Blocks from '../../main'
 import { valid } from '../../method'
 
@@ -124,76 +125,60 @@ _b5Blocks.prototype.clear = {
   },
 }
 
-// COLORS
-
-_b5Blocks.prototype.fillPicker = {
-  text: 'fill',
+_b5Blocks.prototype.stopDraw = {
+  text: 'stop draw',
   type: 'draw',
-  kind: 'colorPicker',
+  kind: 'normal',
   source: 'original',
-  description: 'Set the fill color for the following shapes.',
-  inputNodes: null,
-  outputNodes: null,
-  // outputNodes: [
-  //   {
-  //     text: 'c',
-  //     name: 'fill color',
-  //     description: 'A HEX value.',
-  //     type: ['object', 'string'],
-  //   },
-  // ],
-  default: function () {
-    return [window.sessionStorage.getItem('color') || '#f35c87']
-  },
-  run: function (p, o, fillInline) {
-    p.fill(fillInline)
-    // o[0] = fillInline
-  },
-  // 'input' kind block special
-  inlineData: [
+  description: 'Ignore all following draw blocks until "start draw" block.',
+  inputNodes: [
     {
-      name: 'value',
-      description: 'The fill color.',
-      type: ['object', 'string'],
+      text: 'stop',
+      name: 'to stop',
+      description: 'A boolean value. Whether to stop or not, default true.',
+      type: ['object', 'boolean'],
     },
   ],
-  // Effect block special
-  effectName: 'fill',
+  outputNodes: null,
+  default: [true],
+  run: function (p, o, a) {
+    if (valid(a, true)) {
+      p.fill(255, 0)
+      p.stroke(0, 0)
+    }
+  },
+  colorEffect: function (o, inlineData) {
+    return darkColorEffects
+  },
+  effectName: 'stopStartDraw',
 }
 
-_b5Blocks.prototype.strokePicker = {
-  text: 'stroke',
+_b5Blocks.prototype.startDraw = {
+  text: 'start draw',
   type: 'draw',
-  kind: 'colorPicker',
+  kind: 'normal',
   source: 'original',
-  description: 'Set the stroke color for the following shapes.',
-  inputNodes: null,
-  outputNodes: null,
-  // outputNodes: [
-  //   {
-  //     text: 'c',
-  //     name: 'stroke color',
-  //     description: 'A HEX value.',
-  //     type: ['object', 'string'],
-  //   },
-  // ],
-  // default: ['#f35c87'],
-  default: function () {
-    return [window.sessionStorage.getItem('color') || '#f35c87']
-  },
-  run: function (p, o, strokeInline) {
-    p.stroke(strokeInline)
-    // o[0] = strokeInline
-  },
-  // 'input' kind block special
-  inlineData: [
+  description: 'Reset fill and stroke for all following draw blocks.',
+  inputNodes: [
     {
-      name: 'value',
-      description: 'The stoke color.',
-      type: ['object', 'string'],
+      text: 'start',
+      name: 'to start',
+      description: 'A boolean value. Whether to start or not, default true.',
+      type: ['object', 'boolean'],
     },
   ],
-  effectName: 'stroke',
+  outputNodes: null,
+  default: [true],
+  run: function (p, o, a) {
+    if (valid(a, true)) {
+      p.fill(255)
+      p.stroke(0)
+    }
+  },
+  colorEffect: function (o, inlineData) {
+    return whiteColorEffects
+  },
+  effectName: 'stopStartDraw',
 }
 
 export default _b5Blocks
