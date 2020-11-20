@@ -143,8 +143,8 @@ _b5Blocks.prototype.stopDraw = {
   default: [true],
   run: function (p, o, a) {
     if (valid(a, true)) {
-      p.fill(255, 0)
-      p.stroke(0, 0)
+      p.noFill()
+      p.noStroke()
     }
   },
   colorEffect: function (o, inlineData) {

@@ -68,9 +68,11 @@ _b5Blocks.prototype.cameraVideo = {
   unplug: function (o) {
     if (o.storage)
       // https://dev.to/morinoko/stopping-a-webcam-with-javascript-4297
-      document
-        .querySelector('video')
-        .srcObject.getTracks()
-        .forEach(track => track.stop())
+      try {
+        document
+          .querySelector('video')
+          .srcObject.getTracks()
+          .forEach(track => track.stop())
+      } catch (error) {}
   },
 }

@@ -11,13 +11,13 @@ _b5Blocks.prototype.bounce = {
     {
       text: 'b0',
       name: 'boundary0',
-      description: 'Initial forward boundary.',
+      description: 'The lower boundary to move between.',
       type: ['object', 'number'],
     },
     {
       text: 'b1',
       name: 'boundary1',
-      description: 'Initially toward boundary.',
+      description: 'The upper boundary to move between.',
       type: ['object', 'number'],
     },
     {
