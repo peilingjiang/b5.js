@@ -180,10 +180,7 @@ export class _blockObject {
 
   async blockInit() {
     const init = _b5BlocksObject[this.source][this.name].init
-    if (init && init.constructor.name === 'AsyncFunction') {
-      console.log('HERE')
-      this.output = await init()
-    } else if (init) this.output = init()
+    if (init) this.output = await init()
   }
 
   blockRun(p, overrideInputs = null) {
