@@ -71,7 +71,7 @@ _b5Blocks.prototype.library.posenet = {
      *  poses: [...],
      * }
      */
-    console.log('In Posenet...')
+    console.log('In Posenet...', o.ready, v)
     if (
       o.ready &&
       v &&
