@@ -71,6 +71,7 @@ _b5Blocks.prototype.library.posenet = {
      *  poses: [...],
      * }
      */
+    console.log('In Posenet...')
     if (
       o.ready &&
       v &&
@@ -79,9 +80,11 @@ _b5Blocks.prototype.library.posenet = {
       v.elt.constructor.name === 'HTMLVideoElement'
     ) {
       // If has VIDEO
+      console.log('Start predicting...')
       o.storage.net
         .estimateMultiplePoses(v.elt, netSettings)
         .then(function (estimatedPoses) {
+          console.log('Has Prediction...')
           o.storage.poses = estimatedPoses
         })
 
