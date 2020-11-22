@@ -1,8 +1,7 @@
-import tinycolor from 'tinycolor2'
-
 import _b5Blocks from '../../main'
 import { colorNumberValid } from '../../method'
 import { rgbaInputNodes } from '../../constants'
+import { colorPalette } from '../../../core/constants'
 
 _b5Blocks.prototype.fillPicker = {
   text: 'fill',
@@ -99,14 +98,14 @@ _b5Blocks.prototype.fillRGBA = {
   },
   run: function (p, o, r, g, b, a) {
     p.fill(
-      (o.storage.r = colorNumberValid(r, 243)),
-      (o.storage.g = colorNumberValid(g, 92)),
-      (o.storage.b = colorNumberValid(b, 135)),
+      colorNumberValid(r, 243),
+      colorNumberValid(g, 92),
+      colorNumberValid(b, 135),
       colorNumberValid(a, 255)
     )
   },
   colorEffect: function (o, inlineData) {
-    return tinycolor(o.storage).toHex8String()
+    return colorPalette.draw
   },
   // Effect block special
   effectName: 'fill',
@@ -131,15 +130,21 @@ _b5Blocks.prototype.strokeRGBA = {
     }
   },
   run: function (p, o, r, g, b, a) {
+    // p.stroke(
+    //   (o.storage.r = colorNumberValid(r, 243)),
+    //   (o.storage.g = colorNumberValid(g, 92)),
+    //   (o.storage.b = colorNumberValid(b, 135)),
+    //   colorNumberValid(a, 255)
+    // )
     p.stroke(
-      (o.storage.r = colorNumberValid(r, 243)),
-      (o.storage.g = colorNumberValid(g, 92)),
-      (o.storage.b = colorNumberValid(b, 135)),
+      colorNumberValid(r, 243),
+      colorNumberValid(g, 92),
+      colorNumberValid(b, 135),
       colorNumberValid(a, 255)
     )
   },
   colorEffect: function (o, inlineData) {
-    return tinycolor(o.storage).toHex8String()
+    return colorPalette.draw
   },
   // Effect block special
   effectName: 'stroke',
