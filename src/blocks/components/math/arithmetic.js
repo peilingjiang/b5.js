@@ -1,20 +1,6 @@
 import _b5Blocks from '../../main'
 import { valid } from '../../method'
-
-const _twoNumberInput = [
-  {
-    text: 'a',
-    name: 'number a',
-    description: 'A number.',
-    type: ['object', 'number'],
-  },
-  {
-    text: 'b',
-    name: 'number b',
-    description: 'A number.',
-    type: ['object', 'number'],
-  },
-]
+import { _twoNumberInput } from '../../constants'
 
 _b5Blocks.prototype.add = {
   text: '+',
@@ -32,7 +18,7 @@ _b5Blocks.prototype.add = {
     },
   ],
   default: [0],
-  run: function (p, o, a, b) {
+  run: function (p, o, draw, a, b) {
     o[0] = valid(a, 0) + valid(b, 0)
   },
 }
@@ -53,7 +39,7 @@ _b5Blocks.prototype.subtract = {
     },
   ],
   default: [0],
-  run: function (p, o, a, b) {
+  run: function (p, o, draw, a, b) {
     o[0] = valid(a, 0) - valid(b, 0)
   },
 }
@@ -74,7 +60,7 @@ _b5Blocks.prototype.multiply = {
     },
   ],
   default: [0],
-  run: function (p, o, a, b) {
+  run: function (p, o, draw, a, b) {
     o[0] = valid(a, 0) * valid(b, 0)
   },
 }
@@ -95,7 +81,7 @@ _b5Blocks.prototype.divide = {
     },
   ],
   default: [0],
-  run: function (p, o, a, b) {
+  run: function (p, o, draw, a, b) {
     // ! Error handling system!
     o[0] = b === 0 ? valid(a, 0) : valid(a, 0) / valid(b, 1)
   },
@@ -117,7 +103,7 @@ _b5Blocks.prototype.floorDivide = {
     },
   ],
   default: [0],
-  run: function (p, o, a, b) {
+  run: function (p, o, draw, a, b) {
     // ! Error handling system!
     o[0] =
       b === 0 ? Math.floor(valid(a, 0)) : Math.floor(valid(a, 0) / valid(b, 1))
@@ -140,7 +126,7 @@ _b5Blocks.prototype.modulus = {
     },
   ],
   default: [0],
-  run: function (p, o, a, b) {
+  run: function (p, o, draw, a, b) {
     // ! Error handling system!
     o[0] = b === 0 ? 0 : valid(a, 0) % valid(b, 1)
   },
@@ -175,7 +161,7 @@ _b5Blocks.prototype.exponential = {
     },
   ],
   default: [0],
-  run: function (p, o, a, b) {
+  run: function (p, o, draw, a, b) {
     o[0] = valid(a, 1) ** valid(b, 0)
   },
 }

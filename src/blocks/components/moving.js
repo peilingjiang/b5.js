@@ -44,7 +44,7 @@ _b5Blocks.prototype.bounce = {
       },
     }
   },
-  run: function (p, o, ...args) {
+  run: function (p, o, draw, ...args) {
     let [b0, b1, step] = allValid(args, this.default)
 
     let temp = b0

@@ -5,7 +5,12 @@
 
 import b5 from './main'
 
+b5.prototype._initP5ForB5 = function (p) {
+  p._b5_drawing = true
+}
+
 b5.prototype.runSetup = function (p) {
+  this._initP5ForB5(p)
   for (let v in this.factory.variable) {
     p.push()
     this.factory.variable[v].run(p) // this.factory['variable']['cnv']...
@@ -14,6 +19,9 @@ b5.prototype.runSetup = function (p) {
 }
 
 b5.prototype.runDraw = function (p) {
+  // p5
+  p._b5_drawing = true
+
   p.push()
   for (let r in this.playground.blocks) {
     // Run lineStyles here

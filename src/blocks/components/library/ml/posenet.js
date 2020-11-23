@@ -64,7 +64,7 @@ _b5Blocks.prototype.library.posenet = {
       },
     }
   },
-  run: function (p, o, v, n, d) {
+  run: function (p, o, draw, v, n, d) {
     /**
      * storage: {
      *  net: posenet.net...,
@@ -85,7 +85,9 @@ _b5Blocks.prototype.library.posenet = {
           o.storage.poses = estimatedPoses
         })
 
+      // Draw
       if (
+        draw &&
         mustValid(d, _checksForD) &&
         o.storage.poses &&
         o.storage.poses.length

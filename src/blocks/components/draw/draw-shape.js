@@ -11,8 +11,9 @@ _b5Blocks.prototype.background = {
   inputNodes: rgbaInputNodes,
   outputNodes: null,
   default: [255, 255, 255, 255],
-  run: function (p, o, r, g, b, a) {
-    p.background(valid(r, 255), valid(g, 255), valid(b, 255), valid(a, 255))
+  run: function (p, o, draw, r, g, b, a) {
+    if (draw)
+      p.background(valid(r, 255), valid(g, 255), valid(b, 255), valid(a, 255))
   },
 }
 
@@ -53,9 +54,11 @@ _b5Blocks.prototype.ellipse = {
   default: function (p) {
     return [p.width / 2, p.height / 2, 50, 50] // Default values for block
   },
-  run: function (p, o, x, y, w, h) {
-    const d = this.default(p)
-    p.ellipse(valid(x, d[0]), valid(y, d[1]), valid(w, d[2]), valid(h, d[3]))
+  run: function (p, o, draw, x, y, w, h) {
+    if (draw) {
+      const d = this.default(p)
+      p.ellipse(valid(x, d[0]), valid(y, d[1]), valid(w, d[2]), valid(h, d[3]))
+    }
   },
 }
 
@@ -89,9 +92,11 @@ _b5Blocks.prototype.circle = {
   default: function (p) {
     return [p.width / 2, p.height / 2, 25]
   },
-  run: function (p, o, x, y, r) {
-    const d = this.default(p)
-    p.circle(valid(x, d[0]), valid(y, d[1]), 2 * valid(r, d[2]))
+  run: function (p, o, draw, x, y, r) {
+    if (draw) {
+      const d = this.default(p)
+      p.circle(valid(x, d[0]), valid(y, d[1]), 2 * valid(r, d[2]))
+    }
   },
 }
 
@@ -128,7 +133,48 @@ _b5Blocks.prototype.lineXY = {
     },
   ],
   outputNodes: null,
-  run: function (p, o, x1, y1, x2, y2) {
-    p.line(valid(x1, 0), valid(y1, 0), valid(x2, 100), valid(y2, 100))
+  default: [0, 0, 100, 100],
+  run: function (p, o, draw, x1, y1, x2, y2) {
+    if (draw) p.line(valid(x1, 0), valid(y1, 0), valid(x2, 100), valid(y2, 100))
+  },
+}
+
+_b5Blocks.prototype.rect = {
+  text: 'rectangle',
+  type: 'draw',
+  kind: 'normal',
+  source: 'original',
+  description: 'Draw a rectangle.',
+  inputNodes: [
+    {
+      text: 'x',
+      name: 'x position',
+      description: 'Position on X axis.',
+      type: ['object', 'number'],
+    },
+    {
+      text: 'y',
+      name: 'y position',
+      description: 'Position on Y axis.',
+      type: ['object', 'number'],
+    },
+    {
+      text: 'w',
+      name: 'width',
+      description: 'Width of rectangle.',
+      type: ['object', 'number'],
+    },
+    {
+      text: 'h',
+      name: 'height',
+      description: 'Height of rectangle.',
+      type: ['object', 'number'],
+    },
+  ],
+  outputNodes: null,
+  default: [50, 50, 100, 100],
+  run: function (p, o, draw, x1, y1, x2, y2) {
+    if (draw)
+      p.rect(valid(x1, 50), valid(y1, 50), valid(x2, 100), valid(y2, 100))
   },
 }

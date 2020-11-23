@@ -25,8 +25,36 @@ _b5Blocks.prototype.num = {
     },
   ],
   default: [0],
-  run: function (p, o, a) {
+  run: function (p, o, draw, a) {
     o[0] = valid(a, this.default[0])
+  },
+}
+
+_b5Blocks.prototype.str = {
+  text: 'string',
+  type: 'object',
+  kind: 'inline',
+  source: 'original',
+  description: 'Take a string, output a string.',
+  inputNodes: [
+    {
+      text: 's',
+      name: 'string',
+      description: 'A string.',
+      type: ['object', 'string'],
+    },
+  ],
+  outputNodes: [
+    {
+      text: 's',
+      name: 'string',
+      description: 'A string.',
+      type: ['object', 'string'],
+    },
+  ],
+  default: ['hello'],
+  run: function (p, o, draw, a) {
+    o[0] = valid(a, 'hello')
   },
 }
 
@@ -53,7 +81,7 @@ _b5Blocks.prototype.bool = {
     },
   ],
   default: [false],
-  run: function (p, o, a) {
+  run: function (p, o, draw, a) {
     o[0] = valid(a, false)
   },
 }

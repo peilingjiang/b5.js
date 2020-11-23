@@ -22,12 +22,9 @@ _b5Blocks.prototype.fillPicker = {
   default: function () {
     return [window.sessionStorage.getItem('color') || '#f35c87']
   },
-  run: function (p, o, fillInline) {
+  run: function (p, o, draw, fillInline) {
     p.fill(fillInline)
     // o[0] = fillInline
-  },
-  colorEffect: function (o, inlineData) {
-    return inlineData[0]
   },
   // 'input' kind block special
   inlineData: [
@@ -38,7 +35,10 @@ _b5Blocks.prototype.fillPicker = {
     },
   ],
   // Effect block special
-  effectName: 'fill',
+  colorEffect: function (o, inlineData) {
+    return inlineData[0]
+  },
+  colorEffectName: 'fill',
 }
 
 _b5Blocks.prototype.strokePicker = {
@@ -60,12 +60,9 @@ _b5Blocks.prototype.strokePicker = {
   default: function () {
     return [window.sessionStorage.getItem('color') || '#f35c87']
   },
-  run: function (p, o, strokeInline) {
+  run: function (p, o, draw, strokeInline) {
     p.stroke(strokeInline)
     // o[0] = strokeInline
-  },
-  colorEffect: function (o, inlineData) {
-    return inlineData[0]
   },
   // 'input' kind block special
   inlineData: [
@@ -75,7 +72,10 @@ _b5Blocks.prototype.strokePicker = {
       type: ['object', 'string'],
     },
   ],
-  effectName: 'stroke',
+  colorEffect: function (o, inlineData) {
+    return inlineData[0]
+  },
+  colorEffectName: 'stroke',
 }
 
 _b5Blocks.prototype.fillRGBA = {
@@ -96,7 +96,7 @@ _b5Blocks.prototype.fillRGBA = {
       },
     }
   },
-  run: function (p, o, r, g, b, a) {
+  run: function (p, o, draw, r, g, b, a) {
     p.fill(
       colorNumberValid(r, 243),
       colorNumberValid(g, 92),
@@ -108,7 +108,7 @@ _b5Blocks.prototype.fillRGBA = {
     return colorPalette.draw
   },
   // Effect block special
-  effectName: 'fill',
+  colorEffectName: 'fill',
 }
 
 _b5Blocks.prototype.strokeRGBA = {
@@ -129,7 +129,7 @@ _b5Blocks.prototype.strokeRGBA = {
       },
     }
   },
-  run: function (p, o, r, g, b, a) {
+  run: function (p, o, draw, r, g, b, a) {
     // p.stroke(
     //   (o.storage.r = colorNumberValid(r, 243)),
     //   (o.storage.g = colorNumberValid(g, 92)),
@@ -147,5 +147,5 @@ _b5Blocks.prototype.strokeRGBA = {
     return colorPalette.draw
   },
   // Effect block special
-  effectName: 'stroke',
+  colorEffectName: 'stroke',
 }

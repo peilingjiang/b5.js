@@ -24,7 +24,7 @@ _b5Blocks.prototype.canvasSize = {
     },
   ],
   default: [0, 0], // When there's no inputNodes, default is for outputNodes
-  run: function (p, o) {
+  run: function (p, o, draw) {
     o[0] = p.width
     o[1] = p.height
   },
@@ -52,7 +52,7 @@ _b5Blocks.prototype.canvasCenter = {
     },
   ],
   default: [0, 0],
-  run: function (p, o) {
+  run: function (p, o, draw) {
     o[0] = p.width / 2
     o[1] = p.height / 2
   },
@@ -73,7 +73,7 @@ _b5Blocks.prototype.getFrameRate = {
       type: ['object', 'number'],
     },
   ],
-  run: function (p, o) {
+  run: function (p, o, draw) {
     o[0] = p.frameRate()
   },
 }
@@ -96,7 +96,7 @@ _b5Blocks.prototype.true = {
     },
   ],
   default: [true],
-  run: function (p, o) {
+  run: function (p, o, draw) {
     o[0] = true
   },
 }
@@ -117,7 +117,7 @@ _b5Blocks.prototype.false = {
     },
   ],
   default: [false],
-  run: function (p, o) {
+  run: function (p, o, draw) {
     o[0] = false
   },
 }
@@ -138,7 +138,7 @@ _b5Blocks.prototype.infinity = {
     },
   ],
   default: [Infinity],
-  run: function (p, o) {
+  run: function (p, o, draw) {
     o[0] = Infinity
   },
 }
@@ -159,7 +159,7 @@ _b5Blocks.prototype.negativeInfinity = {
     },
   ],
   default: [-Infinity],
-  run: function (p, o) {
+  run: function (p, o, draw) {
     o[0] = -Infinity
   },
 }

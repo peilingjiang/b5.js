@@ -44,7 +44,7 @@ _b5Blocks.prototype.cameraVideo = {
   default: function (p) {
     return [0, 0, p.width, p.height]
   },
-  run: function (p, o, x, y, w, h) {
+  run: function (p, o, draw, x, y, w, h) {
     const d = this.default(p)
     if (isEmpty(o)) {
       // Capture never created
@@ -56,13 +56,14 @@ _b5Blocks.prototype.cameraVideo = {
     }
     // Use created video from o.storage
     o.storage.size(valid(w, d[2]), valid(h, d[3]))
-    p.image(
-      o.storage,
-      valid(x, d[0]),
-      valid(y, d[1]),
-      valid(w, d[2]),
-      valid(h, d[3])
-    )
+    if (draw)
+      p.image(
+        o.storage,
+        valid(x, d[0]),
+        valid(y, d[1]),
+        valid(w, d[2]),
+        valid(h, d[3])
+      )
   },
   // Special unplug function
   unplug: function (o) {

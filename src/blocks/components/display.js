@@ -16,7 +16,7 @@ _b5Blocks.prototype.log = {
     },
   ],
   outputNodes: null,
-  run: function (p, o, a) {
+  run: function (p, o, draw, a) {
     console.log(a)
   },
 }
@@ -36,7 +36,7 @@ _b5Blocks.prototype.lazyLog = {
     },
   ],
   outputNodes: null,
-  run: function (p, o, a) {
+  run: function (p, o, draw, a) {
     if ((o !== null && !equal(a, o.storage)) || o === null) console.log(a)
     o.storage = a
   },
@@ -55,7 +55,7 @@ _b5Blocks.prototype.clearLog = {
       storage: 0,
     }
   },
-  run: function (p, o) {
+  run: function (p, o, draw) {
     ++o.storage
     if (Math.floor(o.storage % 60) === 0) console.clear()
   },
@@ -78,5 +78,5 @@ _b5Blocks.prototype.comment = {
   ],
   default: [''],
   ignore: true,
-  run: function (p, o) {}, // This block is ignored by b5
+  run: function (p, o, draw) {}, // This block is ignored by b5
 }

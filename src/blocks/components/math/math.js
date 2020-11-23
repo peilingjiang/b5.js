@@ -19,12 +19,12 @@ _b5Blocks.prototype.number = {
     {
       text: 'num',
       name: 'number',
-      description: 'A number.',
+      description: 'A number from the input.',
       type: ['object', 'number'],
     },
   ],
   default: [1],
-  run: function (p, o, a) {
+  run: function (p, o, draw, a) {
     o[0] = valid(a, this.default[0])
   },
   // 'input' kind block special
@@ -53,7 +53,7 @@ _b5Blocks.prototype.numberSlider = {
     },
   ],
   default: [50, 0, 100, 5], // default here is for default inline data instead of input
-  run: function (p, o, a) {
+  run: function (p, o, draw, a) {
     o[0] = valid(a, this.default[0])
   },
   // 'slider' kind block special
@@ -116,7 +116,7 @@ _b5Blocks.prototype.constrain = {
     },
   ],
   default: [0],
-  run: function (p, o, x, min, max) {
+  run: function (p, o, draw, x, min, max) {
     min = valid(min, -Infinity)
     max = valid(max, Infinity)
 
@@ -171,7 +171,7 @@ _b5Blocks.prototype.map = {
     },
   ],
   default: [0, 0, 10, 0, 100],
-  run: function (p, o, ...args) {
+  run: function (p, o, draw, ...args) {
     let [x, min1, max1, min2, max2] = allValid(args, this.default)
     if (min1 === max1 || min2 === max2) o[0] = x
     else o[0] = remap(x, min1, max1, min2, max2)
@@ -215,7 +215,7 @@ _b5Blocks.prototype.random = {
     },
   ],
   default: [false, 0, 100],
-  run: function (p, o, ...args) {
+  run: function (p, o, draw, ...args) {
     let [n, min, max] = allValid(args, this.default)
     if (isEmpty(o) || n) {
       o.storage = Math.ceil(remap(Math.random(), 0, 1, min, max))
@@ -247,7 +247,7 @@ _b5Blocks.prototype.random01 = {
     },
   ],
   default: [false],
-  run: function (p, o, n) {
+  run: function (p, o, draw, n) {
     if (isEmpty(o) || mustValid(n, [false, true])) {
       o.storage = Math.round((Math.random() + Number.EPSILON) * 100) / 100
     }
@@ -279,7 +279,7 @@ _b5Blocks.prototype.dice = {
   ],
   default: [false],
   diceList: [1, 2, 3, 4, 5, 6],
-  run: function (p, o, n) {
+  run: function (p, o, draw, n) {
     if (isEmpty(o) || mustValid(n, [false, true])) {
       o.storage = this.diceList[
         Math.floor(Math.random() * this.diceList.length)

@@ -1,19 +1,5 @@
 import _b5Blocks from '../../main'
-
-const _twoNumberInput = [
-  {
-    text: 'a',
-    name: 'number a',
-    description: 'A number.',
-    type: ['object', 'number'],
-  },
-  {
-    text: 'b',
-    name: 'number b',
-    description: 'A number.',
-    type: ['object', 'number'],
-  },
-]
+import { _twoNumberInput } from '../../constants'
 
 _b5Blocks.prototype.toggle = {
   text: 'toggle',
@@ -38,7 +24,7 @@ _b5Blocks.prototype.toggle = {
     },
   ],
   default: [true],
-  run: function (p, o, a) {
+  run: function (p, o, draw, a) {
     // eslint-disable-next-line eqeqeq
     o[0] = !a
   },
@@ -60,7 +46,7 @@ _b5Blocks.prototype.equal = {
     },
   ],
   default: [false],
-  run: function (p, o, a, b) {
+  run: function (p, o, draw, a, b) {
     // eslint-disable-next-line eqeqeq
     o[0] = a == b
   },
@@ -82,7 +68,7 @@ _b5Blocks.prototype.notEqual = {
     },
   ],
   default: [false],
-  run: function (p, o, a, b) {
+  run: function (p, o, draw, a, b) {
     // eslint-disable-next-line eqeqeq
     o[0] = a != b
   },
@@ -104,7 +90,7 @@ _b5Blocks.prototype.greaterThan = {
     },
   ],
   default: [false],
-  run: function (p, o, a, b) {
+  run: function (p, o, draw, a, b) {
     o[0] = a > b
   },
 }
@@ -125,7 +111,7 @@ _b5Blocks.prototype.lessThan = {
     },
   ],
   default: [false],
-  run: function (p, o, a, b) {
+  run: function (p, o, draw, a, b) {
     o[0] = a < b
   },
 }
@@ -146,7 +132,7 @@ _b5Blocks.prototype.greaterEqualThan = {
     },
   ],
   default: [false],
-  run: function (p, o, a, b) {
+  run: function (p, o, draw, a, b) {
     o[0] = a >= b
   },
 }
@@ -167,7 +153,7 @@ _b5Blocks.prototype.lessEqualThan = {
     },
   ],
   default: [false],
-  run: function (p, o, a, b) {
+  run: function (p, o, draw, a, b) {
     o[0] = a <= b
   },
 }

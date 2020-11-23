@@ -1,5 +1,5 @@
-import { darkColorEffects, whiteColorEffects } from '../../constants'
 import _b5Blocks from '../../main'
+import { darkColorEffects, whiteColorEffects } from '../../constants'
 import { valid } from '../../method'
 
 _b5Blocks.prototype.createCanvas = {
@@ -37,7 +37,7 @@ _b5Blocks.prototype.createCanvas = {
     },
   ],
   default: [400, 300, '2D'],
-  run: function (p, o, x, y, t) {
+  run: function (p, o, draw, x, y, t) {
     const d = this.default
     // Convert b5 language to p5 language
     t === '2D' ? (t = 'P2D') : t === '3D' ? (t = 'WEBGL') : (t = null)
@@ -64,7 +64,7 @@ _b5Blocks.prototype.p2d = {
     },
   ],
   default: ['2D'],
-  run: function (p, o) {
+  run: function (p, o, draw) {
     o[0] = '2D'
   },
 }
@@ -85,7 +85,7 @@ _b5Blocks.prototype.webgl = {
     },
   ],
   default: ['3D'],
-  run: function (p, o) {
+  run: function (p, o, draw) {
     o[0] = '3D'
   },
 }
@@ -99,7 +99,7 @@ _b5Blocks.prototype.frameRate = {
   inputNodes: null,
   outputNodes: null,
   default: [60],
-  run: function (p, o, rateInline) {
+  run: function (p, o, draw, rateInline) {
     p.frameRate(valid(rateInline, this.default[0]))
   },
   // 'input' kind block special
@@ -120,7 +120,7 @@ _b5Blocks.prototype.clear = {
   description: 'Clear the whole canvas.',
   inputNodes: null,
   outputNodes: null,
-  run: function (p, o) {
+  run: function (p, o, draw) {
     p.clear()
   },
 }
@@ -141,42 +141,40 @@ _b5Blocks.prototype.stopDraw = {
   ],
   outputNodes: null,
   default: [true],
-  run: function (p, o, a) {
+  run: function (p, o, draw, a) {
     if (valid(a, true)) {
-      p.noFill()
-      p.noStroke()
+      p._b5_drawing = false
     }
   },
   colorEffect: function (o, inlineData) {
     return darkColorEffects
   },
-  effectName: 'stopStartDraw',
+  colorEffectName: 'stopBeginDraw',
 }
 
 _b5Blocks.prototype.startDraw = {
-  text: 'start draw',
+  text: 'begin draw',
   type: 'draw',
   kind: 'normal',
   source: 'original',
   description: 'Reset fill and stroke for all following draw blocks.',
   inputNodes: [
     {
-      text: 'start',
-      name: 'to start',
-      description: 'A boolean value. Whether to start or not, default true.',
+      text: 'begin',
+      name: 'to begin',
+      description: 'A boolean value. Whether to begin or not, default true.',
       type: ['object', 'boolean'],
     },
   ],
   outputNodes: null,
   default: [true],
-  run: function (p, o, a) {
+  run: function (p, o, draw, a) {
     if (valid(a, true)) {
-      p.fill(255)
-      p.stroke(0)
+      p._b5_drawing = true
     }
   },
   colorEffect: function (o, inlineData) {
     return whiteColorEffects
   },
-  effectName: 'stopStartDraw',
+  colorEffectName: 'stopBeginDraw',
 }

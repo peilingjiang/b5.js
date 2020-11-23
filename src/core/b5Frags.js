@@ -201,7 +201,12 @@ export class _blockObject {
       overrideInputs
     )
 
-    _b5BlocksObject[this.source][this.name].run(p, this.output, ..._args)
+    _b5BlocksObject[this.source][this.name].run(
+      p,
+      this.output,
+      checkDrawing(p),
+      ..._args
+    )
   }
 
   blockColorEffect() {
@@ -310,4 +315,10 @@ export const findEntitiesFromPlayground = (name, data) => {
   for (let y in data)
     for (let x in data[y]) if (name === data[y][x].name) returner.push([y, x])
   return returner
+}
+
+// * Drawing
+
+const checkDrawing = p => {
+  return p._b5_drawing
 }

@@ -1,31 +1,36 @@
 import _b5Blocks from '../../main'
-import { valid, isEmpty } from '../../method'
+import { mouseIsInCanvas } from '../../method'
 
 _b5Blocks.prototype.brush = {
   text: '🖌️ brush',
   type: 'draw',
-  kind: 'normal',
+  kind: 'inline',
   source: 'original',
-  description: 'Make the canvas drawable with cursor right a way.',
-  inputNodes: [
-    {
-      text: 'thickness',
-      name: 'thickness',
-      description: 'Thickness of the brush stroke.',
-      type: ['object', 'number'],
-    },
-  ],
+  description: 'Magically make the canvas drawable with cursor right a way.',
+  // inputNodes: [
+  //   {
+  //     text: 'thickness',
+  //     name: 'thickness',
+  //     description: 'Thickness of the brush stroke.',
+  //     type: ['object', 'number'],
+  //   },
+  // ],
+  inputNodes: null,
   outputNodes: null,
   default: [25],
-  run: function (p, o, r) {
-    if (isEmpty(o)) {
-      o.storage = {
+  init: function () {
+    return {
+      storage: {
         vertices: [], // array of arrays
         lastMousePressed: false,
-      }
+      },
     }
-
-    if (p.mouseIsPressed) {
+  },
+  run: function (p, o, draw, r) {
+    if (
+      p.mouseIsPressed &&
+      mouseIsInCanvas(p.mouseX, p.mouseY, p.width, p.height)
+    ) {
       if (!o.storage.lastMousePressed)
         // Start a new curve
         o.storage.vertices.push([])
@@ -37,12 +42,15 @@ _b5Blocks.prototype.brush = {
     }
 
     // Draw
-    p.push()
-    p.strokeWeight(valid(r, this.default[0]))
-    for (let i of o.storage.vertices)
-      for (let j = 0; j < i.length - 1; ++j)
-        p.line(i[j][0], i[j][1], i[j + 1][0], i[j + 1][1])
-    p.pop()
+    if (draw) {
+      p.push()
+      for (let i of o.storage.vertices) {
+        p.beginShape()
+        for (let j = 0; j < i.length - 1; ++j) p.vertex(i[j][0], i[j][1])
+        p.endShape()
+      }
+      p.pop()
+    }
 
     o.storage.lastMousePressed = p.mouseIsPressed
   },

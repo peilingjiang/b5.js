@@ -17,7 +17,7 @@ _b5Blocks.prototype.string = {
     },
   ],
   default: ['happy'],
-  run: function (p, o, a) {
+  run: function (p, o, draw, a) {
     o[0] = valid(a, this.default[0])
   },
   // 'input' kind block special

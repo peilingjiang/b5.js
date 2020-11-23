@@ -25,7 +25,7 @@ _b5Blocks.prototype.mouse = {
   default: function (p) {
     return [p.width / 2, p.height / 2, 50]
   },
-  run: function (p, o) {
+  run: function (p, o, draw) {
     const d = this.default(p)
 
     o[0] = valid(p.mouseX, d[0])
@@ -49,7 +49,7 @@ _b5Blocks.prototype.mouseIsPressed = {
     },
   ],
   default: [false],
-  run: function (p, o) {
+  run: function (p, o, draw) {
     o[0] =
       p.mouseIsPressed && mouseIsInCanvas(p.mouseX, p.mouseY, p.width, p.height)
   },
