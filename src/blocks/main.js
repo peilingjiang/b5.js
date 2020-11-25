@@ -8,6 +8,8 @@ class _b5Blocks {
 
 _b5Blocks.prototype.library = {}
 
+/* --------------------------------- Custom --------------------------------- */
+
 _b5Blocks.prototype.createCustom = function (
   name,
   type,
@@ -32,6 +34,28 @@ _b5Blocks.prototype.createCustom = function (
   }
 }
 
+_b5Blocks.prototype.deleteCustom = function (name) {
+  if (this.custom[name]) delete this.custom[name]
+}
+
+_b5Blocks.prototype.cleanCustom = function () {
+  // Delete all custom blocks
+  for (let c in this.custom) delete this.custom[c]
+}
+
+/* --------------------------------- Source --------------------------------- */
+
+_b5Blocks.prototype.getSource = function (name) {
+  for (let i in this) {
+    if (this[i].hasOwnProperty(name)) {
+      return i
+    }
+  }
+  return null
+}
+
+/* -------------------------------- Get Names ------------------------------- */
+
 _b5Blocks.prototype.getOriginalNames = function () {
   const o = this.original
   return Object.keys(this.original).reduce((result, key) => {
@@ -47,14 +71,5 @@ _b5Blocks.prototype.getLibraryNames = function () {
 }
 
 _b5Blocks.prototype.getAllBlockNames = function () {}
-
-_b5Blocks.prototype.deleteCustom = function (name) {
-  if (this.custom[name]) delete this.custom[name]
-}
-
-_b5Blocks.prototype.cleanCustom = function () {
-  // Delete all custom blocks
-  for (let c in this.custom) delete this.custom[c]
-}
 
 export default _b5Blocks

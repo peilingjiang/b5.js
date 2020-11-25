@@ -10,12 +10,7 @@ const _isFunction = functionToCheck => {
 
 export const makeBlock = (name, source = null) => {
   if (!source) {
-    for (let i in _b5BlocksObject) {
-      if (_b5BlocksObject[i].hasOwnProperty(name)) {
-        source = i
-        break
-      }
-    }
+    _b5BlocksObject.getSource(name)
   }
   if (!source) return false
 

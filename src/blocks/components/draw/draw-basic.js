@@ -157,7 +157,7 @@ _b5Blocks.prototype.startDraw = {
   type: 'draw',
   kind: 'normal',
   source: 'original',
-  description: 'Reset fill and stroke for all following draw blocks.',
+  description: 'Restart drawing after a "stop draw" block.',
   inputNodes: [
     {
       text: 'begin',
