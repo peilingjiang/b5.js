@@ -10,7 +10,7 @@ const _isFunction = functionToCheck => {
 
 export const makeBlock = (name, source = null) => {
   if (!source) {
-    _b5BlocksObject.getSource(name)
+    source = _b5BlocksObject.getSource(name)
   }
   if (!source) return false
 

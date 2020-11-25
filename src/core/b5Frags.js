@@ -127,11 +127,11 @@ export class _functionSectionObject extends _sectionObject {
     )
   }
 
-  run = (p, o, ...args) => {
+  run = (p, o, draw, ...args) => {
     // Run sub-blocks
     for (let r in this.blocks)
       for (let c in this.blocks[r])
-        this.blocks[r][c].blockRun(p, this._getInputArgs(r, c, args))
+        this.blocks[r][c].blockRun(p, this._getInputArgs(r, c, args), draw)
 
     // * No need for this.output
     for (let i in this.outputNodes.positions) {
@@ -183,7 +183,7 @@ export class _blockObject {
     if (init) this.output = await init()
   }
 
-  blockRun(p, overrideInputs = null) {
+  blockRun(p, overrideInputs = null, overrideDrawStatus = null) {
     /*
     overrideInputs override the args found with given input blocks
     Primarily for function blocks
@@ -204,7 +204,7 @@ export class _blockObject {
     _b5BlocksObject[this.source][this.name].run(
       p,
       this.output,
-      checkDrawing(p),
+      overrideDrawStatus || checkDrawing(p),
       ..._args
     )
   }

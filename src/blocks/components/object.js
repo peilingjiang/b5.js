@@ -1,6 +1,6 @@
 import _b5Blocks from '../main'
 
-import { valid } from '../method'
+import { numberValid, valid } from '../method'
 
 _b5Blocks.prototype.num = {
   text: 'number',
@@ -26,7 +26,7 @@ _b5Blocks.prototype.num = {
   ],
   default: [0],
   run: function (p, o, draw, a) {
-    o[0] = valid(a, this.default[0])
+    o[0] = numberValid(a) ? a : 0
   },
 }
 
