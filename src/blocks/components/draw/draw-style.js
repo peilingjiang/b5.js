@@ -97,7 +97,7 @@ _b5Blocks.prototype.noStroke = {
   outputNodes: null,
   default: [true],
   run: function (p, o, draw, ns) {
-    if (valid(ns, true)) p.noFill()
+    if (valid(ns, true)) p.noStroke()
   },
   colorEffect: function (o, inlineData) {
     return darkColorEffects
