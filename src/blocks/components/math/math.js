@@ -1,3 +1,4 @@
+import { _xyzInput } from '../../constants'
 import _b5Blocks from '../../main'
 import {
   valid,
@@ -286,5 +287,28 @@ _b5Blocks.prototype.dice = {
       ]
     }
     o[0] = o.storage
+  },
+}
+
+/* ---------------------------------- noise --------------------------------- */
+
+_b5Blocks.prototype.noise = {
+  text: 'noise',
+  type: 'default',
+  kind: 'normal',
+  source: 'original',
+  description: 'Get a Perlin noise value at the given x, y, z location.',
+  inputNodes: _xyzInput,
+  outputNodes: [
+    {
+      text: 'n',
+      name: 'noise',
+      description: 'The Perlin noise value.',
+      type: ['object', 'number'],
+    },
+  ],
+  default: [0, 0, 0],
+  run: function (p, o, draw, ...args) {
+    o[0] = p.noise(...allValid(args, this.default))
   },
 }

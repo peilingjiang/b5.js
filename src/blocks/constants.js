@@ -16,6 +16,27 @@ export const _twoNumberInput = [
   },
 ]
 
+export const _xyzInput = [
+  {
+    text: 'x',
+    name: 'x',
+    description: 'The value from x axis.',
+    type: ['object', 'number'],
+  },
+  {
+    text: 'y',
+    name: 'y',
+    description: 'The value from y axis.',
+    type: ['object', 'number'],
+  },
+  {
+    text: 'z',
+    name: 'z',
+    description: 'The value from y axis.',
+    type: ['object', 'number'],
+  },
+]
+
 export const rgbaInputNodes = [
   {
     text: 'r',

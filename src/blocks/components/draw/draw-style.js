@@ -1,7 +1,7 @@
 import { colorPalette } from '../../../core/constants'
 import { darkColorEffects, sliderInlineData } from '../../constants'
 import _b5Blocks from '../../main'
-import { valid } from '../../method'
+import { allValid, valid } from '../../method'
 
 _b5Blocks.prototype.strokeWeightSlider = {
   text: 'stroke weight',
@@ -103,4 +103,75 @@ _b5Blocks.prototype.noStroke = {
     return darkColorEffects
   },
   colorEffectName: 'stroke',
+}
+
+/* --------------------------------- Matrix --------------------------------- */
+
+_b5Blocks.prototype.translate = {
+  text: 'translate',
+  type: 'draw',
+  kind: 'normal',
+  source: 'original',
+  description: 'Displace the following drawings by an amount.',
+  inputNodes: [
+    {
+      text: 'x',
+      name: 'x translation',
+      description: 'Displacement on the x axis.',
+      type: ['object', 'number'],
+    },
+    {
+      text: 'y',
+      name: 'y translation',
+      description: 'Displacement on the y axis.',
+      type: ['object', 'number'],
+    },
+  ],
+  outputNodes: null,
+  default: [0, 0],
+  run: function (p, o, draw, ...args) {
+    p.translate(...allValid(args, this.default))
+  },
+  colorEffect: function (o, inlineData) {
+    return darkColorEffects
+  },
+  colorEffectName: 'translate',
+}
+
+_b5Blocks.prototype.translate3d = {
+  text: 'translate 3d',
+  type: 'draw',
+  kind: 'normal',
+  source: 'original',
+  description:
+    'Displace the following drawings by an amount in x, y, and z axises.',
+  inputNodes: [
+    {
+      text: 'x',
+      name: 'x translation',
+      description: 'Displacement on the x axis.',
+      type: ['object', 'number'],
+    },
+    {
+      text: 'y',
+      name: 'y translation',
+      description: 'Displacement on the y axis.',
+      type: ['object', 'number'],
+    },
+    {
+      text: 'z',
+      name: 'z translation',
+      description: 'Displacement on the z axis.',
+      type: ['object', 'number'],
+    },
+  ],
+  outputNodes: null,
+  default: [0, 0, 0],
+  run: function (p, o, draw, ...args) {
+    p.translate(...allValid(args, this.default))
+  },
+  colorEffect: function (o, inlineData) {
+    return darkColorEffects
+  },
+  colorEffectName: 'translate',
 }

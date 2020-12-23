@@ -67,3 +67,51 @@ _b5Blocks.prototype.bounce = {
     o[0] = o.storage.current
   },
 }
+
+_b5Blocks.prototype.increase = {
+  text: '📈 increase',
+  type: 'default',
+  kind: 'normal',
+  source: 'original',
+  description: 'Keep increasing the value by the interval for each frame.',
+  inputNodes: [
+    {
+      text: 'init',
+      name: 'init value',
+      description: 'The initial value to change.',
+      type: ['object', 'number'],
+    },
+    {
+      text: 'inc',
+      name: 'increment',
+      description:
+        'The interval of changing for each frame, accepting negative values.',
+      type: ['object', 'number'],
+    },
+  ],
+  outputNodes: [
+    {
+      text: 'value',
+      name: 'value',
+      description: 'The increased value.',
+      type: ['object', 'number'],
+    },
+  ],
+  default: [0, 1],
+  init: function () {
+    return {
+      storage: {
+        init: 0, // The initial value
+        current: 0, // The current increased value
+      },
+    }
+  },
+  run: function (p, o, draw, ...args) {
+    let [v0, inc] = allValid(args, this.default)
+
+    if (v0 === o.storage.init) o.storage.current += inc
+    else o.storage.current = o.storage.init = v0
+
+    o[0] = o.storage.current
+  },
+}
