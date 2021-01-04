@@ -175,3 +175,28 @@ _b5Blocks.prototype.translate3d = {
   },
   colorEffectName: 'translate',
 }
+
+_b5Blocks.prototype.rotate = {
+  text: 'rotate',
+  type: 'draw',
+  kind: 'normal',
+  source: 'original',
+  description: 'Rotate the following drawings by an amount.',
+  inputNodes: [
+    {
+      text: 'r',
+      name: 'rotation',
+      description: 'Rotation on the z (perpendicular to the canvas) axis.',
+      type: ['object', 'number'],
+    },
+  ],
+  outputNodes: null,
+  default: [0],
+  run: function (p, o, draw, r) {
+    p.rotate(...valid(r, 0))
+  },
+  colorEffect: function (o, inlineData) {
+    return darkColorEffects
+  },
+  colorEffectName: 'rotate',
+}
