@@ -246,9 +246,6 @@ b5.prototype.handleSection = function (task, type, data, playgroundBlocks) {
     case 'add':
       // data - [name, sectionNames]
 
-      // Clear category for async rendering
-      this._clearCategories(type, data[1])
-
       const sudoSection = {
         name: data[0],
         type: type,
@@ -259,6 +256,11 @@ b5.prototype.handleSection = function (task, type, data, playgroundBlocks) {
         category[data[0]] = new _variableSectionObject(sudoSection, [])
       else if (type === 'function')
         category[data[0]] = new _functionSectionObject(sudoSection, [])
+
+      // Clear category for async rendering
+      // this._clearCategories(type)
+      // >> Now clean after setState
+
       return
 
     case 'delete':
@@ -377,13 +379,14 @@ b5.prototype.getCustomSourceFromName = function (name) {
     : null
 }
 
-b5.prototype._clearCategories = function (type, sectionNames) {
+b5.prototype.clearCategories = function (type, sectionNames) {
   const fType = this.factory[type]
-  for (let name in fType)
+  for (let name in fType) {
     if (!sectionNames.includes(name)) {
       // Clear if not in actual section
       this._handleDeleteSection(fType, name)
     }
+  }
 }
 
 b5.prototype._handleDeleteSection = function (category, name) {
