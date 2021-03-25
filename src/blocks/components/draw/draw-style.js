@@ -193,7 +193,7 @@ _b5Blocks.prototype.rotate = {
   outputNodes: null,
   default: [0],
   run: function (p, o, draw, r) {
-    p.rotate(...valid(r, 0))
+    p.rotate(valid(r, 0))
   },
   colorEffect: function (o, inlineData) {
     return darkColorEffects
