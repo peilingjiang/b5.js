@@ -54,6 +54,12 @@ _b5Blocks.prototype.getSource = function (name) {
   return null
 }
 
+_b5Blocks.prototype.getBlock = function (name) {
+  const s = this.getSource(name)
+  if (!s) return null
+  return this[s][name]
+}
+
 /* -------------------------------- Get Names ------------------------------- */
 
 _b5Blocks.prototype.getOriginalNames = function () {
