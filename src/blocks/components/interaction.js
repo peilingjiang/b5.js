@@ -1,6 +1,37 @@
 import _b5Blocks from '../main'
 import { mouseIsInCanvas, valid } from '../method'
 
+_b5Blocks.prototype.prevMouse = {
+  text: 'prev mouse',
+  type: 'object',
+  kind: 'normal',
+  source: 'original',
+  description: 'The previous X and Y position of the cursor.',
+  inputNodes: null,
+  outputNodes: [
+    {
+      text: 'px',
+      name: 'prev x position',
+      description: 'Previous X position of the cursor.',
+      type: ['object', 'number'],
+    },
+    {
+      text: 'py',
+      name: 'prev y position',
+      description: 'Previous Y position of the cursor.',
+      type: ['object', 'number'],
+    },
+  ],
+  default: function (p) {
+    return [p.width / 2, p.height / 2]
+  },
+  run: function (p, o, draw) {
+    const d = this.default(p)
+    o[0] = valid(p.pmouseX, d[0])
+    o[1] = valid(p.pmouseY, d[1])
+  },
+}
+
 _b5Blocks.prototype.mouse = {
   text: 'mouse',
   type: 'object',
@@ -23,11 +54,10 @@ _b5Blocks.prototype.mouse = {
     },
   ],
   default: function (p) {
-    return [p.width / 2, p.height / 2, 50]
+    return [p.width / 2, p.height / 2]
   },
   run: function (p, o, draw) {
     const d = this.default(p)
-
     o[0] = valid(p.mouseX, d[0])
     o[1] = valid(p.mouseY, d[1])
   },
