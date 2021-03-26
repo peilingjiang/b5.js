@@ -1,5 +1,5 @@
 import _b5Blocks from '../main'
-import { valid, isEmpty } from '../method'
+import { isEmpty, allValid, setSize } from '../method'
 
 _b5Blocks.prototype.cameraVideo = {
   text: '📹 camera',
@@ -44,30 +44,42 @@ _b5Blocks.prototype.cameraVideo = {
   default: function (p) {
     return [0, 0, p.width, p.height]
   },
-  run: function (p, o, draw, x, y, w, h) {
-    const d = this.default(p)
+  run: function (p, o, draw, args) {
+    const [x, y, w, h] = allValid(args, this.default(p))
     if (isEmpty(o)) {
       // Capture never created
-      // * o.storage is the VIDEO object
-      o.storage = p.createCapture(p.VIDEO)
-      o.storage.size(valid(w, d[2]), valid(h, d[3]))
-      o[0] = o.storage // ? Do we need to modify for the output?
-      o.storage.hide() // Hide DOM element
+      /**
+       *
+       * o.storage = {
+       *    ele: video element,
+       *    size: [w, h], last size setting, avoid changing video size all the time
+       * }
+       *
+       */
+      o.storage = {}
+      o.storage.ele = p.createCapture(p.VIDEO)
+      o.storage.ele.style.display = 'none' // Hide DOM element
+
+      // size
+      o.storage.size = setSize(o.storage.ele, [w, h])
+      // loadedmetadata
+      o.storage.loadedmetadata = false
+      o.storage.ele.onloadedmetadata = () => {
+        o.storage.loadedmetadata = true
+      }
+
+      o[0] = o.storage
     }
     // Use created video from o.storage
-    o.storage.size(valid(w, d[2]), valid(h, d[3]))
-    if (draw)
-      p.image(
-        o.storage,
-        valid(x, d[0]),
-        valid(y, d[1]),
-        valid(w, d[2]),
-        valid(h, d[3])
-      )
+
+    if (w !== o.storage.size[0] || h !== o.storage.size[1]) {
+      o.storage.size = setSize(o.storage.ele, [w, h])
+    }
+    if (draw) p.image(o.storage.ele, x, y, w, h)
   },
   // Special unplug function
   unplug: function (o) {
-    if (o.storage)
+    if (o.storage && o.storage.ele)
       // https://dev.to/morinoko/stopping-a-webcam-with-javascript-4297
       try {
         document

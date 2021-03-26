@@ -71,16 +71,17 @@ _b5Blocks.prototype.library.posenet = {
      *  poses: [...],
      * }
      */
+
     if (
       o.ready &&
       v &&
       v.loadedmetadata &&
-      v.elt &&
-      v.elt.constructor.name === 'HTMLVideoElement'
+      v.ele &&
+      v.ele.constructor.name === 'HTMLVideoElement'
     ) {
       // If has VIDEO
       o.storage.net
-        .estimateMultiplePoses(v.elt, netSettings)
+        .estimateMultiplePoses(v.ele, netSettings)
         .then(function (estimatedPoses) {
           o.storage.poses = estimatedPoses
         })

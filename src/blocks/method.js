@@ -21,6 +21,7 @@ export const mustValid = (value, checks = [null]) => {
 
 export const allValid = (valueList, fallbackList) => {
   // Check valid for the whole args list
+  if (!valueList) return fallbackList
   for (let i in valueList) valueList[i] = valid(valueList[i], fallbackList[i])
   return valueList
 }
@@ -60,4 +61,15 @@ export const constrain = (v, a, b) => {
 
 export const mouseIsInCanvas = (mX, mY, cW, cH) => {
   return mX >= 0 && mY >= 0 && mX <= cW && mY <= cH
+}
+
+/* ----------------------------------- DOM ---------------------------------- */
+
+export const setSize = (ele, [w, h]) => {
+  ele.width = w
+  ele.height = h
+  ele.style.width = w + 'px'
+  ele.style.height = h + 'px'
+
+  return [w, h]
 }
