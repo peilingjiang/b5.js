@@ -82,6 +82,57 @@ _b5Blocks.prototype.numberSlider = {
   ],
 }
 
+_b5Blocks.prototype.fractionSlider = {
+  text: 'fraction',
+  type: 'default',
+  kind: 'slider',
+  source: 'original',
+  description: 'Take a fraction (in percent) of the input number.',
+  inputNodes: [
+    {
+      text: 'num',
+      name: 'number',
+      description: 'The input number to take fraction.',
+      type: ['object', 'number'],
+    },
+  ],
+  outputNodes: [
+    {
+      text: 'num',
+      name: 'number',
+      description: 'A fraction of the input number.',
+      type: ['object', 'number'],
+    },
+  ],
+  default: [50, 0, 100, 5], // default here is for default inline data instead of input
+  run: function (p, o, draw, input, a) {
+    o[0] = (valid(a, this.default[0]) * valid(input, 100)) / 100
+  },
+  // 'slider' kind block special
+  inlineData: [
+    {
+      name: 'current',
+      description: 'The current value of the slider.',
+      type: ['object', 'number'],
+    },
+    {
+      name: 'min',
+      description: 'The minimum value of the fraction slider (0).',
+      type: ['object', 'number'],
+    },
+    {
+      name: 'max',
+      description: 'The maximum value of the fraction slider (100).',
+      type: ['object', 'number'],
+    },
+    {
+      name: 'step',
+      description: 'The value of each step of the fraction slider.',
+      type: ['object', 'number'],
+    },
+  ],
+}
+
 _b5Blocks.prototype.constrain = {
   text: 'constrain',
   type: 'default',
