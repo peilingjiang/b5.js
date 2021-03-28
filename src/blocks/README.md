@@ -30,7 +30,7 @@ _b5Blocks.prototype.number = {
   /* Default value of the block output */
   default: [1],
   /* Run - p stands for p5 object */
-  run: function (p, o, a) {
+  run: function (p, o, draw, a) {
     /* Directly manipulate the o (this.output) from the block object */
     o[0] = valid(a, this.default[0])
   },
@@ -52,8 +52,8 @@ _b5Blocks.prototype.number = {
 ```js
 o = {
   ready: false,
-  1: 'Output value from the first node.',
-  2: 'From the second node...',
+  0: 'Output value from the first node.',
+  1: 'From the second node...',
   storage: {
     key: 'Things stored in the storage for later use.',
   },
