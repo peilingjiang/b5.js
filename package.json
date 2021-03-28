@@ -22,7 +22,7 @@
   "dependencies": {
     "@tensorflow-models/posenet": "^2.2.1",
     "@tensorflow/tfjs-converter": "^1.7.4",
-    "@tensorflow/tfjs-core": "^1.7.4"
+    "@tensorflow/tfjs-core": "^3.3.0"
   },
   "simple-git-hooks": {
     "pre-commit": "npx lint-staged"
