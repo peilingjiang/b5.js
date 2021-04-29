@@ -1,6 +1,5 @@
 import * as posenet from '@tensorflow-models/posenet'
 import '@tensorflow/tfjs-backend-webgl'
-import '@tensorflow/tfjs-backend-cpu'
 
 import _b5Blocks from '../../../main'
 import { constrain, valid, mustValid } from '../../../method'
