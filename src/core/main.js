@@ -33,7 +33,7 @@ class b5 {
       this._clear(false, true)
       this._consPlayground(data.playground)
     }
-    this.data = data
+    this.data = JSON.parse(JSON.stringify(data))
   }
 
   updateBlockNames() {
@@ -362,6 +362,30 @@ b5.prototype.handleBumpSectionUpdate = function (
     if (outputs)
       for (let i of outputs) thisObjects[i[0]][i[1]].input[i[2]] = null
   }
+}
+
+/**
+ * Get an array of all names of the used blocks in all codeCanvases
+ */
+b5.prototype.getAllBlockNames = function () {
+  let names = {}
+  // Playground
+  const p = this.playground
+  for (let i in p)
+    for (let j in p[i]) if (!names[p[i][j].name]) names[p[i][j].name] = 1
+
+  // Factory
+  const f = this.factory
+  for (let cat in f)
+    for (let secInd in f[cat]) {
+      const sec = f[cat][secInd]
+      if (!names[sec.name]) names[sec.name] = 1
+      for (let i in sec.blocks)
+        for (let j in sec.blocks[i])
+          if (!names[sec.blocks[i][j].name]) names[sec.blocks[i][j].name] = 1
+    }
+
+  return Object.keys(names)
 }
 
 /* --------------------------------- Helpers -------------------------------- */

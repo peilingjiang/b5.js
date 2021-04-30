@@ -7,6 +7,8 @@ import {
   remap,
   isEmpty,
   mustValid,
+  numberValid,
+  roundNumber,
 } from '../../method'
 
 _b5Blocks.prototype.number = {
@@ -36,6 +38,72 @@ _b5Blocks.prototype.number = {
       type: ['object', 'number'],
     },
   ],
+}
+
+_b5Blocks.prototype.int = {
+  text: 'int',
+  type: 'default',
+  kind: 'inline',
+  source: 'original',
+  description: 'Take a number, output a rounded integer.',
+  inputNodes: [
+    {
+      text: 'n',
+      name: 'number',
+      description: 'A number.',
+      type: ['object', 'number'],
+    },
+  ],
+  outputNodes: [
+    {
+      text: 'n',
+      name: 'number',
+      description: 'An integer.',
+      type: ['object', 'number'],
+    },
+  ],
+  default: [0],
+  run: function (p, o, draw, a) {
+    o[0] = numberValid(a) ? Math.round(a) : 0
+  },
+}
+
+_b5Blocks.prototype.round = {
+  text: 'round',
+  type: 'default',
+  kind: 'normal',
+  source: 'original',
+  description: 'Take a number, output a rounded number with precision.',
+  inputNodes: [
+    {
+      text: 'n',
+      name: 'number',
+      description: 'A number to be rounded.',
+      type: ['object', 'number'],
+    },
+    {
+      text: 'p',
+      name: 'precision',
+      description: 'The rounding precision. Default to 1.',
+      type: ['object', 'number'],
+    },
+  ],
+  outputNodes: [
+    {
+      text: 'n',
+      name: 'number',
+      description: 'The rounded number.',
+      type: ['object', 'number'],
+    },
+  ],
+  default: [0, 1],
+  run: function (p, o, draw, a, precision) {
+    precision = numberValid(precision) ? Math.floor(precision) : this.default[1]
+    o[0] = roundNumber(
+      numberValid(a) || numberValid(Number(a)) ? a : this.default[0],
+      precision
+    )
+  },
 }
 
 _b5Blocks.prototype.numberSlider = {

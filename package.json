@@ -22,7 +22,8 @@
   "dependencies": {
     "@tensorflow-models/posenet": "^2.2.2",
     "@tensorflow/tfjs": "^3.5.0",
-    "@tensorflow/tfjs-backend-webgl": "^3.5.0"
+    "@tensorflow/tfjs-backend-webgl": "^3.5.0",
+    "matter-js": "^0.17.1"
   },
   "simple-git-hooks": {
     "pre-commit": "npx lint-staged"

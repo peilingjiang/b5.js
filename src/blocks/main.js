@@ -76,6 +76,12 @@ _b5Blocks.prototype.getLibraryNames = function () {
   return Object.keys(this.library)
 }
 
-_b5Blocks.prototype.getAllBlockNames = function () {}
+_b5Blocks.prototype.getAllBlockNames = function () {
+  return [
+    ...this.getLibraryNames(),
+    ...this.getOriginalNames(),
+    ...Object.keys(this.custom),
+  ]
+}
 
 export default _b5Blocks

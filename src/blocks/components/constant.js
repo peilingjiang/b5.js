@@ -74,7 +74,7 @@ _b5Blocks.prototype.getFrameRate = {
     },
   ],
   run: function (p, o, draw) {
-    o[0] = p.frameRate()
+    o[0] = p.getFrameRate()
   },
 }
 

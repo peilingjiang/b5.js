@@ -68,13 +68,13 @@ _b5Blocks.prototype.mouseIsPressed = {
   type: 'object',
   kind: 'normal',
   source: 'original',
-  description: 'A mouse click listener.',
+  description: 'A mouse press listener.',
   inputNodes: null,
   outputNodes: [
     {
       text: 'p',
       name: 'pressed',
-      description: 'Is the cursor clicked?',
+      description: 'Is the cursor being pressed?',
       type: ['object', 'boolean'],
     },
   ],
@@ -82,5 +82,98 @@ _b5Blocks.prototype.mouseIsPressed = {
   run: function (p, o, draw) {
     o[0] =
       p.mouseIsPressed && mouseIsInCanvas(p.mouseX, p.mouseY, p.width, p.height)
+  },
+}
+
+_b5Blocks.prototype.mouseIsClicked = {
+  text: 'clicked',
+  type: 'object',
+  kind: 'normal',
+  source: 'original',
+  description: 'A mouse click listener.',
+  inputNodes: null,
+  outputNodes: [
+    {
+      text: 'c',
+      name: 'clicked',
+      description: 'Is the cursor clicked?',
+      type: ['object', 'boolean'],
+    },
+  ],
+  default: [false],
+  init: function () {
+    return {
+      storage: false,
+      0: false,
+    }
+  },
+  run: function (p, o, draw) {
+    o[0] =
+      !o.storage &&
+      p.mouseIsPressed &&
+      mouseIsInCanvas(p.mouseX, p.mouseY, p.width, p.height)
+    o.storage = p.mouseIsPressed
+  },
+}
+
+_b5Blocks.prototype.mouseIsDragged = {
+  text: 'dragged',
+  type: 'object',
+  kind: 'normal',
+  source: 'original',
+  description: 'A mouse drag listener.',
+  inputNodes: null,
+  outputNodes: [
+    {
+      text: 'd',
+      name: 'dragged',
+      description: 'Is the cursor being dragged?',
+      type: ['object', 'boolean'],
+    },
+  ],
+  default: [false],
+  init: function () {
+    return {
+      0: false,
+    }
+  },
+  run: function (p, o, draw) {
+    if (
+      Math.hypot(p.mouseX - p.pmouseX, p.mouseY - p.pmouseY) > 1 &&
+      p.mouseIsPressed
+    )
+      o[0] = mouseIsInCanvas(p.mouseX, p.mouseY, p.width, p.height)
+    else o[0] = false
+  },
+}
+
+_b5Blocks.prototype.mouseIsReleased = {
+  text: 'released',
+  type: 'object',
+  kind: 'normal',
+  source: 'original',
+  description: 'A mouse release listener.',
+  inputNodes: null,
+  outputNodes: [
+    {
+      text: 'd',
+      name: 'dragged',
+      description: 'Is the cursor just released?',
+      type: ['object', 'boolean'],
+    },
+  ],
+  default: [false],
+  init: function () {
+    return {
+      storage: false,
+      0: false,
+    }
+  },
+  run: function (p, o, draw) {
+    o[0] =
+      o.storage &&
+      !p.mouseIsPressed &&
+      mouseIsInCanvas(p.mouseX, p.mouseY, p.width, p.height)
+    o.storage = p.mouseIsPressed
   },
 }

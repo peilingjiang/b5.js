@@ -8,6 +8,7 @@ _b5Blocks.prototype.createCanvas = {
   kind: 'normal',
   source: 'original',
   description: 'Create a new canvas with a white background.',
+  filter: ['setup', 'unique'], // ! NEW
   inputNodes: [
     {
       text: 'w', // Display name of the node
@@ -99,8 +100,18 @@ _b5Blocks.prototype.frameRate = {
   inputNodes: null,
   outputNodes: null,
   default: [60],
+  init: function () {
+    return {
+      storage: null,
+    }
+  },
   run: function (p, o, draw, rateInline) {
+    if (!o.storage) o.storage = p.frameRate
     p.frameRate(valid(rateInline, this.default[0]))
+  },
+  unplug: function (o) {
+    o.storage(null)
+    o.storage = null
   },
   // 'input' kind block special
   inlineData: [

@@ -20,5 +20,6 @@ import './components/media'
 import './components/moving'
 
 import './components/library/ml/posenet'
+import './components/library/physical/matter'
 
 export default _b5Blocks

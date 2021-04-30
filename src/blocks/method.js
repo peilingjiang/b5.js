@@ -57,6 +57,19 @@ export const constrain = (v, a, b) => {
   return Math.max(Math.min(v, b), a)
 }
 
+export const roundNumber = (num, scale) => {
+  if (!('' + num).includes('e')) {
+    return +(Math.round(num + 'e+' + scale) + 'e-' + scale)
+  } else {
+    var arr = ('' + num).split('e')
+    var sig = ''
+    if (+arr[1] + scale > 0) {
+      sig = '+'
+    }
+    return +(Math.round(+arr[0] + 'e' + sig + (+arr[1] + scale)) + 'e-' + scale)
+  }
+}
+
 /* ------------------------------- Interactive ------------------------------ */
 
 export const mouseIsInCanvas = (mX, mY, cW, cH) => {
