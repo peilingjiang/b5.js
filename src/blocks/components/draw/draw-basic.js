@@ -144,8 +144,8 @@ _b5Blocks.prototype.frameRateShow = {
   },
   run: function (p, o, draw) {
     if (
-      (!p._frameRate && p._actualFrameRate > 120) ||
-      (p._frameRate && p._actualFrameRate > 2 * p._frameRate)
+      (!p._frameRate && p._actualFrameRate > 90) ||
+      (p._frameRate && p._actualFrameRate > 1.5 * p._frameRate)
     )
       return
 
@@ -154,8 +154,11 @@ _b5Blocks.prototype.frameRateShow = {
     o.storage.cacheAverage += fps / 20
     if (o.storage.cache.length > 20)
       o.storage.cacheAverage -= o.storage.cache.shift() / 20
-    o.storage.max = Math.max(o.storage.max, fps)
-    o.storage.min = Math.min(o.storage.min, fps)
+    const starterAve =
+      o.storage.cache.length < 20
+        ? Math.round((o.storage.cacheAverage * 20) / o.storage.cache.length)
+        : Math.round(o.storage.cacheAverage)
+
     // Display
     p.push()
     p.noStroke()
@@ -164,24 +167,18 @@ _b5Blocks.prototype.frameRateShow = {
     p.textFont('sans-serif')
     p.textStyle('normal')
     p.fill(
-      o.storage.cacheAverage > 40
-        ? '#132c33'
-        : o.storage.cacheAverage > 20
-        ? '#ff6701'
-        : '#c70039'
+      starterAve > 40 ? '#132c33' : starterAve > 20 ? '#ff6701' : '#c70039'
     )
     p.rect(0, 0, 90, 16)
     p.fill(
-      o.storage.cacheAverage > 40
-        ? '#51c4d3'
-        : o.storage.cacheAverage > 20
-        ? '#fea82f'
-        : '#f37121'
+      starterAve > 40 ? '#51c4d3' : starterAve > 20 ? '#fea82f' : '#f37121'
     )
+
     p.text(
-      `${Math.round(o.storage.cacheAverage)}FPS ( ${o.storage.min} - ${
-        o.storage.max
-      } )`,
+      `${starterAve}FPS ( ${(o.storage.min = Math.min(
+        o.storage.min,
+        starterAve
+      ))} - ${(o.storage.max = Math.max(o.storage.max, starterAve))} )`,
       3,
       11
     )
