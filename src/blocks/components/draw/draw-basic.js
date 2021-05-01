@@ -117,10 +117,76 @@ _b5Blocks.prototype.frameRate = {
   inlineData: [
     {
       name: 'value',
-      description: 'The value of the frameRate.',
+      description: 'The expected frame rate value.',
       type: ['object', 'number'],
     },
   ],
+}
+
+_b5Blocks.prototype.frameRateShow = {
+  text: 'show fps',
+  type: 'draw',
+  kind: 'inline',
+  source: 'original',
+  description: 'Show the frame rate on canvas.',
+  filter: ['draw', 'unique'],
+  inputNodes: null,
+  outputNodes: null,
+  init: function () {
+    return {
+      storage: {
+        max: 0,
+        min: Infinity,
+        cache: [], // Past 20 frames
+        cacheAverage: 0,
+      },
+    }
+  },
+  run: function (p, o, draw) {
+    if (
+      (!p._frameRate && p._actualFrameRate > 120) ||
+      (p._frameRate && p._actualFrameRate > 2 * p._frameRate)
+    )
+      return
+
+    const fps = Math.round(p._actualFrameRate)
+    o.storage.cache.push(fps)
+    o.storage.cacheAverage += fps / 20
+    if (o.storage.cache.length > 20)
+      o.storage.cacheAverage -= o.storage.cache.shift() / 20
+    o.storage.max = Math.max(o.storage.max, fps)
+    o.storage.min = Math.min(o.storage.min, fps)
+    // Display
+    p.push()
+    p.noStroke()
+    p.textSize(10)
+    p.textLeading(10)
+    p.textFont('sans-serif')
+    p.textStyle('normal')
+    p.fill(
+      o.storage.cacheAverage > 40
+        ? '#132c33'
+        : o.storage.cacheAverage > 20
+        ? '#ff6701'
+        : '#c70039'
+    )
+    p.rect(0, 0, 90, 16)
+    p.fill(
+      o.storage.cacheAverage > 40
+        ? '#51c4d3'
+        : o.storage.cacheAverage > 20
+        ? '#fea82f'
+        : '#f37121'
+    )
+    p.text(
+      `${Math.round(o.storage.cacheAverage)}FPS ( ${o.storage.min} - ${
+        o.storage.max
+      } )`,
+      3,
+      11
+    )
+    p.pop()
+  },
 }
 
 _b5Blocks.prototype.clear = {

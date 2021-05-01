@@ -41,6 +41,29 @@ _b5Blocks.prototype.fillPicker = {
   colorEffectName: 'fill',
 }
 
+_b5Blocks.prototype.backgroundPicker = {
+  text: 'bg',
+  type: 'draw',
+  kind: 'colorPicker',
+  source: 'original',
+  description: 'Set the background color with a color picker.',
+  inputNodes: null,
+  outputNodes: null,
+  default: function () {
+    return [window.sessionStorage.getItem('color') || '#ffffff']
+  },
+  run: function (p, o, draw, fillInline) {
+    p.background(fillInline)
+  },
+  inlineData: [
+    {
+      name: 'value',
+      description: 'The background color.',
+      type: ['object', 'string'],
+    },
+  ],
+}
+
 _b5Blocks.prototype.strokePicker = {
   text: 'stroke',
   type: 'draw',
