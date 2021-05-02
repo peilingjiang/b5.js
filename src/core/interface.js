@@ -22,13 +22,11 @@ b5.prototype.runDraw = function (p) {
   // p5
   p._b5_drawing = true
 
-  p.push()
   for (let r in this.playground.blocks) {
     // Run lineStyles here
     for (let c in this.playground.blocks[r])
       this.playground.blocks[r][c].blockRun(p)
   }
-  p.pop()
 }
 
 export default b5
