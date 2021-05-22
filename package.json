@@ -24,6 +24,7 @@
   "dependencies": {
     "@tensorflow-models/posenet": "^2.2.2",
     "@tensorflow/tfjs-backend-webgl": "^3.5.0",
+    "@tensorflow/tfjs-converter": "^3.6.0",
     "@tensorflow/tfjs-core": "^3.5.0",
     "matter-js": "^0.17.1"
   },
