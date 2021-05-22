@@ -388,6 +388,12 @@ _b5Blocks.prototype.dice = {
       description: 'Dice again when set to true.',
       type: ['object', 'boolean'],
     },
+    {
+      text: 'faces',
+      name: 'faces',
+      description: 'How many faces does this dice have. Default 6.',
+      type: ['object', 'number'],
+    },
   ],
   outputNodes: [
     {
@@ -398,12 +404,24 @@ _b5Blocks.prototype.dice = {
     },
   ],
   default: [false],
-  diceList: [1, 2, 3, 4, 5, 6],
-  run: function (p, o, draw, n) {
-    if (isEmpty(o) || mustValid(n, [false, true])) {
-      o.storage = this.diceList[
-        Math.floor(Math.random() * this.diceList.length)
-      ]
+  init: function () {
+    return {
+      storage: null,
+      faces: 6,
+      diceList: [1, 2, 3, 4, 5, 6],
+    }
+  },
+  run: function (p, o, draw, n, f) {
+    let changed = false
+    f = valid(f, 6)
+    if (f !== o.faces && f > 1) {
+      changed = true
+      o.faces = f
+      o.diceList = Array.from(Array(f + 1).keys())
+      o.diceList.shift()
+    }
+    if (!o.storage || mustValid(n, [false, true]) || changed) {
+      o.storage = o.diceList[Math.floor(Math.random() * o.diceList.length)]
     }
     o[0] = o.storage
   },
