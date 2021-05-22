@@ -100,6 +100,38 @@ _b5Blocks.prototype.circle = {
   },
 }
 
+_b5Blocks.prototype.point = {
+  text: 'point',
+  type: 'draw',
+  kind: 'normal',
+  source: 'original',
+  description: 'Draw a point.',
+  inputNodes: [
+    {
+      text: 'x',
+      name: 'x position',
+      description: 'Position on X axis.',
+      type: ['object', 'number'],
+    },
+    {
+      text: 'y',
+      name: 'y position',
+      description: 'Position on Y axis.',
+      type: ['object', 'number'],
+    },
+  ],
+  outputNodes: null,
+  default: function (p) {
+    return [p.width / 2, p.height / 2]
+  },
+  run: function (p, o, draw, x, y) {
+    if (draw) {
+      // const d = this.default(p)
+      p.point(valid(x, p.width / 2), valid(y, p.height / 2))
+    }
+  },
+}
+
 _b5Blocks.prototype.lineXY = {
   text: 'line',
   type: 'draw',
