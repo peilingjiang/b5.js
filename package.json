@@ -4,7 +4,7 @@
   "description": "Read and add magic to b5 files.",
   "main": "src/app.js",
   "scripts": {
-    "format": "prettier --write \"**/*.{js,jsx,ts,tsx,json,md,html,css}\""
+    "format": "prettier --write \"**/*.{js,css,json,md}\""
   },
   "repository": {
     "type": "git",
@@ -31,6 +31,6 @@
     "pre-commit": "npx lint-staged"
   },
   "lint-staged": {
-    "*.{js,css,md}": "prettier --write"
+    "*.{js,css,json,md}": "prettier --write"
   }
 }
