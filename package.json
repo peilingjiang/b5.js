@@ -3,7 +3,9 @@
   "version": "0.1.0",
   "description": "Read and add magic to b5 files.",
   "main": "src/app.js",
-  "scripts": {},
+  "scripts": {
+    "format": "prettier --write \"**/*.{js,jsx,ts,tsx,json,md,html,css}\""
+  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/peilingjiang/b5.js.git"
