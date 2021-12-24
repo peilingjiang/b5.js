@@ -1,6 +1,7 @@
 import _b5Blocks from '../../main'
-import { valid } from '../../method'
-import { _twoNumberInput } from '../../constants'
+import { numberValid, valid } from '../../method'
+import { setEffect } from '../../utils'
+import { objectColorEffects, _twoNumberInput } from '../../constants'
 
 _b5Blocks.prototype.add = {
   text: '+',
@@ -164,4 +165,37 @@ _b5Blocks.prototype.exponential = {
   run: function (p, o, draw, a, b) {
     o[0] = valid(a, 1) ** valid(b, 0)
   },
+}
+
+/* -------------------------------------------------------------------------- */
+
+_b5Blocks.prototype.quadratic = {
+  text: 'quadratic',
+  type: 'object',
+  kind: 'inline',
+  source: 'original',
+  effect: true, // !
+  description:
+    'Change the outputs of the surrounding blocks to their quadratic.',
+  inputNodes: null,
+  outputNodes: null,
+  default: null,
+  effectRange: [
+    [1, 1, 1],
+    [1, 1, 1],
+    [1, 1, 1],
+  ],
+  effectRun: function (p, o, draw, effects, row, column) {
+    for (let y = row - 1; y <= row + 1; y++)
+      for (let x = column - 1; x <= column + 1; x++)
+        if (y !== row || x !== column)
+          setEffect(effects, y, x, output => {
+            if (numberValid(output)) return output * output
+            return output
+          })
+  },
+  colorEffect: function (o, inlineData) {
+    return objectColorEffects
+  },
+  colorEffectName: 'quadratic',
 }

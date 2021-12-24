@@ -110,7 +110,7 @@ _b5Blocks.prototype.frameRate = {
     p.frameRate(valid(rateInline, this.default[0]))
   },
   unplug: function (o) {
-    o.storage(null)
+    if (o.storage) o.storage(null)
     o.storage = null
   },
   // 'input' kind block special
@@ -144,10 +144,11 @@ _b5Blocks.prototype.frameRateShow = {
   },
   run: function (p, o, draw) {
     if (
-      (!p._frameRate && p._actualFrameRate > 90) ||
-      (p._frameRate && p._actualFrameRate > 1.5 * p._frameRate)
-    )
+      (!p._frameRate && p._actualFrameRate > 300) ||
+      (p._frameRate && p._actualFrameRate > 3 * p._frameRate)
+    ) {
       return
+    }
 
     const fps = Math.round(p._actualFrameRate)
     o.storage.cache.push(fps)
@@ -169,7 +170,7 @@ _b5Blocks.prototype.frameRateShow = {
     p.fill(
       starterAve > 40 ? '#132c33' : starterAve > 20 ? '#ff6701' : '#c70039'
     )
-    p.rect(0, 0, 90, 16)
+    p.rect(0, 0, 120, 16)
     p.fill(
       starterAve > 40 ? '#51c4d3' : starterAve > 20 ? '#fea82f' : '#f37121'
     )

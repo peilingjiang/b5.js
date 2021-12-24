@@ -21,11 +21,18 @@ b5.prototype.runSetup = function (p) {
 b5.prototype.runDraw = function (p) {
   // p5
   p._b5_drawing = true
+  const effects = {}
 
   for (let r in this.playground.blocks) {
     // Run lineStyles here
     for (let c in this.playground.blocks[r])
-      this.playground.blocks[r][c].blockRun(p)
+      this.playground.blocks[r][c].effectBlockRun(p, effects, r, c)
+  }
+
+  for (let r in this.playground.blocks) {
+    // Run lineStyles here
+    for (let c in this.playground.blocks[r])
+      this.playground.blocks[r][c].blockRun(p, effects, r, c)
   }
 }
 
