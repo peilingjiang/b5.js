@@ -181,7 +181,7 @@ _b5Blocks.prototype.library.matter_box = {
   },
   unplug: function (o) {
     if (b5MatterWorld && o.storage) {
-      for (let b in o.storage) Composite.remove(b5MatterWorld, b.rectangle)
+      for (let b of o.storage) Composite.remove(b5MatterWorld, b.rectangle)
     }
     o.storage = []
   },
@@ -255,7 +255,7 @@ _b5Blocks.prototype.library.matter_ball = {
   },
   unplug: function (o) {
     if (b5MatterWorld && o.storage) {
-      for (let b in o.storage) Composite.remove(b5MatterWorld, b.circle)
+      for (let b of o.storage) Composite.remove(b5MatterWorld, b.circle)
     }
     o.storage = []
   },

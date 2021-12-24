@@ -1,6 +1,7 @@
 import equal from 'react-fast-compare'
 
 import _b5BlocksObject from '../blocks/blocksObjectWrapper'
+import { applyEffects } from '../blocks/utils'
 import { colorEffectOpacity } from './constants'
 import { _findNodes } from './preFactory'
 
@@ -86,8 +87,13 @@ export class _variableSectionObject extends _sectionObject {
     // Run sub-blocks
 
     if (_isEmpty(this.output)) {
+      const effects = {}
       for (let r in this.blocks)
-        for (let c in this.blocks[r]) this.blocks[r][c].blockRun(p)
+        for (let c in this.blocks[r])
+          this.blocks[r][c].effectBlockRun(p, effects, r, c)
+      for (let r in this.blocks)
+        for (let c in this.blocks[r])
+          this.blocks[r][c].blockRun(p, effects, r, c)
 
       // Construct LOCAL STORAGE
       for (let i in this.outputNodes.positions) {
@@ -129,9 +135,29 @@ export class _functionSectionObject extends _sectionObject {
 
   run = (p, o, draw, ...args) => {
     // Run sub-blocks
+    const effects = {}
+
     for (let r in this.blocks)
       for (let c in this.blocks[r])
-        this.blocks[r][c].blockRun(p, this._getInputArgs(r, c, args), draw)
+        this.blocks[r][c].effectBlockRun(
+          p,
+          effects,
+          r,
+          c,
+          this._getInputArgs(r, c, args),
+          draw
+        )
+
+    for (let r in this.blocks)
+      for (let c in this.blocks[r])
+        this.blocks[r][c].blockRun(
+          p,
+          effects,
+          r,
+          c,
+          this._getInputArgs(r, c, args),
+          draw
+        )
 
     // * No need for this.output
     for (let i in this.outputNodes.positions) {
@@ -183,7 +209,14 @@ export class _blockObject {
     if (init) this.output = await init()
   }
 
-  blockRun(p, overrideInputs = null, overrideDrawStatus = null) {
+  blockRun(
+    p,
+    effects,
+    row,
+    column,
+    overrideInputs = null,
+    overrideDrawStatus = null
+  ) {
     /*
     overrideInputs override the args found with given input blocks
     Primarily for function blocks
@@ -193,20 +226,52 @@ export class _blockObject {
       '2': 12,
     }
     */
-    // TODO: Construct this.args at constructor and on update
-    let _args = _findArgs(
-      this.parent.blocks,
-      this.input,
-      this.inlineData,
-      overrideInputs
-    )
+    if (!_b5BlocksObject[this.source][this.name].effect) {
+      // TODO: Construct this.args at constructor and on update
+      let _args = _findArgs(
+        this.parent.blocks,
+        this.input,
+        this.inlineData,
+        overrideInputs
+      )
 
-    _b5BlocksObject[this.source][this.name].run(
-      p,
-      this.output,
-      overrideDrawStatus || checkDrawing(p),
-      ..._args
-    )
+      _b5BlocksObject[this.source][this.name].run(
+        p,
+        this.output,
+        overrideDrawStatus || checkDrawing(p),
+        ..._args
+      )
+    }
+
+    applyEffects(effects, this.output, row, column)
+  }
+
+  effectBlockRun(
+    p,
+    effects,
+    row,
+    column,
+    overrideInputs = null,
+    overrideDrawStatus = null
+  ) {
+    if (_b5BlocksObject[this.source][this.name].effect) {
+      let _args = _findArgs(
+        this.parent.blocks,
+        this.input,
+        this.inlineData,
+        overrideInputs
+      )
+
+      _b5BlocksObject[this.source][this.name].effectRun(
+        p,
+        this.output,
+        overrideDrawStatus || checkDrawing(p),
+        effects,
+        Number(row),
+        Number(column),
+        ..._args
+      )
+    }
   }
 
   blockColorEffect() {

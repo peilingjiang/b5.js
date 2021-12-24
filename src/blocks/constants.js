@@ -1,6 +1,8 @@
 export const darkColorEffects = '#00000017'
 export const whiteColorEffects = '#ffffff17'
 
+export const objectColorEffects = '#44d7b617'
+
 export const _twoNumberInput = [
   {
     text: 'a',
