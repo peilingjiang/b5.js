@@ -11,4 +11,4 @@ export const colorPalette = {
   selected: '#07689f',
 }
 
-export const colorEffectOpacity = '17' // HEX
+export const colorEffectOpacity = '27' // HEX

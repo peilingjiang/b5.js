@@ -1,4 +1,5 @@
 import _b5Blocks from '../../main'
+import { colorPalette } from '../../../core/constants'
 import { darkColorEffects, whiteColorEffects } from '../../constants'
 import { valid } from '../../method'
 
@@ -121,6 +122,10 @@ _b5Blocks.prototype.frameRate = {
       type: ['object', 'number'],
     },
   ],
+  colorEffect: function (o, inlineData) {
+    return colorPalette.draw
+  },
+  colorEffectName: 'frameRate',
 }
 
 _b5Blocks.prototype.frameRateShow = {
