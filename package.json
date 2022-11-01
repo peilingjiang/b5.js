@@ -19,7 +19,7 @@
   "devDependencies": {
     "lint-staged": "^13.0.3",
     "prettier": "^2.7.1",
-    "simple-git-hooks": "^2.8.0"
+    "simple-git-hooks": "^2.8.1"
   },
   "dependencies": {
     "@tensorflow-models/posenet": "^2.2.2",
