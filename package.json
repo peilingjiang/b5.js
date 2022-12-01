@@ -18,7 +18,7 @@
   "homepage": "https://github.com/peilingjiang/b5.js#readme",
   "devDependencies": {
     "lint-staged": "^13.0.3",
-    "prettier": "^2.7.1",
+    "prettier": "^2.8.0",
     "simple-git-hooks": "^2.8.0"
   },
   "dependencies": {
