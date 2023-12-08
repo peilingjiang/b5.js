@@ -17,16 +17,16 @@
   },
   "homepage": "https://github.com/peilingjiang/b5.js#readme",
   "devDependencies": {
-    "lint-staged": "^13.0.3",
-    "prettier": "^2.7.1",
-    "simple-git-hooks": "^2.8.0"
+    "lint-staged": "^15.2.0",
+    "prettier": "^3.1.0",
+    "simple-git-hooks": "^2.9.0"
   },
   "dependencies": {
     "@tensorflow-models/posenet": "^2.2.2",
-    "@tensorflow/tfjs-backend-webgl": "^3.19.0",
-    "@tensorflow/tfjs-converter": "^3.19.0",
-    "@tensorflow/tfjs-core": "^3.19.0",
-    "matter-js": "^0.18.0"
+    "@tensorflow/tfjs-backend-webgl": "^3.21.0",
+    "@tensorflow/tfjs-converter": "^3.21.0",
+    "@tensorflow/tfjs-core": "^3.21.0",
+    "matter-js": "^0.19.0"
   },
   "simple-git-hooks": {
     "pre-commit": "npx lint-staged"
