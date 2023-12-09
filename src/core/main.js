@@ -399,8 +399,8 @@ b5.prototype.getCustomSourceFromName = function (name) {
   return this.factory.variable[name]
     ? 'variable'
     : this.factory.function[name]
-    ? 'function'
-    : null
+      ? 'function'
+      : null
 }
 
 b5.prototype.clearCategories = function (type, sectionNames) {
