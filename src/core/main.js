@@ -24,16 +24,19 @@ class b5 {
   }
 
   update(data) {
-    if (this.data === undefined || !equal(data.factory, this.data.factory)) {
+    const newData = JSON.parse(JSON.stringify(data))
+
+    if (this.data === undefined || !equal(newData.factory, this.data.factory)) {
       // Re-construct completely
       this._clear(true, true)
-      this._init(data)
+      this._init(newData)
     } else {
       // Only update playground part
       this._clear(false, true)
-      this._consPlayground(data.playground)
+      this._consPlayground(newData.playground)
     }
-    this.data = JSON.parse(JSON.stringify(data))
+
+    this.data = newData
   }
 
   updateBlockNames() {

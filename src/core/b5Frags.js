@@ -91,16 +91,18 @@ export class _variableSectionObject extends _sectionObject {
       for (let r in this.blocks)
         for (let c in this.blocks[r])
           this.blocks[r][c].effectBlockRun(p, effects, r, c)
+
       for (let r in this.blocks)
         for (let c in this.blocks[r])
           this.blocks[r][c].blockRun(p, effects, r, c)
 
       // Construct LOCAL STORAGE
-      for (let i in this.outputNodes.positions) {
-        const [y, x, node] = this.outputNodes.positions[i]
+      if (p.__ready__)
+        for (let i in this.outputNodes.positions) {
+          const [y, x, node] = this.outputNodes.positions[i]
 
-        this.output[i] = this.blocks[y][x].output[node]
-      }
+          this.output[i] = this.blocks[y][x].output[node]
+        }
     } else if (o && _isEmpty(o))
       for (let i in this.output) o[i] = this.output[i]
   }

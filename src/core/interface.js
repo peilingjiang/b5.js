@@ -11,11 +11,44 @@ b5.prototype._initP5ForB5 = function (p) {
 
 b5.prototype.runSetup = function (p) {
   this._initP5ForB5(p)
-  for (let v in this.factory.variable) {
-    p.push()
-    this.factory.variable[v].run(p) // this.factory['variable']['cnv']...
-    p.pop()
+
+  function hasCreateCanvas(blocks) {
+    for (let r in blocks)
+      for (let c in blocks[r])
+        if (blocks[r][c].name === 'createCanvas') return true
+    return false
   }
+
+  let createCanvasAdvanceRun = false
+
+  // Run create canvas first
+  for (let v in this.factory.variable) {
+    const variable = this.factory.variable[v]
+    const variableBlocks = variable.blocks
+
+    // check if blocks have createCanvas
+    if (hasCreateCanvas(variableBlocks)) {
+      variable.run(p)
+      createCanvasAdvanceRun = true
+    }
+  }
+
+  if (!createCanvasAdvanceRun)
+    // Run all if no createCanvas
+    for (let v in this.factory.variable) {
+      p.push()
+      this.factory.variable[v].run(p) // this.factory['variable']['cnv']...
+      p.pop()
+    }
+  else
+    for (let v in this.factory.variable) {
+      // Run the rest of the blocks
+      if (!hasCreateCanvas(this.factory.variable[v].blocks)) {
+        p.push()
+        this.factory.variable[v].run(p)
+        p.pop()
+      }
+    }
 }
 
 b5.prototype.runDraw = function (p) {
