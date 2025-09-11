@@ -17,9 +17,9 @@
   },
   "homepage": "https://github.com/peilingjiang/b5.js#readme",
   "devDependencies": {
-    "lint-staged": "^15.2.0",
-    "prettier": "^3.1.0",
-    "simple-git-hooks": "^2.9.0"
+    "lint-staged": "^15.5.2",
+    "prettier": "^3.6.2",
+    "simple-git-hooks": "^2.13.1"
   },
   "dependencies": {
     "@tensorflow-models/posenet": "^2.2.2",
